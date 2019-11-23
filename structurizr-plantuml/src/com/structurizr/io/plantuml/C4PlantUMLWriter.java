@@ -211,15 +211,19 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 			case Lay:
 			case Rel:
 				relationshipMacro = mode.name();
+				Directions direction = Directions.Down;
 				if (relationship.getProperties().containsKey(C4_LAYOUT_DIRECTION)) {
-					Directions direction = Directions.valueOf(relationship.getProperties().get(C4_LAYOUT_DIRECTION));
-					relationshipMacro = String.format("%s_%s", relationshipMacro, direction);
+					direction = Directions.valueOf(relationship.getProperties().get(C4_LAYOUT_DIRECTION));
 				}
+				relationshipMacro = String.format("%s_%s", relationshipMacro, direction.forMacro());
 				break;
 			default:
-				relationshipMacro = String.format("%s_%s", relationshipMacro, mode);
+				relationshipMacro = String.format("Rel_%s", mode);
 			}
-			if (relationship.getDescription() == null) {
+			if (mode==RelationshipModes.Lay) {
+				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(relationship.getSource()),
+						idOf(relationship.getDestination()), separator));
+			} else if (relationship.getDescription() == null) {
 				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(relationship.getSource()),
 						idOf(relationship.getDestination()), separator));
 			} else {
