@@ -22,7 +22,7 @@ public class AnnotatedMethodComponentFinderStrategyTest {
     private String packageToScan = "test.AnnotatedMethodComponentFinderStrategy";
 
     @Test
-    public void test_findComponentsFromAnnotatedMethodsAndClassesIgnoreDuplicates() throws Exception {
+    public void test_findComponentsFromAnnotatedMethodsOfNarrowedClassesIgnoreDuplicates() throws Exception {
         componentFinder = new ComponentFinder(fakeContainer, packageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, Configuration.class));
 
         Set<Component> components = componentFinder.findComponents();
@@ -43,11 +43,11 @@ public class AnnotatedMethodComponentFinderStrategyTest {
     }
 
     @Test
-    public void test_findComponentsFromAnnotatedMethods() throws Exception {
+    public void test_findComponentsFromAllAnnotatedMethodsIgnoreDuplicates() throws Exception {
         componentFinder = new ComponentFinder(fakeContainer, packageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class));
 
         Set<Component> components = componentFinder.findComponents();
 
-        assertThat(components).hasSize(2);
+        assertThat(components).hasSize(3);
     }
 }

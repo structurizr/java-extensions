@@ -2,16 +2,12 @@ package com.structurizr.analysis;
 
 import com.structurizr.model.Component;
 import com.structurizr.model.Container;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import org.reflections.ReflectionUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +37,6 @@ import java.util.stream.Collectors;
  * </pre>
  */
 public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFinderStrategy {
-
     private final Class<? extends Annotation> classAnnotation;
     private final Class<? extends Annotation> methodAnnotation;
 
@@ -89,36 +84,32 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
         Set<Component> components = new HashSet<>();
         Container container = getComponentFinder().getContainer();
 
-        Set<URL> classUrls = new HashSet<>();
+        Set<Class<?>> classes = new HashSet<>();
         if (classAnnotation != null) {
-            classUrls.addAll(findTypesAnnotatedWith(classAnnotation).stream().map(this::toUrl).collect(Collectors.toSet()));
+            classes.addAll(findTypesAnnotatedWith(classAnnotation));
         } else {
-            classUrls.addAll(getComponentFinder().getTypeRepository().getAllTypes().stream().map(this::toUrl).collect(Collectors.toSet()));
+            classes.addAll(getComponentFinder().getTypeRepository().getAllTypes());
         }
-
-        ConfigurationBuilder config = new ConfigurationBuilder().addUrls(classUrls).addScanners(new MethodAnnotationsScanner());
-        Set<SimpleImmutableEntry<Class, Class>> methodReturnTypes = new Reflections(config).getMethodsAnnotatedWith(methodAnnotation)
-                .stream().map(this::interfaceToImpReturnedFrom).collect(Collectors.toSet());
-
-        for (SimpleImmutableEntry<Class, Class> entry : methodReturnTypes) {
-            Component component = container.addComponent(entry.getKey().getSimpleName(), entry.getValue(), "", "");
-            components.add(component);
+        for (Class<?> clazz : classes) {
+            Set<SimpleImmutableEntry<Class, Class>> allMethods = ReflectionUtils.getAllMethods(clazz, m -> m.isAnnotationPresent(methodAnnotation))
+                    .stream().map(this::interfaceToImpReturnedFrom).collect(Collectors.toSet());
+            for (SimpleImmutableEntry<Class, Class> entry : allMethods) {
+                Component component = container.addComponent(entry.getKey().getSimpleName(), entry.getValue(), "", "");
+                components.add(component);
+            }
         }
         return components;
-    }
-
-    private URL toUrl(Class clazz) {
-        if (getComponentFinder().getUrlClassLoader() == null) {
-            return ClasspathHelper.forClass(clazz);
-        }
-        return ClasspathHelper.forClass(clazz, getComponentFinder().getUrlClassLoader());
     }
 
     private SimpleImmutableEntry<Class, Class> interfaceToImpReturnedFrom(Method method) {
         Class returnInterface = method.getReturnType();
         Class returnFirstImpl = method.getReturnType();
         if (returnInterface.isInterface()) {
-            returnFirstImpl = TypeUtils.findFirstImplementationOfInterface(returnInterface, getTypeRepository().getAllTypes());
+            Class firstImplementationOfInterface = TypeUtils.findFirstImplementationOfInterface(returnInterface, getTypeRepository().getAllTypes());
+            //firstImplementationOfInterface could be null when bean is defined inside class of packageToScan but impl is located in non scan package
+            if (firstImplementationOfInterface != null) {
+                returnFirstImpl = firstImplementationOfInterface;
+            }
         }
         return new SimpleImmutableEntry<>(returnInterface, returnFirstImpl);
     }
