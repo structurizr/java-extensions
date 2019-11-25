@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
@@ -323,17 +324,13 @@ public class PlantUMLWriter {
                     .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
                     .forEach(e -> write(view, e, writer, false));
 
-            writer.write("package \"" + view.getSoftwareSystem().getName() + "\" <<" + typeOf(view.getSoftwareSystem()) + ">> {");
-            writer.write(System.lineSeparator());
-
-            view.getElements().stream()
-                    .filter(ev -> ev.getElement() instanceof Container)
-                    .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-                    .forEach(e -> write(view, e, writer, true));
-
-            writer.write("}");
-            writer.write(System.lineSeparator());
+            writeContainerForSoftwareSystem(view, writer, (writtenView, usedWriter) -> {
+                writtenView.getElements().stream()
+                        .filter(ev -> ev.getElement() instanceof Container)
+                        .map(ElementView::getElement)
+                        .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                        .forEach(e -> write(writtenView, e, usedWriter, true));
+            });
 
             writeRelationships(view, writer);
 
@@ -341,6 +338,17 @@ public class PlantUMLWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void writeContainerForSoftwareSystem(ContainerView view, Writer writer,
+                                                 BiConsumer<ContainerView, Writer> packageContentWriter) throws IOException {
+        writer.write("package \"" + view.getSoftwareSystem().getName() + "\" <<" + typeOf(view.getSoftwareSystem()) + ">> {");
+        writer.write(System.lineSeparator());
+
+        packageContentWriter.accept(view, writer);
+
+        writer.write("}");
+        writer.write(System.lineSeparator());
     }
 
     protected void write(ComponentView view, Writer writer) {
@@ -353,17 +361,13 @@ public class PlantUMLWriter {
                     .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
                     .forEach(e -> write(view, e, writer, false));
 
-            writer.write("package \"" + view.getContainer().getName() + "\" <<" + typeOf(view.getContainer()) + ">> {");
-            writer.write(System.lineSeparator());
-
-            view.getElements().stream()
-                    .filter(ev -> ev.getElement() instanceof Component)
-                    .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-                    .forEach(e -> write(view, e, writer, true));
-
-            writer.write("}");
-            writer.write(System.lineSeparator());
+            writeContainerForContainer(view, writer, (writtenView, usedWriter) -> {
+                writtenView.getElements().stream()
+                        .filter(ev -> ev.getElement() instanceof Component)
+                        .map(ElementView::getElement)
+                        .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                        .forEach(e -> write(writtenView, e, usedWriter, true));
+            });
 
             writeRelationships(view, writer);
 
@@ -371,6 +375,17 @@ public class PlantUMLWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void writeContainerForContainer(ComponentView view, Writer writer,
+                                            BiConsumer<ComponentView, Writer> packageContentWriter) throws IOException {
+        writer.write("package \"" + view.getContainer().getName() + "\" <<" + typeOf(view.getContainer()) + ">> {");
+        writer.write(System.lineSeparator());
+
+        packageContentWriter.accept(view, writer);
+
+        writer.write("}");
+        writer.write(System.lineSeparator());
     }
 
     protected void write(DynamicView view, Writer writer) {
