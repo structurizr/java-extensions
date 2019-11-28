@@ -1,9 +1,9 @@
-package test.AnnotatedMethodComponentFinderStrategy;
+package test.AnnotatedMethodComponentFinderStrategy.main;
 
 public class FakeComponentImpl implements FakeComponent {
     private final FakeEfferentComponentImpl someEfferentComponent;
 
-    public FakeComponentImpl(FakeEfferentComponentImpl someEfferentComponent) {
+    FakeComponentImpl(FakeEfferentComponentImpl someEfferentComponent) {
         this.someEfferentComponent = someEfferentComponent;
     }
 }

@@ -5,10 +5,15 @@ import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.Relationship;
 import org.junit.Test;
-import test.AnnotatedMethodComponentFinderStrategy.*;
+import test.AnnotatedMethodComponentFinderStrategy.main.Bean;
+import test.AnnotatedMethodComponentFinderStrategy.main.Configuration;
+import test.AnnotatedMethodComponentFinderStrategy.main.FakeComponent;
+import test.AnnotatedMethodComponentFinderStrategy.main.FakeComponentImpl;
+import test.AnnotatedMethodComponentFinderStrategy.main.FakeEfferentComponentImpl;
 
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.from;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -19,11 +24,12 @@ public class AnnotatedMethodComponentFinderStrategyTest {
             .getModel()
             .addSoftwareSystem("Fake System", "")
             .addContainer("Fake Container", "", "");
-    private String packageToScan = "test.AnnotatedMethodComponentFinderStrategy";
+    private String rootPackageToScan = "test.AnnotatedMethodComponentFinderStrategy";
+    private String mainPackageToScan = "test.AnnotatedMethodComponentFinderStrategy.main";
 
     @Test
-    public void test_findComponentsFromAnnotatedMethodsOfNarrowedClassesIgnoreDuplicates() throws Exception {
-        componentFinder = new ComponentFinder(fakeContainer, packageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, Configuration.class));
+    public void test_findComponentsFromAnnotatedMethodsOnlyFromSpecifiedClassesIgnoringDuplicatesOfSameImplType() throws Exception {
+        componentFinder = new ComponentFinder(fakeContainer, mainPackageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, Configuration.class));
 
         Set<Component> components = componentFinder.findComponents();
         assertThat(components).hasSize(2);
@@ -43,11 +49,36 @@ public class AnnotatedMethodComponentFinderStrategyTest {
     }
 
     @Test
-    public void test_findComponentsFromAllAnnotatedMethodsIgnoreDuplicates() throws Exception {
-        componentFinder = new ComponentFinder(fakeContainer, packageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class));
+    public void test_findComponentsFromAllAnnotatedMethodsIgnoreDuplicatesOfSameImplType() throws Exception {
+        componentFinder = new ComponentFinder(fakeContainer, mainPackageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class));
 
         Set<Component> components = componentFinder.findComponents();
 
         assertThat(components).hasSize(3);
+    }
+
+    @Test
+    public void test_findComponentsFromAllAnnotatedMethodsIgnoringAllDuplicates_WhenIgnoreStrategyPassed() throws Exception {
+        componentFinder = new ComponentFinder(fakeContainer, rootPackageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, new IgnoreDuplicateComponentStrategy()));
+
+        Set<Component> components = componentFinder.findComponents();
+
+        assertThat(components).hasSize(3);
+    }
+
+    @Test
+    public void test_findComponentsFromAllAnnotatedMethodsIgnoringAllDuplicates_WhenNullAsDuplicateStrategyPassed() throws Exception {
+        componentFinder = new ComponentFinder(fakeContainer, rootPackageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, null, null));
+
+        Set<Component> components = componentFinder.findComponents();
+
+        assertThat(components).hasSize(3);
+    }
+
+    @Test
+    public void test_findComponents_ThrowsDuplicateComponentException_WhenThrowStrategyPassed() {
+        componentFinder = new ComponentFinder(fakeContainer, rootPackageToScan, new AnnotatedMethodComponentFinderStrategy(Bean.class, new ThrowExceptionDuplicateComponentStrategy()));
+
+        assertThatThrownBy(() -> componentFinder.findComponents()).isInstanceOf(DuplicateComponentException.class);
     }
 }

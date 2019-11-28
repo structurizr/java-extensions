@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 /**
  * A generic component finder strategy that finds components based on returned types of specifically annotated methods.
  * To filter scanned classes for specifically annotated methods specify classAnnotation as well.
- * This strategy ignores duplicates and uses first found implementation as a type property for a Component.
+ * This strategy uses first found implementation as a type property for a Component and
+ * when component duplicates are found it behaves according to passed DuplicateComponentStrategy (by default it ignores duplicates if nothing is passed to constructor).
  * <pre>
  * With example below this strategy finds 2 components based on method annotation {@code @Bean},
  * e.g. component with name "SomeComponent" has efferent relation to "SomeEfferentComponent".
@@ -46,7 +47,11 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
      * @param methodAnnotation the annotation to look for on methods
      */
     public AnnotatedMethodComponentFinderStrategy(Class<? extends Annotation> methodAnnotation) {
-        this(methodAnnotation, null, new ReferencedTypesSupportingTypesStrategy());
+        this(methodAnnotation, null, new IgnoreDuplicateComponentStrategy());
+    }
+
+    public AnnotatedMethodComponentFinderStrategy(Class<? extends Annotation> methodAnnotation, DuplicateComponentStrategy duplicateComponentStrategy) {
+        this(methodAnnotation, null, duplicateComponentStrategy);
     }
 
     /**
@@ -57,24 +62,28 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
      * @param classAnnotation  the annotation to look for on classes/interfaces
      */
     public AnnotatedMethodComponentFinderStrategy(Class<? extends Annotation> methodAnnotation, Class<? extends Annotation> classAnnotation) {
-        this(methodAnnotation, classAnnotation, new ReferencedTypesSupportingTypesStrategy());
+        this(methodAnnotation, classAnnotation, new IgnoreDuplicateComponentStrategy(), new ReferencedTypesSupportingTypesStrategy());
     }
 
     /**
      * Construct strategy that finds components based on return type of methods annotated with {@code methodAnnotation}
      * which belong only to classes annotated with {@code classAnnotation}.
      *
-     * @param methodAnnotation the annotation to look for on methods
-     * @param classAnnotation  the annotation to look for on classes/interfaces to narrow scanned scope of methods
-     * @param strategies       strategies to look for supporting types for a component
-     *                         (component hides all types which support defined in component functionality behind abstraction)
+     * @param methodAnnotation           the annotation to look for on methods
+     * @param classAnnotation            the annotation to look for on classes/interfaces to narrow scanned scope of methods
+     * @param duplicateComponentStrategy strategy how to behave when component duplicates found
+     * @param strategies                 strategies to look for supporting types for a component
+     *                                   (component hides all types which support defined in component functionality behind abstraction)
      */
     public AnnotatedMethodComponentFinderStrategy(
             @Nonnull Class<? extends Annotation> methodAnnotation,
             @Nullable Class<? extends Annotation> classAnnotation,
+            @Nullable DuplicateComponentStrategy duplicateComponentStrategy,
             SupportingTypesStrategy... strategies
     ) {
         super(strategies);
+        DuplicateComponentStrategy duplicateStrategy = duplicateComponentStrategy != null ? duplicateComponentStrategy : new IgnoreDuplicateComponentStrategy();
+        this.setDuplicateComponentStrategy(duplicateStrategy);
         this.classAnnotation = classAnnotation;
         this.methodAnnotation = methodAnnotation;
     }
@@ -94,8 +103,10 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
             Set<SimpleImmutableEntry<Class, Class>> allMethods = ReflectionUtils.getAllMethods(clazz, m -> m.isAnnotationPresent(methodAnnotation))
                     .stream().map(this::interfaceToImpReturnedFrom).collect(Collectors.toSet());
             for (SimpleImmutableEntry<Class, Class> entry : allMethods) {
-                Component component = container.addComponent(entry.getKey().getSimpleName(), entry.getValue(), "", "");
-                components.add(component);
+                Component component = addComponent(container, entry.getKey().getSimpleName(), entry.getValue().getName(), "", "");
+                if (component != null) {
+                    components.add(component);
+                }
             }
         }
         return components;

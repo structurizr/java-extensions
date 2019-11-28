@@ -1,4 +1,4 @@
-package test.AnnotatedMethodComponentFinderStrategy;
+package test.AnnotatedMethodComponentFinderStrategy.main;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
