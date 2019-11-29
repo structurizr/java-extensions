@@ -1,9 +1,9 @@
 package test.AnnotatedMethodComponentFinderStrategy.main;
 
-class SecondConfiguration {
+class SecondFakeConfiguration {
 
     @Bean
-    SecondFakeComponent otherFakeComponent() {
+    SecondFakeComponent secondFakeComponent() {
         return new SecondFakeComponent();
     }
 

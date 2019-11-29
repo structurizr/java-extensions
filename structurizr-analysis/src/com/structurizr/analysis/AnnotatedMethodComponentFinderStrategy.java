@@ -10,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -101,7 +102,7 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
         }
         for (Class<?> clazz : classes) {
             Set<SimpleImmutableEntry<Class, Class>> allMethods = ReflectionUtils.getAllMethods(clazz, m -> m.isAnnotationPresent(methodAnnotation))
-                    .stream().map(this::interfaceToImpReturnedFrom).collect(Collectors.toSet());
+                    .stream().map(this::interfaceToImpReturnedFrom).filter(Objects::nonNull).collect(Collectors.toSet());
             for (SimpleImmutableEntry<Class, Class> entry : allMethods) {
                 Component component = addComponent(container, entry.getKey().getSimpleName(), entry.getValue().getName(), "", "");
                 if (component != null) {
@@ -114,6 +115,9 @@ public class AnnotatedMethodComponentFinderStrategy extends AbstractComponentFin
 
     private SimpleImmutableEntry<Class, Class> interfaceToImpReturnedFrom(Method method) {
         Class returnInterface = method.getReturnType();
+        if (returnInterface.equals(Void.TYPE)) {
+            return null;
+        }
         Class returnFirstImpl = method.getReturnType();
         if (returnInterface.isInterface()) {
             Class firstImplementationOfInterface = TypeUtils.findFirstImplementationOfInterface(returnInterface, getTypeRepository().getAllTypes());

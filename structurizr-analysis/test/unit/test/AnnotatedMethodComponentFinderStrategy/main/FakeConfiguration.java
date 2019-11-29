@@ -17,4 +17,8 @@ class FakeConfiguration {
     FakeComponent secondFakeComponent() {
         return new FakeComponentImpl(fakeEfferentComponent());
     }
+
+    @Bean
+    void notComponent() {
+    }
 }
