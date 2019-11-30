@@ -29,6 +29,9 @@ import static java.lang.String.format;
  *
  */
 public class C4PlantUMLWriter extends PlantUMLWriter {
+	private static final java.util.logging.Logger logger = java.util.logging.Logger
+			.getLogger(C4PlantUMLWriter.class.getName());
+	
 	/**
 	 * This property indicates to C4-PlantUML library which relationship type to
 	 * use. Possible values are given in the {@link Directions} enum
@@ -49,7 +52,11 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	}
 
 	public static enum Directions {
-		Up, Down, Right, Left
+		Up, Down, Right, Left;
+
+		public String forMacro() {
+			return name().substring(0, 1);
+		}
 	}
 
 	public static enum RelationshipModes {
@@ -145,9 +152,6 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		}
 	}
 
-	private static final java.util.logging.Logger logger = java.util.logging.Logger
-			.getLogger(C4PlantUMLWriter.class.getName());
-
 	public C4PlantUMLWriter() {
 		super();
 		try {
@@ -199,11 +203,10 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	/**
 	 * We replace the write element method to use macros provided by C4-PlantUML
 	 */
+	@SuppressWarnings("unchecked")
 	protected void write(View view, Element element, Writer writer, boolean indent) {
 		try {
 			final String prefix = indent ? "  " : "";
-			final String id = idOf(element);
-			final String separator = System.lineSeparator();
 			getWriterFor(element).write(view, element, writer, prefix);
 		} catch (NoMacroFound noMacro) {
 			super.write(view, element, writer, indent);
