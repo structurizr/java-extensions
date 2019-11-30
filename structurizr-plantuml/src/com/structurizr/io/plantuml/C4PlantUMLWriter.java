@@ -1,12 +1,15 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.model.*;
+import com.structurizr.view.ComponentView;
+import com.structurizr.view.ContainerView;
 import com.structurizr.view.View;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
 import static java.lang.String.format;
@@ -167,6 +170,30 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void writeContainerForSoftwareSystem(ContainerView view, Writer writer, BiConsumer<ContainerView, Writer> packageContentWriter) throws IOException {
+		writer.write(
+				String.format("System_Boundary(%s_boundary, %s) {", view.getSoftwareSystemId(), view.getSoftwareSystem().getName()));
+		writer.write(System.lineSeparator());
+
+		packageContentWriter.accept(view, writer);
+
+		writer.write("}");
+		writer.write(System.lineSeparator());
+	}
+
+	@Override
+	protected void writeContainerForContainer(ComponentView view, Writer writer, BiConsumer<ComponentView, Writer> packageContentWriter) throws IOException {
+		writer.write(
+				String.format("Container_Boundary(%s_boundary, %s) {", view.getContainerId(), view.getContainer().getName()));
+		writer.write(System.lineSeparator());
+
+		packageContentWriter.accept(view, writer);
+
+		writer.write("}");
+		writer.write(System.lineSeparator());
 	}
 
 	/**
