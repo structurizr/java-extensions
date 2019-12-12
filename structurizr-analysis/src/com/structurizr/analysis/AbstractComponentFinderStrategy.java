@@ -18,7 +18,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
 
     private static final Log log = LogFactory.getLog(AbstractComponentFinderStrategy.class);
 
-    private Set<Component> componentsFound = new HashSet<>();
+    protected Set<Component> componentsFound = new HashSet<>();
 
     protected ComponentFinder componentFinder;
 
@@ -37,7 +37,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
     /**
      * Sets a reference to the parent component finder.
      *
-     * @param componentFinder   a ComponentFinder instance
+     * @param componentFinder a ComponentFinder instance
      */
     public void setComponentFinder(ComponentFinder componentFinder) {
         this.componentFinder = componentFinder;
@@ -62,7 +62,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
     /**
      * A template method into which subclasses can put their component finding code.
      *
-     * @return  the Set of Components found, or an empty set if no components were found
+     * @return the Set of Components found, or an empty set if no components were found
      */
     protected abstract Set<Component> doFindComponents();
 
@@ -72,7 +72,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
         findDependencies();
     }
 
-    private void findSupportingTypes(Set<Component> components) {
+    protected void findSupportingTypes(Set<Component> components) {
         for (Component component : components) {
             for (CodeElement codeElement : component.getCode()) {
                 TypeVisibility visibility = TypeUtils.getVisibility(getTypeRepository(), codeElement.getType());
@@ -88,7 +88,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
 
             for (SupportingTypesStrategy strategy : supportingTypesStrategies) {
                 for (Class<?> type : strategy.findSupportingTypes(component)) {
-                    if (!isNestedClass(type) && componentFinder.getContainer().getComponentOfType(type.getCanonicalName()) == null) {
+                    if (!isNestedClass(type) && findComponent(type.getCanonicalName()) == null) {
                         CodeElement codeElement = component.addSupportingType(type.getCanonicalName());
 
                         TypeVisibility visibility = TypeUtils.getVisibility(getTypeRepository(), codeElement.getType());
@@ -110,7 +110,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
         return type != null && type.getName().indexOf('$') > -1;
     }
 
-    private void findDependencies() {
+    protected void findDependencies() {
         for (Component component : componentFinder.getContainer().getComponents()) {
             for (CodeElement codeElement : component.getCode()) {
                 addEfferentDependencies(component, codeElement.getType(), new HashSet<>());
@@ -126,7 +126,7 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
                 if (!isNestedClass(referencedType)) {
                     String referencedTypeName = referencedType.getCanonicalName();
                     if (!StringUtils.isNullOrEmpty(referencedTypeName)) {
-                        Component destinationComponent = componentFinder.getContainer().getComponentOfType(referencedTypeName);
+                        Component destinationComponent = findComponent(referencedTypeName);
                         if (destinationComponent != null) {
                             if (component != destinationComponent) {
                                 component.uses(destinationComponent, "");
@@ -142,10 +142,19 @@ public abstract class AbstractComponentFinderStrategy implements ComponentFinder
         }
     }
 
+    private Component findComponent(String referencedTypeName) {
+        Container container = componentFinder.getContainer();
+        Component componentOfType = container.getComponentOfType(referencedTypeName);
+        if (componentOfType == null) {
+            componentOfType = container.getComponentWithName(referencedTypeName);
+        }
+        return componentOfType;
+    }
+
     /**
      * Adds a supporting type strategy to this component finder strategy.
      *
-     * @param supportingTypesStrategy   a SupportingTypesStrategy instance
+     * @param supportingTypesStrategy a SupportingTypesStrategy instance
      */
     public void addSupportingTypesStrategy(SupportingTypesStrategy supportingTypesStrategy) {
         if (supportingTypesStrategy == null) {
