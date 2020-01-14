@@ -2,6 +2,7 @@ dependencies {
     compile project(':structurizr-adr-tools')
     compile project(':structurizr-annotations')
     compile project(':structurizr-dot')
+    compile project(':structurizr-fc4')
     compile project(':structurizr-mermaid')
     compile project(':structurizr-plantuml')
     compile project(':structurizr-spring')

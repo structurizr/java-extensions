@@ -1,0 +1,6 @@
+system:
+  E-mail System:
+    description: The internal Microsoft Exchange e-mail system.
+    uses:
+      Personal Banking Customer:
+        to: Sends e-mails to

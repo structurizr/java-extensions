@@ -1,0 +1,3 @@
+system:
+  Mainframe Banking System:
+    description: Stores all of the core banking information about customers, accounts, transactions, etc.

@@ -1,0 +1,6 @@
+system:
+  ATM:
+    description: Allows customers to withdraw cash.
+    uses:
+      Mainframe Banking System:
+        to: Uses
