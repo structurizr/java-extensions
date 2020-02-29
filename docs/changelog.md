@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.3.2 (unreleased)
+## 1.3.4 (29th February 2020)
+
+Bug fixes.
 
 ## 1.3.1 (29th October 2019)
 
