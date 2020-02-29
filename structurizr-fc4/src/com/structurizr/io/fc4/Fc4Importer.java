@@ -53,13 +53,13 @@ public class Fc4Importer {
         // create a single System Landscape diagram containing everything
         SystemLandscapeView systemLandscapeView = workspace.getViews().createSystemLandscapeView("SystemLandscape", "A system landscape view for " + workspace.getName());
         systemLandscapeView.addAllElements();
-        systemLandscapeView.setAutomaticLayout(true);
+        systemLandscapeView.enableAutomaticLayout();
 
         // and a system context view for all software systems
         for (SoftwareSystem softwareSystem : workspace.getModel().getSoftwareSystems()) {
             SystemContextView systemContextView = workspace.getViews().createSystemContextView(softwareSystem, softwareSystem.getName(), "A system context view for " + softwareSystem.getName() + '.');
             systemContextView.addNearestNeighbours(softwareSystem);
-            systemContextView.setAutomaticLayout(true);
+            systemContextView.enableAutomaticLayout();
         }
 
         // add some basic styling
