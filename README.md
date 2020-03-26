@@ -16,9 +16,10 @@ This GitHub repository is a collection of extensions for the [Structurizr for Ja
     * [Components and supporting types](docs/supporting-types.md)
     * [The Spring PetClinic example](docs/spring-petclinic.md)
 * Exporting and visualising with other tools
-    * [PlantUML](docs/plantuml.md)
-    * [Graphviz and DOT](docs/graphviz-and-dot.md)
-    * [WebSequenceDiagrams](docs/websequencediagrams.md)
+	* [Automatic layout with Graphviz](docs/graphviz.md)
+    * [PlantUML export](docs/plantuml.md)
+    * [DOT file export](docs/dot.md)
+    * [WebSequenceDiagrams export](docs/websequencediagrams.md)
 * Related projects
     * [java](https://github.com/structurizr/java): Structurizr for Java
     * [java-quickstart](https://github.com/structurizr/java-quickstart): A simple starting point for using Structurizr for Java

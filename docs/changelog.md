@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.5 (unreleased)
+
+- Added the structurizr-graphviz library.
+
 ## 1.3.4 (29th February 2020)
 
 Bug fixes.
