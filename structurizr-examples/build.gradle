@@ -3,11 +3,12 @@ dependencies {
     compile project(':structurizr-annotations')
     compile project(':structurizr-dot')
     compile project(':structurizr-fc4')
+    compile project(':structurizr-graphviz')
     compile project(':structurizr-mermaid')
     compile project(':structurizr-plantuml')
     compile project(':structurizr-spring')
 
-    compile 'com.structurizr:structurizr-client:1.3.4'
+    compile 'com.structurizr:structurizr-client:1.3.5'
 
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.slf4j:slf4j-simple:1.7.21'
