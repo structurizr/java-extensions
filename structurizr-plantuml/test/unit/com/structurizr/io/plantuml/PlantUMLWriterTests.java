@@ -185,7 +185,7 @@ public class PlantUMLWriterTests {
         emailSystem.delivers(user, "Delivers e-mails to");
 
         Container webApplication = softwareSystem.addContainer("Web Application", "", "");
-        Container database = softwareSystem.addContainer("Database", "A relational database management system, likely PostgreSQL or MySQL but anything with JDBC drivers would be suitable.", "");
+        Container database = softwareSystem.addContainer("Database", "A relational database management system, likely PostgreSQL or MySQL but anything with JDBC drivers would be suitable.", "SQL");
         database.addTags(DATA_STORE_TAG);
         user.uses(webApplication, "Uses", "HTTP");
         webApplication.uses(database, "Reads from and writes to", "JDBC");
@@ -564,7 +564,7 @@ public class PlantUMLWriterTests {
             "  diagrams" + System.lineSeparator() +
             "]" + System.lineSeparator() +
             "package \"Software System\" <<Software System>> {" + System.lineSeparator() +
-            "  database 8 <<Container>> #dddddd [" + System.lineSeparator() +
+            "  database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
             "    Database" + System.lineSeparator() +
             "    --" + System.lineSeparator() +
             "    A relational database" + System.lineSeparator() +
@@ -594,7 +594,7 @@ public class PlantUMLWriterTests {
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
-            "database 8 <<Container>> #dddddd [" + System.lineSeparator() +
+            "database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
             "  --" + System.lineSeparator() +
             "  A relational database" + System.lineSeparator() +
@@ -642,7 +642,7 @@ public class PlantUMLWriterTests {
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
-            "database 8 <<Container>> #dddddd [" + System.lineSeparator() +
+            "database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
             "  --" + System.lineSeparator() +
             "  A relational database" + System.lineSeparator() +
@@ -681,7 +681,7 @@ public class PlantUMLWriterTests {
             "participant \"User\" as 1 <<Person>> #dddddd" + System.lineSeparator() +
             "participant \"SomeController\" as 12 <<Spring MVC Controller>> #dddddd" + System.lineSeparator() +
             "participant \"SomeRepository\" as 14 <<Spring Data>> #dddddd" + System.lineSeparator() +
-            "database \"Database\" as 8 <<Container>> #dddddd" + System.lineSeparator() +
+            "database \"Database\" as 8 <<SQL>> #dddddd" + System.lineSeparator() +
             "1 -[#707070]> 12 : 1. Requests /something" + System.lineSeparator() +
             "12 -[#707070]> 14 : 2. Uses" + System.lineSeparator() +
             "14 -[#707070]> 8 : 3. select * from something" + System.lineSeparator() +
@@ -703,7 +703,7 @@ public class PlantUMLWriterTests {
             "}" + System.lineSeparator() +
             "node \"Database Server\" <<Ubuntu 12.04 LTS>> as 23 {" + System.lineSeparator() +
             "  node \"MySQL\" <<MySQL 5.5.x>> as 24 {" + System.lineSeparator() +
-            "    database \"Database\" <<Container>> as 25 #dddddd" + System.lineSeparator() +
+            "    database \"Database\" <<SQL>> as 25 #dddddd" + System.lineSeparator() +
             "  }" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "node \"Web Server\" <<Ubuntu 12.04 LTS>> as 20 {" + System.lineSeparator() +
