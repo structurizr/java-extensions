@@ -689,7 +689,11 @@ public class PlantUMLWriter {
             DeploymentNode deploymentNode = (DeploymentNode)e;
             return hasValue(deploymentNode.getTechnology()) ? deploymentNode.getTechnology() : "Deployment Node";
         } else if (e instanceof ContainerInstance) {
-            return "Container";
+            Container container = ((ContainerInstance) e).getContainer();
+            return hasValue(container.getTechnology()) ? container.getTechnology() : "Container";
+        } else if (e instanceof Container) {
+            Container container = (Container) e;
+            return hasValue(container.getTechnology()) ? container.getTechnology() : "Container";
         } else {
             return e.getClass().getSimpleName();
         }
