@@ -38,6 +38,13 @@ class SVGReader {
 
         FileInputStream fileIS = new FileInputStream(file);
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setNamespaceAware(false);
+        builderFactory.setValidating(false);
+        builderFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+        builderFactory.setFeature("http://xml.org/sax/features/validation", false);
+        builderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        builderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         Document xmlDocument = builder.parse(fileIS);
         XPath xPath = XPathFactory.newInstance().newXPath();
