@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 (unreleased)
+
+- Fixes issues with running the Graphviz extension in non-English locales.
+
 ## 1.3.5 (8th April 2020)
 
 - Added the structurizr-graphviz library.

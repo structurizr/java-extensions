@@ -6,6 +6,7 @@ import com.structurizr.view.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.util.Locale;
 
 /**
  * Writes a Structurizr view to a graphviz dot file. Please note that this is not a full export (colours, shapes, etc);
@@ -30,7 +31,7 @@ class DotFileWriter {
     private void writeHeader(Writer writer) throws Exception {
         writer.write("digraph {");
         writer.write("\n");
-        writer.write(String.format("  graph [splines=polyline,rankdir=%s,ranksep=%s,nodesep=%s,fontsize=5]", rankDirection.getCode(), rankSeparation, nodeSeparation));
+        writer.write(String.format(Locale.US, "  graph [splines=polyline,rankdir=%s,ranksep=%s,nodesep=%s,fontsize=5]", rankDirection.getCode(), rankSeparation, nodeSeparation));
         writer.write("\n");
         writer.write("  node [shape=box,fontsize=5]");
         writer.write("\n");
@@ -134,7 +135,7 @@ class DotFileWriter {
 
         SoftwareSystem softwareSystem = view.getSoftwareSystem();
 
-        fileWriter.write(String.format("  subgraph cluster_%s {\n", softwareSystem.getId()));
+        fileWriter.write(String.format(Locale.US, "  subgraph cluster_%s {\n", softwareSystem.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == softwareSystem) {
@@ -165,7 +166,7 @@ class DotFileWriter {
 
         Container container = view.getContainer();
 
-        fileWriter.write(String.format("  subgraph cluster_%s {\n", container.getId()));
+        fileWriter.write(String.format(Locale.US, "  subgraph cluster_%s {\n", container.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == container) {
@@ -201,7 +202,7 @@ class DotFileWriter {
                 writeElement(view, "  ", elementView.getElement(), fileWriter);
             }
         } else {
-            fileWriter.write(String.format("  subgraph cluster_%s {\n", element.getId()));
+            fileWriter.write(String.format(Locale.US, "  subgraph cluster_%s {\n", element.getId()));
             fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement().getParent() == element) {
@@ -244,9 +245,9 @@ class DotFileWriter {
     }
 
     private void write(DeploymentView view, DeploymentNode deploymentNode, FileWriter fileWriter, String indent) throws Exception {
-        fileWriter.write(String.format(indent + "subgraph cluster_%s {\n", deploymentNode.getId()));
+        fileWriter.write(String.format(Locale.US, indent + "subgraph cluster_%s {\n", deploymentNode.getId()));
         fileWriter.write(indent + "  margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
-        fileWriter.write(String.format(indent + "  label=\"%s: %s\"\n", deploymentNode.getId(), deploymentNode.getName()));
+        fileWriter.write(String.format(Locale.US, indent + "  label=\"%s: %s\"\n", deploymentNode.getId(), deploymentNode.getName()));
 
         for (DeploymentNode child : deploymentNode.getChildren()) {
             if (view.isElementInView(child)) {
@@ -265,7 +266,7 @@ class DotFileWriter {
     }
 
     private void writeElement(View view, String padding, Element element, Writer writer) throws Exception {
-        writer.write(String.format("%s%s [width=%f,height=%f,fixedsize=true,id=%s,label=\"%s: %s\"]",
+        writer.write(String.format(Locale.US, "%s%s [width=%f,height=%f,fixedsize=true,id=%s,label=\"%s: %s\"]",
                 padding,
                 element.getId(),
                 getElementWidth(view, element.getId()) / Constants.STRUCTURIZR_DPI, // convert Structurizr dimensions to inches
@@ -286,7 +287,7 @@ class DotFileWriter {
                 continue;
             }
 
-            writer.write(String.format("  %s -> %s [id=%s]",
+            writer.write(String.format(Locale.US, "  %s -> %s [id=%s]",
                     relationshipView.getRelationship().getSourceId(),
                     relationshipView.getRelationship().getDestinationId(),
                     relationshipView.getId()
