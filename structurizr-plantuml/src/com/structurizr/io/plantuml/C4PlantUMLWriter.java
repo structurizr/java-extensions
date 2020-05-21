@@ -33,6 +33,18 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 			.getLogger(C4PlantUMLWriter.class.getName());
 	
 	/**
+	 * Various layout abilities as provided by C4-PlantUML
+	 * @see https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md
+	 * @author nicolas-delsaux
+	 */
+	public static enum Layout {
+		LAYOUT_TOP_DOWN,
+		LAYOUT_LEFT_RIGHT,
+		LAYOUT_WITH_LEGEND,
+		LAYOUT_AS_SKETCH,
+	}
+	
+	/**
 	 * This property indicates to C4-PlantUML library which relationship type to
 	 * use. Possible values are given in the {@link Directions} enum
 	 */
@@ -153,6 +165,9 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	}
 
 	public C4PlantUMLWriter() {
+		this(Layout.LAYOUT_WITH_LEGEND);
+	}
+	public C4PlantUMLWriter(Layout layout) {
 		super();
 		try {
 			addIncludeURL(new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml"));
@@ -162,6 +177,7 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml"));
 			addIncludeURL(
 					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml"));
+			getIncludes().add(String.format("%s()\n", layout.name());
 		} catch (URISyntaxException e) {
 			logger.log(Level.SEVERE, "Using C4-PlantUML shoulld not trigger URI error", e);
 		}
