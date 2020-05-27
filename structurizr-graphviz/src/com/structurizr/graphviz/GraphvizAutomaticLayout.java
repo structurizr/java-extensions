@@ -4,6 +4,7 @@ import com.structurizr.Workspace;
 import com.structurizr.view.*;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Applies the graphviz automatic layout to views in a Structurizr workspace.
@@ -20,6 +21,8 @@ public class GraphvizAutomaticLayout {
 
     private int margin = 20;
     private boolean changePaperSize = true;
+
+    private Locale locale = Locale.US;
 
     public GraphvizAutomaticLayout() {
         this(new File("."));
@@ -49,8 +52,20 @@ public class GraphvizAutomaticLayout {
         this.changePaperSize = changePaperSize;
     }
 
+    /**
+     * Sets the locale used when writing DOT files.
+     *
+     * @param locale        a Locale instance
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     private DotFileWriter createDotFileWriter() {
-        return new DotFileWriter(path, rankDirection, rankSeparation, nodeSeparation);
+        DotFileWriter dotFileWriter = new DotFileWriter(path, rankDirection, rankSeparation, nodeSeparation);
+        dotFileWriter.setLocale(locale);
+
+        return dotFileWriter;
     }
 
     private SVGReader createSVGReader() {
