@@ -107,7 +107,7 @@ public class AdrToolsImporterTests {
         importer.importArchitectureDecisionRecords();
 
         Decision decision5 = documentation.getDecisions().stream().filter(d -> d.getId().equals("5")).findFirst().get();
-        assertTrue(decision5.getContent().contains("Amended by [9. Help scripts](#/:9)"));
+        assertTrue(decision5.getContent().contains("Amended by [9. Help scripts](#%2F:9)"));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AdrToolsImporterTests {
         Decision decision4 = documentation.getDecisions().stream().filter(d -> d.getId().equals("4")).findFirst().get();
         assertEquals(DecisionStatus.Superseded, decision4.getStatus());
         System.out.println(decision4.getContent());
-        assertTrue(decision4.getContent().contains("Superceded by [10. AsciiDoc format](#/:10)"));
+        assertTrue(decision4.getContent().contains("Superceded by [10. AsciiDoc format](#%2F:10)"));
     }
 
 }
