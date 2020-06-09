@@ -261,6 +261,12 @@ class DotFileWriter {
             }
         }
 
+        for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+            if (view.isElementInView(infrastructureNode)) {
+                writeElement(view, indent + "  ", infrastructureNode, fileWriter);
+            }
+        }
+
         for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
             if (view.isElementInView(containerInstance)) {
                 writeElement(view, indent + "  ", containerInstance, fileWriter);
