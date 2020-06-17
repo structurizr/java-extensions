@@ -392,11 +392,14 @@ public class PlantUMLWriter {
         try {
             writeHeader(view, writer);
 
+            Set<Element> elements = new LinkedHashSet<>();
+            for (RelationshipView relationshipView : view.getRelationships()) {
+                elements.add(relationshipView.getRelationship().getSource());
+                elements.add(relationshipView.getRelationship().getDestination());
+            }
+
             if (useSequenceDiagrams) {
-                view.getElements().stream()
-                    .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getId().compareTo(e2.getId()))
-                    .forEach(e -> {
+                elements.forEach(e -> {
                                    try {
                                        writeSequenceElement(view, e, writer, false, plantumlSequenceType(view, e));
                                    } catch (IOException e3) {
@@ -404,10 +407,7 @@ public class PlantUMLWriter {
                                    }
                              });
             } else {
-                view.getElements().stream()
-                    .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).
-                    forEach(e -> write(view, e, writer, false));
+                elements.forEach(e -> write(view, e, writer, false));
             }
             view.getRelationships()
                     .forEach(relationship -> {

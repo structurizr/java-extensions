@@ -642,6 +642,15 @@ public class PlantUMLWriterTests {
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
+            "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
+            "  User" + System.lineSeparator() +
+            "  --" + System.lineSeparator() +
+            "  A detailed description of the" + System.lineSeparator() +
+            "  user to be displayed on the" + System.lineSeparator() +
+            "  diagrams" + System.lineSeparator() +
+            "]" + System.lineSeparator() +
+            "component \"SomeController\" <<Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
+            "component \"SomeRepository\" <<Spring Data>> as 14 #dddddd" + System.lineSeparator() +
             "database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
             "  --" + System.lineSeparator() +
@@ -650,15 +659,6 @@ public class PlantUMLWriterTests {
             "  PostgreSQL or MySQL but" + System.lineSeparator() +
             "  anything with JDBC drivers" + System.lineSeparator() +
             "  would be suitable." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "component \"SomeController\" <<Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
-            "component \"SomeRepository\" <<Spring Data>> as 14 #dddddd" + System.lineSeparator() +
-            "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "  User" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A detailed description of the" + System.lineSeparator() +
-            "  user to be displayed on the" + System.lineSeparator() +
-            "  diagrams" + System.lineSeparator() +
             "]" + System.lineSeparator() +
             "1 -[#707070]> 12 : 1. Requests /something" + System.lineSeparator() +
             "12 -[#707070]> 14 : 2. Uses" + System.lineSeparator() +

@@ -1,17 +1,14 @@
 package com.structurizr.io.websequencediagrams;
 
 import com.structurizr.Workspace;
-import com.structurizr.model.InteractionStyle;
-import com.structurizr.model.Relationship;
+import com.structurizr.model.*;
 import com.structurizr.view.DynamicView;
 import com.structurizr.view.RelationshipView;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * A simple writer that outputs dynamic diagram definitions that can be copy-pasted
@@ -63,10 +60,34 @@ public final class WebSequenceDiagramsWriter {
         System.out.println(stringWriter.toString());
     }
 
-    private void write(DynamicView view, Writer writer) {
+    public void write(DynamicView view, Writer writer) {
         try {
             writer.write("title " + view.getName() + " - " + view.getKey());
             writer.write(System.lineSeparator());
+            writer.write(System.lineSeparator());
+
+            Set<Element> elements = new LinkedHashSet<>();
+            for (RelationshipView relationshipView : view.getRelationships()) {
+                elements.add(relationshipView.getRelationship().getSource());
+                elements.add(relationshipView.getRelationship().getDestination());
+            }
+
+            for (Element element : elements) {
+                if (element instanceof Person) {
+                    writer.write(String.format("actor <<Person>>>\\n%s as %s", element.getName(), element.getName()));
+                    writer.write(System.lineSeparator());
+                } else if (element instanceof SoftwareSystem) {
+                    writer.write(String.format("participant <<Software System>>>\\n%s as %s", element.getName(), element.getName()));
+                    writer.write(System.lineSeparator());
+                } else if (element instanceof Container) {
+                    writer.write(String.format("participant <<Container>>>\\n%s as %s", element.getName(), element.getName()));
+                    writer.write(System.lineSeparator());
+                } else if (element instanceof Component) {
+                    writer.write(String.format("participant <<Component>>>\\n%s as %s", element.getName(), element.getName()));
+                    writer.write(System.lineSeparator());
+                }
+            }
+
             writer.write(System.lineSeparator());
 
             for (RelationshipView relationshipView : view.getRelationships()) {
@@ -80,8 +101,6 @@ public final class WebSequenceDiagramsWriter {
                 ));
                 writer.write(System.lineSeparator());
             }
-
-            writer.write(System.lineSeparator());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
