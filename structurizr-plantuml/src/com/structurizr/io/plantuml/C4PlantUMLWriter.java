@@ -34,7 +34,7 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	
 	/**
 	 * Various layout abilities as provided by C4-PlantUML
-	 * @see https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md
+	 * @see <a href="https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md">https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md</a>
 	 * @author nicolas-delsaux
 	 */
 	public static enum Layout {
