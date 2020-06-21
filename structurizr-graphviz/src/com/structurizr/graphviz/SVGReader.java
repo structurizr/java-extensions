@@ -52,8 +52,8 @@ class SVGReader {
         String transform = nodeList.item(0).getAttributes().getNamedItem("transform").getNodeValue();
         String translate = transform.substring(transform.indexOf("translate"));
         String numbers = translate.substring(translate.indexOf("(") + 1, translate.indexOf(")"));
-        int transformX = Integer.parseInt(numbers.split(" ")[0]);
-        int transformY = Integer.parseInt(numbers.split(" ")[1]);
+        int transformX = (int)Double.parseDouble(numbers.split(" ")[0]);
+        int transformY = (int)Double.parseDouble(numbers.split(" ")[1]);
 
         int minimumX = Integer.MAX_VALUE;
         int minimumY = Integer.MAX_VALUE;
