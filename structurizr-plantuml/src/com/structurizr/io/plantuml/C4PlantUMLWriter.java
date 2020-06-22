@@ -1,18 +1,33 @@
 package com.structurizr.io.plantuml;
 
-import com.structurizr.model.*;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.View;
+import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import static java.lang.String.format;
+import com.structurizr.model.Component;
+import com.structurizr.model.Container;
+import com.structurizr.model.ContainerInstance;
+import com.structurizr.model.Element;
+import com.structurizr.model.Location;
+import com.structurizr.model.Person;
+import com.structurizr.model.Relationship;
+import com.structurizr.model.SoftwareSystem;
+import com.structurizr.view.ComponentView;
+import com.structurizr.view.ContainerView;
+import com.structurizr.view.View;
 
 /**
  * This writer extends the classical one to use the C4-PlantUML sprite library
@@ -164,12 +179,87 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		}
 	}
 
-	public C4PlantUMLWriter() {
-		this(Layout.LAYOUT_WITH_LEGEND);
+	public static Collection<String> inferC4PlantUMLLibraryFrom(String urlText) {
+		try {
+			URL url = canonicalizeUrl(urlText);
+			// Now we're sure url base is correct, add the library fragments
+			
+			return Arrays.asList("C4.puml", "C4_Context.puml", "C4_Container.puml", "C4_Component.puml").stream()
+					.map(file -> {
+						try {
+							return new URL(url, file);
+						} catch(MalformedURLException e) {
+							throw new RuntimeException(String.format("Unable to create C4-PlantUML libray object from %s", urlText), e);
+						}
+					})
+					.map(fileUrl -> fileUrl.toExternalForm())
+					.collect(Collectors.toList());
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(String.format("Unable to create C4-PlantUML libray object from %s", urlText), e);
+		}
 	}
-	public C4PlantUMLWriter(Layout layout) {
+
+	static URL canonicalizeUrl(String urlText) throws MalformedURLException {
+		URL url = new URL(urlText);
+		if(url.getHost().equals("github.com")) {
+			// The substring trick is here to remove first character (which by design is a "/")
+			String path = url.getPath().substring(1);
+			String[] fragments = path.split("/");
+			if(fragments.length<2) {
+				throw new RuntimeException(String.format("The path you gave (%s) in you URL is wrong, as it is not a GitHub user repo but %s", 
+						path, urlText));
+			} else {
+				String user = fragments[0];
+				String repo = fragments[1];
+				String branch = "master";
+				if(fragments.length>2) {
+					if("tree".equals(fragments[2])) {
+						if(fragments.length==4) {
+							branch = fragments[3];
+						}
+					} else {
+						throw new RuntimeException(String.format("We don't know how to parse url %s. Please enter a bug report.", urlText));
+					}
+				}
+				url = new URL(url.getProtocol(), url.getHost(),
+						String.format("/%s/%s/tree/%s/", user, repo, branch));
+			}
+			url = new URL(url.getProtocol(), "raw.githubusercontent.com",
+					url.getPath().replace("/tree/", "/"));
+		}
+		return url;
+	}
+
+	public C4PlantUMLWriter() {
+		this(Layout.LAYOUT_WITH_LEGEND, "https://github.com/RicardoNiepel/C4-PlantUML");
+	}
+	/**
+	 * Constructur providing a base url and a layout
+	 * @param layout layout to use for each graph
+	 * @param c4PlantUMLBaseUrl base url of repository. The following GitHub url kinds are supported
+	 * <ul>
+	 * <li>raw content (i.e. "https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/")</li>
+	 * <li>Official repository name with branch or tag (i.e. "https://github.com/RicardoNiepel/C4-PlantUML/tree/master")</li>
+	 * <li>Official repository name without branch. Master is assumed in that case
+	 * (i.ie "https://github.com/RicardoNiepel/C4-PlantUML/")</li>
+	 * </ul>
+	 * @see #inferC4PlantUMLLibraryFrom
+	 */
+	public C4PlantUMLWriter(Layout layout, String c4PlantUMLBaseUrl) {
+		this(layout, inferC4PlantUMLLibraryFrom(c4PlantUMLBaseUrl));
+	}
+	/**
+	 * Constructor providing the layout and the full list of includes to use
+	 * @param layout layout to use for each graph
+	 * @param c4PlantUMLIncludes full list of C4PlantUML brushes. It should include C4.puml, C4_Context.puml, C4_Container.puml and C4_Component.puml. 
+	 */
+	public C4PlantUMLWriter(Layout layout, Collection<String> c4PlantUMLIncludes) {
 		super();
 		try {
+			for(String url : c4PlantUMLIncludes) {
+				addIncludeURL(new URI(url));
+				
+			}
 			addIncludeURL(new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml"));
 			addIncludeURL(
 					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml"));
@@ -179,7 +269,7 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml"));
 			getIncludes().add(String.format("%s()\n", layout.name()));
 		} catch (URISyntaxException e) {
-			logger.log(Level.SEVERE, "Using C4-PlantUML shoulld not trigger URI error", e);
+			logger.log(Level.SEVERE, "Using C4-PlantUML should not trigger URI error", e);
 		}
 	}
 
