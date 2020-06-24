@@ -260,13 +260,6 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 				addIncludeURL(new URI(url));
 				
 			}
-			addIncludeURL(new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml"));
-			addIncludeURL(
-					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml"));
-			addIncludeURL(
-					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml"));
-			addIncludeURL(
-					new URI("https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml"));
 			getIncludes().add(String.format("%s()\n", layout.name()));
 		} catch (URISyntaxException e) {
 			logger.log(Level.SEVERE, "Using C4-PlantUML should not trigger URI error", e);
