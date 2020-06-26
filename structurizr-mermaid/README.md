@@ -3,7 +3,6 @@
 ## 1.3.8 (unreleased)
 
 - Adds support for infrastructure nodes.
-- Element types are now always included in the stereotypes.
 
 ## 1.3.7 (22nd June 2020)
 

@@ -564,7 +564,7 @@ public class PlantUMLWriterTests {
             "  diagrams" + System.lineSeparator() +
             "]" + System.lineSeparator() +
             "package \"Software System\" <<Software System>> {" + System.lineSeparator() +
-            "  database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
+            "  database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
             "    Database" + System.lineSeparator() +
             "    --" + System.lineSeparator() +
             "    A relational database" + System.lineSeparator() +
@@ -594,7 +594,7 @@ public class PlantUMLWriterTests {
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
-            "database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
+            "database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
             "  --" + System.lineSeparator() +
             "  A relational database" + System.lineSeparator() +
@@ -618,8 +618,8 @@ public class PlantUMLWriterTests {
             "]" + System.lineSeparator() +
             "package \"Web Application\" <<Container>> {" + System.lineSeparator() +
             "  component \"EmailComponent\" <<Component>> as 13 #dddddd" + System.lineSeparator() +
-            "  component \"SomeController\" <<Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
-            "  component \"SomeRepository\" <<Spring Data>> as 14 #dddddd" + System.lineSeparator() +
+            "  component \"SomeController\" <<Component: Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
+            "  component \"SomeRepository\" <<Component: Spring Data>> as 14 #dddddd" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "4 .[#707070].> 1 : Delivers e-mails to" + System.lineSeparator() +
             "13 .[#707070].> 4 : <<SMTP>>\\nSends e-mails using" + System.lineSeparator() +
@@ -649,9 +649,9 @@ public class PlantUMLWriterTests {
             "  user to be displayed on the" + System.lineSeparator() +
             "  diagrams" + System.lineSeparator() +
             "]" + System.lineSeparator() +
-            "component \"SomeController\" <<Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
-            "component \"SomeRepository\" <<Spring Data>> as 14 #dddddd" + System.lineSeparator() +
-            "database 8 <<SQL>> #dddddd [" + System.lineSeparator() +
+            "component \"SomeController\" <<Component: Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
+            "component \"SomeRepository\" <<Component: Spring Data>> as 14 #dddddd" + System.lineSeparator() +
+            "database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
             "  --" + System.lineSeparator() +
             "  A relational database" + System.lineSeparator() +
@@ -679,9 +679,9 @@ public class PlantUMLWriterTests {
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "participant \"User\" as 1 <<Person>> #dddddd" + System.lineSeparator() +
-            "participant \"SomeController\" as 12 <<Spring MVC Controller>> #dddddd" + System.lineSeparator() +
-            "participant \"SomeRepository\" as 14 <<Spring Data>> #dddddd" + System.lineSeparator() +
-            "database \"Database\" as 8 <<SQL>> #dddddd" + System.lineSeparator() +
+            "participant \"SomeController\" as 12 <<Component: Spring MVC Controller>> #dddddd" + System.lineSeparator() +
+            "participant \"SomeRepository\" as 14 <<Component: Spring Data>> #dddddd" + System.lineSeparator() +
+            "database \"Database\" as 8 <<Container: SQL>> #dddddd" + System.lineSeparator() +
             "1 -[#707070]> 12 : 1. Requests /something" + System.lineSeparator() +
             "12 -[#707070]> 14 : 2. Uses" + System.lineSeparator() +
             "14 -[#707070]> 8 : 3. select * from something" + System.lineSeparator() +
@@ -701,13 +701,13 @@ public class PlantUMLWriterTests {
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
             "}" + System.lineSeparator() +
-            "node \"Database Server\" <<Ubuntu 12.04 LTS>> as 23 {" + System.lineSeparator() +
-            "  node \"MySQL\" <<MySQL 5.5.x>> as 24 {" + System.lineSeparator() +
-            "    database \"Database\" <<SQL>> as 25 #dddddd" + System.lineSeparator() +
+            "node \"Database Server\" <<Deployment Node: Ubuntu 12.04 LTS>> as 23 {" + System.lineSeparator() +
+            "  node \"MySQL\" <<Deployment Node: MySQL 5.5.x>> as 24 {" + System.lineSeparator() +
+            "    database \"Database\" <<Container: SQL>> as 25 #dddddd" + System.lineSeparator() +
             "  }" + System.lineSeparator() +
             "}" + System.lineSeparator() +
-            "node \"Web Server\" <<Ubuntu 12.04 LTS>> as 20 {" + System.lineSeparator() +
-            "  node \"Apache Tomcat\" <<Apache Tomcat 8.x>> as 21 {" + System.lineSeparator() +
+            "node \"Web Server\" <<Deployment Node: Ubuntu 12.04 LTS>> as 20 {" + System.lineSeparator() +
+            "  node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 21 {" + System.lineSeparator() +
             "    rectangle \"Web Application\" <<Container>> as 22 #dddddd" + System.lineSeparator() +
             "  }" + System.lineSeparator() +
             "}" + System.lineSeparator() +

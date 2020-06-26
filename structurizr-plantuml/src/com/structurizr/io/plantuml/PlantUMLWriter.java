@@ -468,6 +468,10 @@ public class PlantUMLWriter {
                 write(view, child, writer, indent+1);
             }
 
+            for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+                write(view, infrastructureNode, writer, indent+1);
+            }
+
             for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
                 write(view, containerInstance, writer, indent+1);
             }
@@ -475,6 +479,26 @@ public class PlantUMLWriter {
             writer.write(
                     format("%s}", calculateIndent(indent))
             );
+            writer.write(System.lineSeparator());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void write(View view, InfrastructureNode infrastructureNode, Writer writer, int indent) {
+        try {
+            writer.write(
+                    format("%s%s \"%s\" <<%s>> as %s %s",
+                            calculateIndent(indent),
+                            plantumlType(view, infrastructureNode),
+                            infrastructureNode.getName(),
+                            typeOf(infrastructureNode),
+                            idOf(infrastructureNode),
+                            backgroundOf(view, infrastructureNode)
+                    )
+            );
+
+
             writer.write(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
@@ -680,23 +704,30 @@ public class PlantUMLWriter {
     }
 
     protected String typeOf(Element e) {
+        String type;
+
         if (e instanceof SoftwareSystem) {
-            return "Software System";
+            type = "Software System";
+        } else if (e instanceof Container) {
+            Container container = (Container)e;
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else if (e instanceof Component) {
             Component component = (Component)e;
-            return hasValue(component.getTechnology()) ? component.getTechnology() : "Component";
+            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
         } else if (e instanceof DeploymentNode) {
             DeploymentNode deploymentNode = (DeploymentNode)e;
-            return hasValue(deploymentNode.getTechnology()) ? deploymentNode.getTechnology() : "Deployment Node";
+            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+        } else if (e instanceof InfrastructureNode) {
+            InfrastructureNode infrastructureNode = (InfrastructureNode)e;
+            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
         } else if (e instanceof ContainerInstance) {
-            Container container = ((ContainerInstance) e).getContainer();
-            return hasValue(container.getTechnology()) ? container.getTechnology() : "Container";
-        } else if (e instanceof Container) {
-            Container container = (Container) e;
-            return hasValue(container.getTechnology()) ? container.getTechnology() : "Container";
+            Container container = ((ContainerInstance)e).getContainer();
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else {
-            return e.getClass().getSimpleName();
+            type = e.getClass().getSimpleName();
         }
+
+        return type;
     }
 
     protected boolean hasValue(String s) {
