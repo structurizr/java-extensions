@@ -585,7 +585,6 @@ public class MermaidWriter {
         String openingMetadataSymbol = "[";
         String closingMetadataSymbol = "]";
 
-
         String type;
 
         if (e instanceof SoftwareSystem) {
