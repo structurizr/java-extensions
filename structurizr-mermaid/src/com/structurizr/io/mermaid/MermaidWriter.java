@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
@@ -26,6 +23,8 @@ import static java.util.Collections.emptyList;
  */
 public class MermaidWriter {
 
+    private static final String ELEMENT_DEFINITION = "  %s%s%s\"<div style='font-weight: bold'>%s</div><div style='font-size: 70%%; margin-top: 0px'>%s</div><div style='font-size: 80%%; margin-top:10px'>%s</div>\"%s";
+    private static final String RELATIONSHIP_DEFINITION = "  %s-%s \"<div>%s</div><div style='font-size: 70%%'>%s</div>\" %s->%s";
     private boolean useSequenceDiagrams = false;
 
     /**
@@ -78,6 +77,29 @@ public class MermaidWriter {
         StringWriter stringWriter = new StringWriter();
         write(workspace, stringWriter);
         System.out.println(stringWriter.toString());
+    }
+
+    /**
+     * Creates Mermaid diagram definitions based upon the specified workspace.
+     *
+     * @param workspace     the workspace containing the views to be written
+     * @return  a collection of Mermaid diagram definitions, one per view
+     */
+    public Collection<MermaidDiagram> toMermaidDiagrams(Workspace workspace) {
+        if (workspace == null) {
+            throw new IllegalArgumentException("A workspace must be provided.");
+        }
+
+        Collection<MermaidDiagram> diagrams = new ArrayList<>();
+
+        for (View view : workspace.getViews().getViews()) {
+            StringWriter stringWriter = new StringWriter();
+            write(view, stringWriter);
+
+            diagrams.add(new MermaidDiagram(view.getKey(), view.getName(), stringWriter.toString()));
+        }
+
+        return diagrams;
     }
 
     /**
@@ -176,7 +198,7 @@ public class MermaidWriter {
 
             if (enterpriseBoundaryVisible) {
                 String name = view.getModel().getEnterprise() != null ? view.getModel().getEnterprise().getName() : "Enterprise";
-                writer.write("  subgraph \"" + name + "\"");
+                writer.write("  subgraph boundary [" + name + "]");
                 writer.write(System.lineSeparator());
             }
 
@@ -194,6 +216,8 @@ public class MermaidWriter {
 
             if (enterpriseBoundaryVisible) {
                 writer.write("  end");
+                writer.write(System.lineSeparator());
+                writer.write("  style boundary fill:#ffffff,stroke:#000000,color:#000000");
                 writer.write(System.lineSeparator());
             }
 
@@ -215,7 +239,7 @@ public class MermaidWriter {
                     .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
                     .forEach(e -> write(view, e, writer, 0));
 
-            writer.write("  subgraph \"" + view.getSoftwareSystem().getName() + "\"");
+            writer.write("  subgraph boundary [" + view.getSoftwareSystem().getName() + "]");
             writer.write(System.lineSeparator());
 
             view.getElements().stream()
@@ -225,6 +249,8 @@ public class MermaidWriter {
                     .forEach(e -> write(view, e, writer, 1));
 
             writer.write("  end");
+            writer.write(System.lineSeparator());
+            writer.write("  style boundary fill:#ffffff,stroke:#000000,color:#000000");
             writer.write(System.lineSeparator());
 
             writeRelationships(view, writer);
@@ -245,7 +271,7 @@ public class MermaidWriter {
                     .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
                     .forEach(e -> write(view, e, writer, 0));
 
-            writer.write("  subgraph \"" + view.getContainer().getName() + "\"");
+            writer.write("  subgraph boundary [" + view.getContainer().getName() + "]");
             writer.write(System.lineSeparator());
 
             view.getElements().stream()
@@ -255,6 +281,8 @@ public class MermaidWriter {
                     .forEach(e -> write(view, e, writer, 1));
 
             writer.write("  end");
+            writer.write(System.lineSeparator());
+            writer.write("  style boundary fill:#ffffff,stroke:#000000,color:#000000");
             writer.write(System.lineSeparator());
 
             writeRelationships(view, writer);
@@ -267,35 +295,66 @@ public class MermaidWriter {
 
     protected void write(DynamicView view, Writer writer) {
         try {
-            writeHeader(view, writer);
+            Set<Element> elements = new LinkedHashSet<>();
+            for (RelationshipView relationshipView : view.getRelationships()) {
+                elements.add(relationshipView.getRelationship().getSource());
+                elements.add(relationshipView.getRelationship().getDestination());
+            }
 
             if (useSequenceDiagrams) {
-                throw new UnsupportedOperationException("Not implemented yet.");
+                writer.write("sequenceDiagram");
+                writer.write(System.lineSeparator());
+
+                /**
+                 * sequenceDiagram
+                 *     participant A as Alice
+                 *     participant J as John
+                 *     A->>J: Hello John, how are you?
+                 *     J->>A: Great!
+                 */
+                for (Element element : elements) {
+                    writer.write(calculateIndent(1) + "participant " + element.getId() + " as " + element.getName());
+                    writer.write(System.lineSeparator());
+                }
+
+                for (RelationshipView relationshipView : view.getRelationships()) {
+                    Relationship relationship = relationshipView.getRelationship();
+                    writer.write(format(
+                            "%s%s->>%s: %s",
+                            calculateIndent(1),
+                            relationship.getSourceId(),
+                            relationship.getDestinationId(),
+                            lines(hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationship.getDescription()) ? relationship.getDescription() : "")
+                    ));
+                    writer.write(System.lineSeparator());
+                }
             } else {
-                view.getElements().stream()
-                        .map(ElementView::getElement)
+                writeHeader(view, writer);
+
+                elements.stream()
                         .sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).
                         forEach(e -> write(view, e, writer, 0));
-            }
-            view.getRelationships().stream()
-                    .sorted((rv1, rv2) -> (rv1.getOrder().compareTo(rv2.getOrder())))
-                    .forEach(relationship -> {
-                        try {
-                            writer.write(
-                                    format("  %s-->|\"<b>%s. %s</b><br /><sup>%s</sup>\"|%s",
-                                            idOf(relationship.getRelationship().getSource()),
-                                            relationship.getOrder(),
-                                            lines(hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""),
-                                            !StringUtils.isNullOrEmpty(relationship.getRelationship().getTechnology()) ? "[" + relationship.getRelationship().getTechnology() + "]" : "",
-                                            idOf(relationship.getRelationship().getDestination())
-                                    )
-                            );
 
-                            writer.write(System.lineSeparator());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                view.getRelationships().stream()
+                        .sorted((rv1, rv2) -> (rv1.getOrder().compareTo(rv2.getOrder())))
+                        .forEach(relationship -> {
+                            try {
+                                writer.write(
+                                        format("  %s-->|\"<div style='font-weight: bold'>%s. %s</div><div style='font-size: 70%%'>%s</div>\"|%s",
+                                                idOf(relationship.getRelationship().getSource()),
+                                                relationship.getOrder(),
+                                                lines(hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""),
+                                                !StringUtils.isNullOrEmpty(relationship.getRelationship().getTechnology()) ? "[" + relationship.getRelationship().getTechnology() + "]" : "",
+                                                idOf(relationship.getRelationship().getDestination())
+                                        )
+                                );
+
+                                writer.write(System.lineSeparator());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }
 
             writeFooter(writer);
         } catch (IOException e) {
@@ -306,6 +365,7 @@ public class MermaidWriter {
     protected void write(DeploymentView view, Writer writer) {
         try {
             writeHeader(view, writer);
+            writer.write(System.lineSeparator());
 
             view.getElements().stream()
                     .filter(ev -> ev.getElement() instanceof DeploymentNode && ev.getElement().getParent() == null)
@@ -324,8 +384,9 @@ public class MermaidWriter {
     protected void write(View view, DeploymentNode deploymentNode, Writer writer, int indent) {
         try {
             writer.write(
-                    format("%ssubgraph \"%s\"",
+                    format("%ssubgraph %s [%s]",
                             calculateIndent(indent),
+                            deploymentNode.getId(),
                             deploymentNode.getName()
                     )
             );
@@ -336,6 +397,10 @@ public class MermaidWriter {
                 write(view, child, writer, indent+1);
             }
 
+            for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+                write(view, infrastructureNode, writer, indent+1);
+            }
+
             for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
                 write(view, containerInstance, writer, indent+1);
             }
@@ -343,6 +408,9 @@ public class MermaidWriter {
             writer.write(
                     format("%send", calculateIndent(indent))
             );
+            writer.write(System.lineSeparator());
+            writer.write(
+                    format("%sstyle %s fill:#ffffff,stroke:#000000,color:#000000", calculateIndent(indent), deploymentNode.getId()));
             writer.write(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
@@ -363,22 +431,38 @@ public class MermaidWriter {
         try {
             final String separator = System.lineSeparator();
 
+            String nodeOpeningSymbol = "[";
+            String nodeClosingSymbol = "]";
+
+            Shape shape = shapeOf(view, element);
+            if (element instanceof ContainerInstance) {
+                shape = shapeOf(view, ((ContainerInstance)element).getContainer());
+            }
+
+            if (shape == Shape.RoundedBox) {
+                nodeOpeningSymbol = "(";
+                nodeClosingSymbol = ")";
+            } else if (shape == Shape.Cylinder) {
+                    nodeOpeningSymbol = "[(";
+                    nodeClosingSymbol = ")]";
+            }
+
             if (element instanceof ContainerInstance) {
                 Container container = ((ContainerInstance) element).getContainer();
-                writer.write(format("  %s%s(\"<div style='background: %s; color: %s'><b>%s</b><br /><sup>[%s]</sup><br />%s</div>\")",
+                writer.write(format(ELEMENT_DEFINITION,
                         calculateIndent(indent),
                         idOf(element),
-                        backgroundOf(view, container),
-                        colorOf(view, container),
-                        container.getName(), typeOf(container), lines(container.getDescription())
+                        nodeOpeningSymbol,
+                        container.getName(), typeOf(container), lines(container.getDescription()),
+                        nodeClosingSymbol
                 ));
             } else {
-                writer.write(format("  %s%s(\"<div style='background: %s; color: %s'><b>%s</b><br /><sup>[%s]</sup><br />%s</div>\")",
+                writer.write(format(ELEMENT_DEFINITION,
                         calculateIndent(indent),
                         idOf(element),
-                        backgroundOf(view, element),
-                        colorOf(view, element),
-                        element.getName(), typeOf(element), lines(element.getDescription())
+                        nodeOpeningSymbol,
+                        element.getName(), typeOf(element), lines(element.getDescription()),
+                        nodeClosingSymbol
                 ));
             }
             writer.write(format("%s", separator));
@@ -390,9 +474,9 @@ public class MermaidWriter {
 
             if (element instanceof ContainerInstance) {
                 Container container = ((ContainerInstance) element).getContainer();
-                writer.write(format("  %sstyle %s fill:%s", calculateIndent(indent),idOf(element), backgroundOf(view, container)));
+                writer.write(format("  %sstyle %s fill:%s,stroke:%s,color:%s", calculateIndent(indent),idOf(element), backgroundOf(view, container), strokeOf(view, container), colorOf(view, container)));
             } else {
-                writer.write(format("  %sstyle %s fill:%s", calculateIndent(indent),idOf(element), backgroundOf(view, element)));
+                writer.write(format("  %sstyle %s fill:%s,stroke:%s,color:%s", calculateIndent(indent),idOf(element), backgroundOf(view, element), strokeOf(view, element), colorOf(view, element)));
             }
 
             writer.write(format("%s", separator));
@@ -442,8 +526,17 @@ public class MermaidWriter {
         return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getBackground();
     }
 
+    protected String strokeOf(View view, Element element) {
+        String stroke = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getStroke();
+        return stroke != null ? stroke : "#bbbbbb";
+    }
+
     protected String colorOf(View view, Element element) {
         return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getColor();
+    }
+
+    protected Shape shapeOf(View view, Element element) {
+        return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
     }
 
     protected RelationshipStyle relationshipStyleOf(View view, Relationship relationship) {
@@ -469,7 +562,7 @@ public class MermaidWriter {
             }
 
             writer.write(
-                    format("  %s-%s \"<b>%s</b><br /><sup>%s</sup>\" %s->%s",
+                    format(RELATIONSHIP_DEFINITION,
                             idOf(relationship.getSource()),
                             style.getDashed() ? "." : "-",
                             lines(relationship.getDescription()),
@@ -489,19 +582,34 @@ public class MermaidWriter {
     }
 
     protected String typeOf(Element e) {
+        String openingMetadataSymbol = "[";
+        String closingMetadataSymbol = "]";
+
+
+        String type;
+
         if (e instanceof SoftwareSystem) {
-            return "Software System";
+            type = "Software System";
+        } else if (e instanceof Container) {
+            Container container = (Container)e;
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else if (e instanceof Component) {
             Component component = (Component)e;
-            return hasValue(component.getTechnology()) ? component.getTechnology() : "Component";
+            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
         } else if (e instanceof DeploymentNode) {
             DeploymentNode deploymentNode = (DeploymentNode)e;
-            return hasValue(deploymentNode.getTechnology()) ? deploymentNode.getTechnology() : "Deployment Node";
+            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+        } else if (e instanceof InfrastructureNode) {
+            InfrastructureNode infrastructureNode = (InfrastructureNode)e;
+            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
         } else if (e instanceof ContainerInstance) {
-            return "Container";
+            Container container = ((ContainerInstance)e).getContainer();
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else {
-            return e.getClass().getSimpleName();
+            type = e.getClass().getSimpleName();
         }
+
+        return openingMetadataSymbol + type + closingMetadataSymbol;
     }
 
     protected boolean hasValue(String s) {
@@ -509,7 +617,13 @@ public class MermaidWriter {
     }
 
     protected void writeHeader(View view, Writer writer) throws IOException {
-        writer.write("graph TB");
+        writeHeader(view, writer, "TB");
+    }
+
+    protected void writeHeader(View view, Writer writer, String direction) throws IOException {
+        writer.write("graph " + direction);
+        writer.write(System.lineSeparator());
+        writer.write("  linkStyle default fill:#ffffff");
         writer.write(System.lineSeparator());
     }
 
