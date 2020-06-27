@@ -28,4 +28,4 @@ This GitHub repository is a collection of extensions for the [Structurizr for Ja
     * [structurizr-groovy](https://github.com/tidyjava/structurizr-groovy): An initial version of a Groovy wrapper around Structurizr for Java.
     * [structurizr-dotnet](https://github.com/structurizr/dotnet): Structurizr for .NET
     
-[![Build Status](https://travis-ci.org/structurizr/java-extensions.svg?branch=master)](https://travis-ci.org/structurizr/java-extensions)
+![Java CI with Gradle](https://github.com/structurizr/java-extensions/workflows/Java%20CI%20with%20Gradle/badge.svg)
