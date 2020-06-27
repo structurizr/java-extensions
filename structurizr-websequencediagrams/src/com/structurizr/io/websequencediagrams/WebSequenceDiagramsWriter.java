@@ -8,7 +8,8 @@ import com.structurizr.view.RelationshipView;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A simple writer that outputs dynamic diagram definitions that can be copy-pasted
@@ -104,6 +105,21 @@ public final class WebSequenceDiagramsWriter {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    /**
+     * Write the dynamic views in the given workspace as WebSequenceDiagrams definitions, to stdout.
+     *
+     * @param workspace     the workspace containing the views to be written
+     */
+    public void toStdOut(Workspace workspace) {
+        if (workspace == null) {
+            throw new IllegalArgumentException("A workspace must be provided.");
+        }
+
+        StringWriter stringWriter = new StringWriter();
+        write(workspace, stringWriter);
+        System.out.println(stringWriter.toString());
     }
 
 }
