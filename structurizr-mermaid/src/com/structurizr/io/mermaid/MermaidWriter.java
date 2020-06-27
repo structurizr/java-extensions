@@ -187,13 +187,13 @@ public class MermaidWriter {
             view.getElements().stream()
                     .map(ElementView::getElement)
                     .filter(e -> e instanceof Person && ((Person)e).getLocation() != Location.Internal)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 0));
 
             view.getElements().stream()
                     .map(ElementView::getElement)
                     .filter(e -> e instanceof SoftwareSystem && ((SoftwareSystem)e).getLocation() != Location.Internal)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 0));
 
             if (enterpriseBoundaryVisible) {
@@ -205,13 +205,13 @@ public class MermaidWriter {
             view.getElements().stream()
                     .map(ElementView::getElement)
                     .filter(e -> e instanceof Person && ((Person)e).getLocation() == Location.Internal)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, enterpriseBoundaryVisible ? 1 : 0));
 
             view.getElements().stream()
                     .map(ElementView::getElement)
                     .filter(e -> e instanceof SoftwareSystem && ((SoftwareSystem)e).getLocation() == Location.Internal)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, enterpriseBoundaryVisible ? 1 : 0));
 
             if (enterpriseBoundaryVisible) {
@@ -236,7 +236,7 @@ public class MermaidWriter {
             view.getElements().stream()
                     .filter(ev -> !(ev.getElement() instanceof Container))
                     .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 0));
 
             writer.write("  subgraph boundary [" + view.getSoftwareSystem().getName() + "]");
@@ -245,7 +245,7 @@ public class MermaidWriter {
             view.getElements().stream()
                     .filter(ev -> ev.getElement() instanceof Container)
                     .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 1));
 
             writer.write("  end");
@@ -268,7 +268,7 @@ public class MermaidWriter {
             view.getElements().stream()
                     .filter(ev -> !(ev.getElement() instanceof Component))
                     .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 0));
 
             writer.write("  subgraph boundary [" + view.getContainer().getName() + "]");
@@ -277,7 +277,7 @@ public class MermaidWriter {
             view.getElements().stream()
                     .filter(ev -> ev.getElement() instanceof Component)
                     .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 1));
 
             writer.write("  end");
@@ -332,11 +332,11 @@ public class MermaidWriter {
                 writeHeader(view, writer, "LR");
 
                 elements.stream()
-                        .sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).
+                        .sorted(Comparator.comparing(Element::getName)).
                         forEach(e -> write(view, e, writer, 0));
 
                 view.getRelationships().stream()
-                        .sorted((rv1, rv2) -> (rv1.getOrder().compareTo(rv2.getOrder())))
+                        .sorted(Comparator.comparing(RelationshipView::getOrder))
                         .forEach(relationship -> {
                             try {
                                 writer.write(
@@ -370,7 +370,7 @@ public class MermaidWriter {
             view.getElements().stream()
                     .filter(ev -> ev.getElement() instanceof DeploymentNode && ev.getElement().getParent() == null)
                     .map(ev -> (DeploymentNode)ev.getElement())
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, 1));
 
             writeRelationships(view, writer);
@@ -393,15 +393,21 @@ public class MermaidWriter {
 
             writer.write(System.lineSeparator());
 
-            for (DeploymentNode child : deploymentNode.getChildren()) {
+            List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
+            children.sort(Comparator.comparing(DeploymentNode::getName));
+            for (DeploymentNode child : children) {
                 write(view, child, writer, indent+1);
             }
 
-            for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+            List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
+            infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
+            for (InfrastructureNode infrastructureNode : infrastructureNodes) {
                 write(view, infrastructureNode, writer, indent+1);
             }
 
-            for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
+            List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
+            containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
+            for (ContainerInstance containerInstance : containerInstances) {
                 write(view, containerInstance, writer, indent+1);
             }
 

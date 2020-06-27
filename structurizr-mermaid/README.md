@@ -52,7 +52,7 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 ## Changelog
 
-### 1.3.5 (unreleased)
+### 1.3.5 (27th June 2020)
 
 - Improved rendering of all diagrams.
 - Adds support for infrastructure nodes.

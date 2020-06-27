@@ -166,11 +166,6 @@ public class MermaidWriterTests {
                 "  linkStyle default fill:#ffffff\n" +
                 "\n" +
                 "  subgraph 50 [Developer Laptop]\n" +
-                "    subgraph 59 [Web Browser]\n" +
-                "        60[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
-                "        style 60 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
-                "    end\n" +
-                "    style 59 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    subgraph 55 [Docker Container - Database Server]\n" +
                 "      subgraph 56 [Database Server]\n" +
                 "          57[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
@@ -181,14 +176,19 @@ public class MermaidWriterTests {
                 "    style 55 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    subgraph 51 [Docker Container - Web Server]\n" +
                 "      subgraph 52 [Apache Tomcat]\n" +
-                "          53[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
-                "          style 53 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
                 "          54[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
                 "          style 54 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
+                "          53[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
+                "          style 53 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
                 "      end\n" +
                 "      style 52 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    end\n" +
                 "    style 51 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 59 [Web Browser]\n" +
+                "        60[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
+                "        style 60 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
+                "    end\n" +
+                "    style 59 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  end\n" +
                 "  style 50 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  54-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->57\n" +
@@ -201,14 +201,6 @@ public class MermaidWriterTests {
                 "  linkStyle default fill:#ffffff\n" +
                 "\n" +
                 "  subgraph 68 [Big Bank plc]\n" +
-                "    subgraph 69 [bigbank-web***]\n" +
-                "      subgraph 70 [Apache Tomcat]\n" +
-                "          71[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
-                "          style 71 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
-                "      end\n" +
-                "      style 70 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    end\n" +
-                "    style 69 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    subgraph 73 [bigbank-api***]\n" +
                 "      subgraph 74 [Apache Tomcat]\n" +
                 "          75[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
@@ -233,6 +225,14 @@ public class MermaidWriterTests {
                 "      style 83 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    end\n" +
                 "    style 82 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 69 [bigbank-web***]\n" +
+                "      subgraph 70 [Apache Tomcat]\n" +
+                "          71[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
+                "          style 71 fill:#438dd5,stroke:#bbbbbb,color:#ffffff\n" +
+                "      end\n" +
+                "      style 70 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    end\n" +
+                "    style 69 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  end\n" +
                 "  style 68 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  subgraph 65 [Customer's computer]\n" +
