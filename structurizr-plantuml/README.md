@@ -9,7 +9,7 @@ structurizr-plantuml can export the views in a Structurizr workspace to diagram 
 - Dynamic
 - Deployment
 
-Create your software architecture model and views as usual, and use the [PlantUMLWriter](https://github.com/structurizr/java/blob/master/structurizr-plantuml/src/com/structurizr/io/plantuml/PlantUMLWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/PlantUML.java):
+Create your software architecture model and views as usual, and use the [PlantUMLWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-plantuml/src/com/structurizr/io/plantuml/PlantUMLWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/PlantUML.java):
 
 ```java
 Workspace workspace = new Workspace("Getting Started", "This is a model of my software system.");
@@ -26,7 +26,7 @@ contextView.addAllPeople();
 
 Styles styles = views.getConfiguration().getStyles();
 styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
-        styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
+styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
 PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
 plantUMLWriter.toStdOut(workspace);
