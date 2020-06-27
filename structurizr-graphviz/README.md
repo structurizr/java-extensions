@@ -1,6 +1,6 @@
-# Graphviz automatic layout
+# structurizr-graphviz
 
-The ```structurizr-graphviz``` library is a wrapper around the [Graphviz tool](http://www.graphviz.org), which allows you to apply the Graphviz layout algorithm to the views in a Structurizr workspace.
+structurizr-graphviz is a wrapper around the [Graphviz tool](http://www.graphviz.org), which allows you to apply the Graphviz layout algorithm to the views in a Structurizr workspace.
 
 > You will need Graphviz installed.
 
@@ -19,4 +19,15 @@ The ```structurizr-graphviz``` library does the following for every view in the 
 2. Run Graphviz (via the ```dot``` command), with the output format set to SVG.
 3. Parse the generated SVG to extract layout information, and apply this to the Structurizr view (element x,y positions, relationship vertices, and paper size).
 
-Once the layout has been applied, you can upload your workspace to the Structurizr cloud service/on-premises installation as usual. 
+Once the layout has been applied, you can upload your workspace to the Structurizr cloud service/on-premises installation as usual.
+
+## Changelog
+
+### 1.3.6 (9th June 2020)
+
+- Fixes issues with running the Graphviz extension in non-English locales.
+
+### 1.3.5 (8th April 2020)
+
+- Initial version.
+

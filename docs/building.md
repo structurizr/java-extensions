@@ -1,17 +1,15 @@
 # Building
 
-[![Build Status](https://travis-ci.org/structurizr/java-extensions.svg?branch=master)](https://travis-ci.org/structurizr/java-extensions)
+![Java CI with Gradle](https://github.com/structurizr/java-extensions/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
-To build "Structurizr for Java extensions" from the sources (you'll need Java 8)...
+To build the Structurizr for Java extensions, you'll need:
+
+- Java 8 or above
+- The ```JAVA_HOME``` environment needs to point to your JDK
 
 ```
 git clone https://github.com/structurizr/java-extensions.git
 cd java-extensions
-./gradlew compileJava test
-```
-
-If necessary, after building, you can install "Structurizr for Java extensions" into your local Maven repo using:
-
-```
-./gradlew publishToMavenLocal
+export JAVA_HOME=...
+./gradlew
 ```
