@@ -6,13 +6,10 @@ import com.structurizr.model.Model;
 import com.structurizr.model.Person;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.model.Tags;
-import com.structurizr.view.PaperSize;
 import com.structurizr.view.Shape;
 import com.structurizr.view.Styles;
 import com.structurizr.view.SystemContextView;
 import com.structurizr.view.ViewSet;
-
-import java.io.StringWriter;
 
 /**
  * An example of how to use the PlantUML writer. Run this program and copy/paste
@@ -38,22 +35,7 @@ public class PlantUML {
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
         PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
-
-        // if you're using dark background colours, you might need to explicitly set the foreground colour using skin params
-        // e.g. rectangleFontColor, rectangleFontColor<<Software System>>, etc
-        plantUMLWriter.addSkinParam("rectangleFontColor", "#ffffff");
-        plantUMLWriter.addSkinParam("rectangleStereotypeFontColor", "#ffffff");
-
-        // can set direction, default is "top to bottom direction"
-        // plantUMLWriter.setDirection("left to right direction");
-
-        // write to a specific writer
-        StringWriter stringWriter = new StringWriter();
-        plantUMLWriter.write(workspace, stringWriter);
-        System.out.println(stringWriter.toString());
-
-        // or just output directly to stdout
-        // plantUMLWriter.toStdOut(workspace);
+        plantUMLWriter.toStdOut(workspace);
     }
 
 }

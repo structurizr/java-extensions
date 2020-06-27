@@ -17,9 +17,9 @@ This GitHub repository is a collection of extensions for the [Structurizr for Ja
     * [The Spring PetClinic example](docs/spring-petclinic.md)
 * Exporting and visualising with other tools
 	* [Automatic layout with Graphviz](docs/graphviz.md)
-    * [PlantUML export](docs/plantuml.md)
-    * [DOT file export](docs/dot.md)
-    * [WebSequenceDiagrams export](docs/websequencediagrams.md)
+    * [PlantUML](structurizr-plantuml)
+    * [Mermaid](structurizr-mermaid)
+    * [WebSequenceDiagrams](structurizr-websequencediagrams)
 * Related projects
     * [java](https://github.com/structurizr/java): Structurizr for Java
     * [java-quickstart](https://github.com/structurizr/java-quickstart): A simple starting point for using Structurizr for Java
@@ -27,6 +27,5 @@ This GitHub repository is a collection of extensions for the [Structurizr for Ja
     * [structurizr-spring-boot](https://github.com/Catalysts/structurizr-extensions/tree/master/structurizr-spring-boot): A way to apply dependency management to help modularise Structurizr code.
     * [structurizr-groovy](https://github.com/tidyjava/structurizr-groovy): An initial version of a Groovy wrapper around Structurizr for Java.
     * [structurizr-dotnet](https://github.com/structurizr/dotnet): Structurizr for .NET
-* [changelog](docs/changelog.md)
-
+    
 [![Build Status](https://travis-ci.org/structurizr/java-extensions.svg?branch=master)](https://travis-ci.org/structurizr/java-extensions)
