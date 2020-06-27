@@ -1,8 +1,0 @@
-system:
-  Internet Banking System:
-    description: Allows customers to view information about their bank accounts, and make payments.
-    uses:
-      Mainframe Banking System:
-        to: Gets account information from, and makes payments using
-      E-mail System:
-        to: Sends e-mail using
