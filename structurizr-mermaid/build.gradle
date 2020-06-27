@@ -6,6 +6,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.4.0'
+    testCompile 'com.structurizr:structurizr-client:1.4.5'
 
 }
 

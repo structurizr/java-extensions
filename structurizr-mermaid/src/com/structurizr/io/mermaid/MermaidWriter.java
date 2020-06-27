@@ -329,7 +329,7 @@ public class MermaidWriter {
                     writer.write(System.lineSeparator());
                 }
             } else {
-                writeHeader(view, writer);
+                writeHeader(view, writer, "LR");
 
                 elements.stream()
                         .sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).
