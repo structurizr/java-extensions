@@ -68,7 +68,7 @@ If you copy/paste this into [PlantUML online](http://www.plantuml.com/plantuml/)
 
 ## Changelog
 
-### 1.3.8 (unreleased)
+### 1.3.8 (27th June 2020)
 
 - Adds support for infrastructure nodes.
 - Element types are now always included in the stereotypes.
