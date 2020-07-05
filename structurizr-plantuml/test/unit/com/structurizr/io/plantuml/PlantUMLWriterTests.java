@@ -319,6 +319,7 @@ public class PlantUMLWriterTests {
                 "  rectangleBorderColor #707070" + System.lineSeparator() +
                 "  noteBackgroundColor #ffffff" + System.lineSeparator() +
                 "  noteBorderColor #707070" + System.lineSeparator() +
+                "  defaultTextAlignment center" + System.lineSeparator() +
                 "}" + System.lineSeparator() +
                 "@enduml" + System.lineSeparator(), stringWriter.toString());
     }
@@ -344,6 +345,7 @@ public class PlantUMLWriterTests {
                 "  rectangleBorderColor #707070" + System.lineSeparator() +
                 "  noteBackgroundColor #ffffff" + System.lineSeparator() +
                 "  noteBorderColor #707070" + System.lineSeparator() +
+                "  defaultTextAlignment center" + System.lineSeparator() +
                 "  handwritten true" + System.lineSeparator() +
                 "}" + System.lineSeparator() +
                 "package \"Enterprise\" {" + System.lineSeparator() +
@@ -377,6 +379,7 @@ public class PlantUMLWriterTests {
                 "  rectangleBorderColor #707070" + System.lineSeparator() +
                 "  noteBackgroundColor #ffffff" + System.lineSeparator() +
                 "  noteBorderColor #707070" + System.lineSeparator() +
+                "  defaultTextAlignment center" + System.lineSeparator() +
                 "}" + System.lineSeparator() +
                 "rectangle \"A user\" <<Person>> as 2 #00ff00" + System.lineSeparator() +
                 "rectangle \"My software system\" <<Software System>> as 1 #ff0000" + System.lineSeparator() +
@@ -481,6 +484,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
             "  E-mail System" + System.lineSeparator() +
@@ -515,6 +519,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
             "  E-mail System" + System.lineSeparator() +
@@ -549,6 +554,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
             "  E-mail System" + System.lineSeparator() +
@@ -593,6 +599,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
             "  Database" + System.lineSeparator() +
@@ -641,6 +648,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
             "  User" + System.lineSeparator() +
@@ -677,6 +685,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "participant \"User\" as 1 <<Person>> #dddddd" + System.lineSeparator() +
             "participant \"SomeController\" as 12 <<Component: Spring MVC Controller>> #dddddd" + System.lineSeparator() +
@@ -700,6 +709,7 @@ public class PlantUMLWriterTests {
             "  rectangleBorderColor #707070" + System.lineSeparator() +
             "  noteBackgroundColor #ffffff" + System.lineSeparator() +
             "  noteBorderColor #707070" + System.lineSeparator() +
+            "  defaultTextAlignment center" + System.lineSeparator() +
             "}" + System.lineSeparator() +
             "node \"Database Server\" <<Deployment Node: Ubuntu 12.04 LTS>> as 23 {" + System.lineSeparator() +
             "  node \"MySQL\" <<Deployment Node: MySQL 5.5.x>> as 24 {" + System.lineSeparator() +

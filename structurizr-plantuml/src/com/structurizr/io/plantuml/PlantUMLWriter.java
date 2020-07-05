@@ -46,6 +46,7 @@ public class PlantUMLWriter {
         addSkinParam("rectangleBorderColor", "#707070");
         addSkinParam("noteBackgroundColor", "#ffffff");
         addSkinParam("noteBorderColor", "#707070");
+        addSkinParam("defaultTextAlignment", "center");
     }
 
     protected List<String> getIncludes() {
