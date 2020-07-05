@@ -383,6 +383,9 @@ public class MermaidWriter {
 
     protected void write(View view, DeploymentNode deploymentNode, Writer writer, int indent) {
         try {
+            String stroke = strokeOf(view, deploymentNode);
+            String color = colorOf(view, deploymentNode);
+
             writer.write(
                     format("%ssubgraph %s [%s]",
                             calculateIndent(indent),
@@ -415,8 +418,9 @@ public class MermaidWriter {
                     format("%send", calculateIndent(indent))
             );
             writer.write(System.lineSeparator());
+
             writer.write(
-                    format("%sstyle %s fill:#ffffff,stroke:#000000,color:#000000", calculateIndent(indent), deploymentNode.getId()));
+                    format("%sstyle %s fill:#ffffff,stroke:%s,color:%s", calculateIndent(indent), deploymentNode.getId(), stroke, color));
             writer.write(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
@@ -534,7 +538,17 @@ public class MermaidWriter {
 
     protected String strokeOf(View view, Element element) {
         String stroke = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getStroke();
-        return stroke != null ? stroke : "#bbbbbb";
+
+        if (element instanceof DeploymentNode) {
+            return stroke != null ? stroke : "#000000";
+        } else {
+            if (stroke != null) {
+                return stroke;
+            } else {
+                java.awt.Color color = java.awt.Color.decode(backgroundOf(view, element));
+                return String.format("#%06X", (0xFFFFFF & color.darker().getRGB())).toLowerCase();
+            }
+        }
     }
 
     protected String colorOf(View view, Element element) {
@@ -633,7 +647,6 @@ public class MermaidWriter {
     }
 
     protected void writeFooter(Writer writer) throws IOException {
-        writer.write(System.lineSeparator());
     }
 
 }
