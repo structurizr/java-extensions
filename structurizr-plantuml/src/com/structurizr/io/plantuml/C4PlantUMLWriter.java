@@ -46,7 +46,8 @@ import com.structurizr.view.View;
 public class C4PlantUMLWriter extends PlantUMLWriter {
 	private static final java.util.logging.Logger logger = java.util.logging.Logger
 			.getLogger(C4PlantUMLWriter.class.getName());
-	
+
+
 	/**
 	 * Various layout abilities as provided by C4-PlantUML
 	 * @see <a href="https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md">https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md</a>
@@ -255,24 +256,18 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	 */
 	public C4PlantUMLWriter(Layout layout, Collection<String> c4PlantUMLIncludes) {
 		super();
+
 		try {
 			for(String url : c4PlantUMLIncludes) {
 				addIncludeURL(new URI(url));
-				
 			}
 			getIncludes().add(String.format("%s()\n", layout.name()));
 		} catch (URISyntaxException e) {
 			logger.log(Level.SEVERE, "Using C4-PlantUML should not trigger URI error", e);
 		}
-	}
 
-	@Override
-	protected void write(View view, ContainerInstance container, Writer writer, int indent) {
-		try {
-			new ContainerInstanceWriter().write(view, container, writer, calculateIndent(indent));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// the C4-PlantUML macro provides its own skinparams
+		clearSkinParams();
 	}
 
 	@Override
@@ -302,10 +297,11 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	/**
 	 * We replace the write element method to use macros provided by C4-PlantUML
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	protected void write(View view, Element element, Writer writer, boolean indent) {
+	protected void write(View view, Element element, Writer writer, int indent) {
 		try {
-			final String prefix = indent ? "  " : "";
+			final String prefix = calculateIndent(indent);
 			getWriterFor(element).write(view, element, writer, prefix);
 		} catch (NoMacroFound noMacro) {
 			super.write(view, element, writer, indent);
@@ -321,6 +317,8 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 			return new SoftwareSystemWriter();
 		} else if (element instanceof Container) {
 			return new ContainerWriter();
+		} else if (element instanceof ContainerInstance) {
+			return new ContainerInstanceWriter();
 		} else if (element instanceof Component) {
 			return new ComponentWriter();
 		}
@@ -357,10 +355,10 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 						idOf(relationship.getDestination()), separator));
 			} else {
 				if (relationship.getTechnology() == null) {
-					writer.write(format("%s(%s, %s, '%s')%s", relationshipMacro, idOf(relationship.getSource()),
+					writer.write(format("%s(%s, %s, \"%s\")%s", relationshipMacro, idOf(relationship.getSource()),
 							idOf(relationship.getDestination()), relationship.getDescription(), separator));
 				} else {
-					writer.write(format("%s(%s, %s, '%s', %s)%s", relationshipMacro, idOf(relationship.getSource()),
+					writer.write(format("%s(%s, %s, \"%s\", %s)%s", relationshipMacro, idOf(relationship.getSource()),
 							idOf(relationship.getDestination()), relationship.getDescription(),
 							relationship.getTechnology(), separator));
 				}

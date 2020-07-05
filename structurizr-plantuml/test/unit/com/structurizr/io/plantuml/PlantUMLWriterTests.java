@@ -1,727 +1,460 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
-import com.structurizr.model.*;
-import com.structurizr.view.*;
-import org.junit.Before;
+import com.structurizr.util.WorkspaceUtils;
 import org.junit.Test;
 
-import java.io.StringWriter;
-import java.net.URI;
+import java.io.File;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class PlantUMLWriterTests {
-    private static final String DATA_STORE_TAG = "DataStore";
-    private static final String SOME_TAG = "Some";
 
-    private PlantUMLWriter plantUMLWriter;
-    private Workspace workspace;
-    private StringWriter stringWriter;
+   @Test
+    public void testBigBankPlcExample() throws Exception {
+        Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 
-    @Before
-    public void setUp() {
-        plantUMLWriter = new PlantUMLWriter();
+        Collection<PlantUMLDiagram> diagrams = new PlantUMLWriter().toPlantUMLDiagrams(workspace);
+        assertEquals(7, diagrams.size());
 
-        // Public plantuml.com/plantuml server limits dimensions to 2000, but local servers can be configured
-        // differently. Setting limit here to 1999 to be provably different to plantuml.com AND still usable at the
-        // public server AND bigger than A6 so that we can ensure smaller paper sizes are respected correctly.
-        plantUMLWriter.setSizeLimit(1999);
-        workspace = new Workspace("Name", "Description");
-        stringWriter = new StringWriter();
+        PlantUMLDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
+        assertEquals("@startuml(id=SystemLandscape)\n" +
+                "title System Landscape for Big Bank plc\n" +
+                "caption The system landscape diagram for Big Bank plc.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "actor \"Personal Banking Customer\" <<Person>> as 1 #08427b\n" +
+                "note right of 1\n" +
+                "  A customer of the bank, with personal bank accounts.\n" +
+                "end note\n" +
+                "package \"Big Bank plc\" {\n" +
+                "  actor \"Back Office Staff\" <<Person>> as 15 #999999\n" +
+                "  note right of 15\n" +
+                "    Administration and support staff within the bank.\n" +
+                "  end note\n" +
+                "  actor \"Customer Service Staff\" <<Person>> as 12 #999999\n" +
+                "  note right of 12\n" +
+                "    Customer service staff within the bank.\n" +
+                "  end note\n" +
+                "  rectangle 9 <<Software System>> #999999 [\n" +
+                "    ATM\n" +
+                "    --\n" +
+                "    Allows customers to withdraw cash.\n" +
+                "  ]\n" +
+                "  rectangle 6 <<Software System>> #999999 [\n" +
+                "    E-mail System\n" +
+                "    --\n" +
+                "    The internal Microsoft Exchange e-mail system.\n" +
+                "  ]\n" +
+                "  rectangle 2 <<Software System>> #1168bd [\n" +
+                "    Internet Banking System\n" +
+                "    --\n" +
+                "    Allows customers to view information about their bank accounts, and make payments.\n" +
+                "  ]\n" +
+                "  rectangle 4 <<Software System>> #999999 [\n" +
+                "    Mainframe Banking System\n" +
+                "    --\n" +
+                "    Stores all of the core banking information about customers, accounts, transactions, etc.\n" +
+                "  ]\n" +
+                "}\n" +
+                "9 .[#707070].> 4 : Uses\n" +
+                "15 .[#707070].> 4 : Uses\n" +
+                "12 .[#707070].> 4 : Uses\n" +
+                "6 .[#707070].> 1 : Sends e-mails to\n" +
+                "2 .[#707070].> 6 : Sends e-mail using\n" +
+                "2 .[#707070].> 4 : Gets account information from, and makes payments using\n" +
+                "1 .[#707070].> 9 : Withdraws cash using\n" +
+                "1 .[#707070].> 12 : <<Telephone>>\\nAsks questions to\n" +
+                "1 .[#707070].> 2 : Views account balances, and makes payments using\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemContext")).findFirst().get();
+        assertEquals("@startuml(id=SystemContext)\n" +
+                "title Internet Banking System - System Context\n" +
+                "caption The system context diagram for the Internet Banking System.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "actor \"Personal Banking Customer\" <<Person>> as 1 #08427b\n" +
+                "note right of 1\n" +
+                "  A customer of the bank, with personal bank accounts.\n" +
+                "end note\n" +
+                "  rectangle 6 <<Software System>> #999999 [\n" +
+                "    E-mail System\n" +
+                "    --\n" +
+                "    The internal Microsoft Exchange e-mail system.\n" +
+                "  ]\n" +
+                "  rectangle 2 <<Software System>> #1168bd [\n" +
+                "    Internet Banking System\n" +
+                "    --\n" +
+                "    Allows customers to view information about their bank accounts, and make payments.\n" +
+                "  ]\n" +
+                "  rectangle 4 <<Software System>> #999999 [\n" +
+                "    Mainframe Banking System\n" +
+                "    --\n" +
+                "    Stores all of the core banking information about customers, accounts, transactions, etc.\n" +
+                "  ]\n" +
+                "6 .[#707070].> 1 : Sends e-mails to\n" +
+                "2 .[#707070].> 6 : Sends e-mail using\n" +
+                "2 .[#707070].> 4 : Gets account information from, and makes payments using\n" +
+                "1 .[#707070].> 2 : Views account balances, and makes payments using\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("Containers")).findFirst().get();
+        assertEquals("@startuml(id=Containers)\n" +
+                "title Internet Banking System - Containers\n" +
+                "caption The container diagram for the Internet Banking System.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "rectangle 6 <<Software System>> #999999 [\n" +
+                "  E-mail System\n" +
+                "  --\n" +
+                "  The internal Microsoft Exchange e-mail system.\n" +
+                "]\n" +
+                "rectangle 4 <<Software System>> #999999 [\n" +
+                "  Mainframe Banking System\n" +
+                "  --\n" +
+                "  Stores all of the core banking information about customers, accounts, transactions, etc.\n" +
+                "]\n" +
+                "actor \"Personal Banking Customer\" <<Person>> as 1 #08427b\n" +
+                "note right of 1\n" +
+                "  A customer of the bank, with personal bank accounts.\n" +
+                "end note\n" +
+                "package \"Internet Banking System\" <<Software System>> {\n" +
+                "  rectangle 20 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "    API Application\n" +
+                "    --\n" +
+                "    Provides Internet banking functionality via a JSON/HTTPS API.\n" +
+                "  ]\n" +
+                "  database 21 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "    Database\n" +
+                "    --\n" +
+                "    Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "  ]\n" +
+                "  rectangle 18 <<Container: Xamarin>> #438dd5 [\n" +
+                "    Mobile App\n" +
+                "    --\n" +
+                "    Provides a limited subset of the Internet banking functionality to customers via their mobile device.\n" +
+                "  ]\n" +
+                "  rectangle 17 <<Container: JavaScript and Angular>> #438dd5 [\n" +
+                "    Single-Page Application\n" +
+                "    --\n" +
+                "    Provides all of the Internet banking functionality to customers via their web browser.\n" +
+                "  ]\n" +
+                "  rectangle 19 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "    Web Application\n" +
+                "    --\n" +
+                "    Delivers the static content and the Internet banking single page application.\n" +
+                "  ]\n" +
+                "}\n" +
+                "20 .[#707070].> 21 : <<JDBC>>\\nReads from and writes to\n" +
+                "20 .[#707070].> 6 : <<SMTP>>\\nSends e-mail using\n" +
+                "20 .[#707070].> 4 : <<XML/HTTPS>>\\nMakes API calls to\n" +
+                "6 .[#707070].> 1 : Sends e-mails to\n" +
+                "18 .[#707070].> 20 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "1 .[#707070].> 18 : Views account balances, and makes payments using\n" +
+                "1 .[#707070].> 17 : Views account balances, and makes payments using\n" +
+                "1 .[#707070].> 19 : <<HTTPS>>\\nVisits bigbank.com/ib using\n" +
+                "17 .[#707070].> 20 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "19 .[#707070].> 17 : Delivers to the customer's web browser\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("Components")).findFirst().get();
+        assertEquals("@startuml(id=Components)\n" +
+                "title Internet Banking System - API Application - Components\n" +
+                "caption The component diagram for the API Application.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "database 21 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "  Database\n" +
+                "  --\n" +
+                "  Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "]\n" +
+                "rectangle 6 <<Software System>> #999999 [\n" +
+                "  E-mail System\n" +
+                "  --\n" +
+                "  The internal Microsoft Exchange e-mail system.\n" +
+                "]\n" +
+                "rectangle 4 <<Software System>> #999999 [\n" +
+                "  Mainframe Banking System\n" +
+                "  --\n" +
+                "  Stores all of the core banking information about customers, accounts, transactions, etc.\n" +
+                "]\n" +
+                "rectangle 18 <<Container: Xamarin>> #438dd5 [\n" +
+                "  Mobile App\n" +
+                "  --\n" +
+                "  Provides a limited subset of the Internet banking functionality to customers via their mobile device.\n" +
+                "]\n" +
+                "rectangle 17 <<Container: JavaScript and Angular>> #438dd5 [\n" +
+                "  Single-Page Application\n" +
+                "  --\n" +
+                "  Provides all of the Internet banking functionality to customers via their web browser.\n" +
+                "]\n" +
+                "package \"API Application\" <<Container: Java and Spring MVC>> {\n" +
+                "  rectangle 30 <<Component: Spring MVC Rest Controller>> #85bbf0 [\n" +
+                "    Accounts Summary Controller\n" +
+                "    --\n" +
+                "    Provides customers with a summary of their bank accounts.\n" +
+                "  ]\n" +
+                "  rectangle 34 <<Component: Spring Bean>> #85bbf0 [\n" +
+                "    E-mail Component\n" +
+                "    --\n" +
+                "    Sends e-mails to users.\n" +
+                "  ]\n" +
+                "  rectangle 33 <<Component: Spring Bean>> #85bbf0 [\n" +
+                "    Mainframe Banking System Facade\n" +
+                "    --\n" +
+                "    A facade onto the mainframe banking system.\n" +
+                "  ]\n" +
+                "  rectangle 31 <<Component: Spring MVC Rest Controller>> #85bbf0 [\n" +
+                "    Reset Password Controller\n" +
+                "    --\n" +
+                "    Allows users to reset their passwords with a single use URL.\n" +
+                "  ]\n" +
+                "  rectangle 32 <<Component: Spring Bean>> #85bbf0 [\n" +
+                "    Security Component\n" +
+                "    --\n" +
+                "    Provides functionality related to signing in, changing passwords, etc.\n" +
+                "  ]\n" +
+                "  rectangle 29 <<Component: Spring MVC Rest Controller>> #85bbf0 [\n" +
+                "    Sign In Controller\n" +
+                "    --\n" +
+                "    Allows users to sign in to the Internet Banking System.\n" +
+                "  ]\n" +
+                "}\n" +
+                "30 .[#707070].> 33 : Uses\n" +
+                "34 .[#707070].> 6 : Sends e-mail using\n" +
+                "33 .[#707070].> 4 : <<XML/HTTPS>>\\nUses\n" +
+                "18 .[#707070].> 30 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "18 .[#707070].> 31 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "18 .[#707070].> 29 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "31 .[#707070].> 34 : Uses\n" +
+                "31 .[#707070].> 32 : Uses\n" +
+                "32 .[#707070].> 21 : <<JDBC>>\\nReads from and writes to\n" +
+                "29 .[#707070].> 32 : Uses\n" +
+                "17 .[#707070].> 30 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "17 .[#707070].> 31 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "17 .[#707070].> 29 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
+        assertEquals("@startuml(id=SignIn)\n" +
+                "title API Application - Dynamic\n" +
+                "caption Summarises how the sign in feature works in the single-page application.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "rectangle 17 <<Container: JavaScript and Angular>> #438dd5 [\n" +
+                "  Single-Page Application\n" +
+                "  --\n" +
+                "  Provides all of the Internet banking functionality to customers via their web browser.\n" +
+                "]\n" +
+                "rectangle 29 <<Component: Spring MVC Rest Controller>> #85bbf0 [\n" +
+                "  Sign In Controller\n" +
+                "  --\n" +
+                "  Allows users to sign in to the Internet Banking System.\n" +
+                "]\n" +
+                "rectangle 32 <<Component: Spring Bean>> #85bbf0 [\n" +
+                "  Security Component\n" +
+                "  --\n" +
+                "  Provides functionality related to signing in, changing passwords, etc.\n" +
+                "]\n" +
+                "database 21 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "  Database\n" +
+                "  --\n" +
+                "  Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "]\n" +
+                "17 -[#707070]> 29 : 1. Submits credentials to\n" +
+                "29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+                "32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
+        assertEquals("@startuml(id=DevelopmentDeployment)\n" +
+                "title Internet Banking System - Deployment - Development\n" +
+                "caption An example development deployment scenario for the Internet Banking System.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "node \"Developer Laptop\" <<Deployment Node: Microsoft Windows 10 or Apple macOS>> as 50 {\n" +
+                "  node \"Docker Container - Database Server\" <<Deployment Node: Docker>> as 55 {\n" +
+                "    node \"Database Server\" <<Deployment Node: Oracle 12c>> as 56 {\n" +
+                "      database 57 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "        Database\n" +
+                "        --\n" +
+                "        Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "  node \"Docker Container - Web Server\" <<Deployment Node: Docker>> as 51 {\n" +
+                "    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 52 {\n" +
+                "      rectangle 54 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "        API Application\n" +
+                "        --\n" +
+                "        Provides Internet banking functionality via a JSON/HTTPS API.\n" +
+                "      ]\n" +
+                "      rectangle 53 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "        Web Application\n" +
+                "        --\n" +
+                "        Delivers the static content and the Internet banking single page application.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 59 {\n" +
+                "    rectangle 60 <<Container: JavaScript and Angular>> #438dd5 [\n" +
+                "      Single-Page Application\n" +
+                "      --\n" +
+                "      Provides all of the Internet banking functionality to customers via their web browser.\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}\n" +
+                "54 .[#707070].> 57 : <<JDBC>>\\nReads from and writes to\n" +
+                "60 .[#707070].> 54 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "53 .[#707070].> 60 : Delivers to the customer's web browser\n" +
+                "@enduml", diagram.getDefinition());
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
+        assertEquals("@startuml(id=LiveDeployment)\n" +
+                "title Internet Banking System - Deployment - Live\n" +
+                "caption An example live deployment scenario for the Internet Banking System.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "node \"Big Bank plc\" <<Deployment Node: Big Bank plc data center>> as 68 {\n" +
+                "  node \"bigbank-api*** (x8)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 73 {\n" +
+                "    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 74 {\n" +
+                "      rectangle 75 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "        API Application\n" +
+                "        --\n" +
+                "        Provides Internet banking functionality via a JSON/HTTPS API.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "  node \"bigbank-db01\" <<Deployment Node: Ubuntu 16.04 LTS>> as 78 {\n" +
+                "    node \"Oracle - Primary\" <<Deployment Node: Oracle 12c>> as 79 {\n" +
+                "      database 80 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "        Database\n" +
+                "        --\n" +
+                "        Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "  node \"bigbank-db02\" <<Deployment Node: Ubuntu 16.04 LTS>> as 82 {\n" +
+                "    node \"Oracle - Secondary\" <<Deployment Node: Oracle 12c>> as 83 {\n" +
+                "      database 84 <<Container: Oracle Database Schema>> #438dd5 [\n" +
+                "        Database\n" +
+                "        --\n" +
+                "        Stores user registration information, hashed authentication credentials, access logs, etc.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "  node \"bigbank-web*** (x4)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 69 {\n" +
+                "    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 70 {\n" +
+                "      rectangle 71 <<Container: Java and Spring MVC>> #438dd5 [\n" +
+                "        Web Application\n" +
+                "        --\n" +
+                "        Delivers the static content and the Internet banking single page application.\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n" +
+                "node \"Customer's computer\" <<Deployment Node: Microsoft Windows or Apple macOS>> as 65 {\n" +
+                "  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 66 {\n" +
+                "    rectangle 67 <<Container: JavaScript and Angular>> #438dd5 [\n" +
+                "      Single-Page Application\n" +
+                "      --\n" +
+                "      Provides all of the Internet banking functionality to customers via their web browser.\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}\n" +
+                "node \"Customer's mobile device\" <<Deployment Node: Apple iOS or Android>> as 63 {\n" +
+                "  rectangle 64 <<Container: Xamarin>> #438dd5 [\n" +
+                "    Mobile App\n" +
+                "    --\n" +
+                "    Provides a limited subset of the Internet banking functionality to customers via their mobile device.\n" +
+                "  ]\n" +
+                "}\n" +
+                "75 .[#707070].> 80 : <<JDBC>>\\nReads from and writes to\n" +
+                "75 .[#707070].> 84 : <<JDBC>>\\nReads from and writes to\n" +
+                "64 .[#707070].> 75 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "79 .[#707070].> 83 : Replicates data to\n" +
+                "67 .[#707070].> 75 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
+                "71 .[#707070].> 67 : Delivers to the customer's web browser\n" +
+                "@enduml", diagram.getDefinition());
     }
-
-    @Test
-    public void test_writeWorkspace_ThrowsAnExceptionWhenPassedANullWorkspace() throws Exception {
-        try {
-            plantUMLWriter.write((Workspace)null, null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A workspace must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_writeWorkspace_ThrowsAnExceptionWhenPassedANullWriter() throws Exception {
-        try {
-            plantUMLWriter.write(workspace, null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A writer must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_writeView_ThrowsAnExceptionWhenPassedANullView() throws Exception {
-        try {
-            plantUMLWriter.write((View)null, null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A view must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_writeView_ThrowsAnExceptionWhenPassedANullWriter() throws Exception {
-        populateWorkspace();
-
-        try {
-            plantUMLWriter.write((View) workspace.getViews().getSystemLandscapeViews().stream().findFirst().get(), null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A writer must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_writeWorkspace() throws Exception {
-        populateWorkspace();
-
-        plantUMLWriter.write(workspace, stringWriter);
-        assertEquals(
-                SYSTEM_LANDSCAPE_VIEW +
-                SYSTEM_CONTEXT_VIEW +
-                CONTAINER_VIEW +
-                COMPONENT_VIEW +
-                DYNAMIC_VIEW +
-                DEPLOYMENT_VIEW, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeEnterpriseContextView() throws Exception {
-        populateWorkspace();
-
-        SystemLandscapeView systemLandscapeView = workspace.getViews().getSystemLandscapeViews()
-            .stream().findFirst().get();
-        plantUMLWriter.write(systemLandscapeView, stringWriter);
-
-        assertEquals(SYSTEM_LANDSCAPE_VIEW, stringWriter.toString());
-
-    }
-
-    @Test
-    public void test_writeSystemContextView() throws Exception {
-        populateWorkspace();
-
-        SystemContextView systemContextView = workspace.getViews().getSystemContextViews()
-            .stream().findFirst().get();
-        plantUMLWriter.write(systemContextView, stringWriter);
-
-        assertEquals(SYSTEM_CONTEXT_VIEW, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeContainerView() throws Exception {
-        populateWorkspace();
-
-        ContainerView containerView = workspace.getViews().getContainerViews()
-            .stream().findFirst().get();
-        plantUMLWriter.write(containerView, stringWriter);
-
-        assertEquals(CONTAINER_VIEW, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeComponentsView() throws Exception {
-        populateWorkspace();
-
-        ComponentView componentView = workspace.getViews().getComponentViews()
-            .stream().findFirst().get();
-        plantUMLWriter.write(componentView, stringWriter);
-
-        assertEquals(COMPONENT_VIEW, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeDynamicView() throws Exception {
-        populateWorkspace();
-
-        DynamicView dynamicView = workspace.getViews().getDynamicViews()
-                .stream().findFirst().get();
-        plantUMLWriter.write(dynamicView, stringWriter);
-
-        assertEquals(DYNAMIC_VIEW, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeDynamicViewSequence() throws Exception {
-        populateWorkspace();
-
-        DynamicView dynamicView = workspace.getViews().getDynamicViews()
-                 .stream().findFirst().get();
-        plantUMLWriter.setUseSequenceDiagrams(true);
-        plantUMLWriter.write(dynamicView, stringWriter);
-        plantUMLWriter.setUseSequenceDiagrams(false);
-
-        System.out.print(stringWriter.toString());
-
-        assertEquals(DYNAMIC_VIEW_SEQUENCE, stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeDeploymentView() throws Exception {
-        populateWorkspace();
-
-        DeploymentView deploymentView = workspace.getViews().getDeploymentViews()
-                .stream().findFirst().get();
-        plantUMLWriter.write(deploymentView, stringWriter);
-
-        assertEquals(DEPLOYMENT_VIEW, stringWriter.toString());
-    }
-
-    private void populateWorkspace() {
-        Model model = workspace.getModel();
-        model.setEnterprise(new Enterprise("Some Enterprise"));
-
-        Person user = model.addPerson(Location.Internal, "User",
-                "A detailed description of the user to be displayed on the diagrams");
-        SoftwareSystem softwareSystem = model.addSoftwareSystem(Location.Internal, "Software System", "");
-        user.uses(softwareSystem, "Uses");
-
-        SoftwareSystem emailSystem = model.addSoftwareSystem(Location.External, "E-mail System", "An SMTP relay configured to send emails to the users.");
-        softwareSystem.uses(emailSystem, "Sends e-mail using");
-        emailSystem.delivers(user, "Delivers e-mails to");
-
-        Container webApplication = softwareSystem.addContainer("Web Application", "", "");
-        Container database = softwareSystem.addContainer("Database", "A relational database management system, likely PostgreSQL or MySQL but anything with JDBC drivers would be suitable.", "SQL");
-        database.addTags(DATA_STORE_TAG);
-        user.uses(webApplication, "Uses", "HTTP");
-        webApplication.uses(database, "Reads from and writes to", "JDBC");
-        webApplication.uses(emailSystem, "Sends e-mail using");
-
-        Component controller = webApplication.addComponent("SomeController", "", "Spring MVC Controller");
-        controller.addTags(SOME_TAG);
-        Component emailComponent = webApplication.addComponent("EmailComponent", "");
-        Component repository = webApplication.addComponent("SomeRepository", "", "Spring Data");
-        repository.addTags(SOME_TAG);
-        user.uses(controller, "Uses", "HTTP");
-        controller.uses(repository, "Uses");
-        controller.uses(emailComponent, "Sends e-mail using");
-        repository.uses(database, "Reads from and writes to", "JDBC");
-        emailComponent.uses(emailSystem, "Sends e-mails using", "SMTP");
-
-        DeploymentNode webServer = model.addDeploymentNode("Web Server", "A server hosted at AWS EC2.", "Ubuntu 12.04 LTS");
-        webServer.addDeploymentNode("Apache Tomcat", "The live web server", "Apache Tomcat 8.x")
-                .add(webApplication);
-        DeploymentNode databaseServer = model.addDeploymentNode("Database Server", "A server hosted at AWS EC2.", "Ubuntu 12.04 LTS");
-        databaseServer.addDeploymentNode("MySQL", "The live database server", "MySQL 5.5.x")
-                .add(database);
-
-        SystemLandscapeView
-                systemLandscapeView = workspace.getViews().createSystemLandscapeView("enterpriseContext", "");
-        systemLandscapeView.addAllElements();
-
-        SystemContextView
-            systemContextView = workspace.getViews().createSystemContextView(softwareSystem, "systemContext", "");
-        systemContextView.addAllElements();
-
-        ContainerView containerView = workspace.getViews().createContainerView(softwareSystem, "containers", "");
-        containerView.setPaperSize(PaperSize.A2_Landscape);
-        containerView.addAllElements();
-
-        ComponentView componentView = workspace.getViews().createComponentView(webApplication, "components", "");
-        componentView.setPaperSize(PaperSize.A6_Portrait);
-        componentView.addAllElements();
-
-        DynamicView dynamicView = workspace.getViews().createDynamicView(webApplication, "dynamic", "");
-        dynamicView.add(user, "Requests /something", controller);
-        dynamicView.add(controller, repository);
-        dynamicView.add(repository, "select * from something", database);
-
-        DeploymentView deploymentView = workspace.getViews().createDeploymentView(softwareSystem, "deployment", "");
-        deploymentView.addAllDeploymentNodes();
-
-        Styles styles = workspace.getViews().getConfiguration().getStyles();
-        styles.addElementStyle(DATA_STORE_TAG).shape(Shape.Cylinder);
-    }
-
-    @Test
-    public void test_toString_ThrowsAnException_WhenPassedANullView() throws Exception {
-        try {
-            plantUMLWriter.toString((View)null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A view must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_toString_ThrowsAnException_WhenPassedANullWorkspace() throws Exception {
-        try {
-            assertEquals(0, plantUMLWriter.toString((Workspace)null).length);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A workspace must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_toStdOut_ThrowsAnException_WhenPassedANullWorkspace() throws Exception {
-        try {
-            plantUMLWriter.toStdOut(null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("A workspace must be provided.", e.getMessage());
-        }
-    }
-
-    @Test
-    public void test_toString_ReturnsAnEmptyArray_WhenTheWorkspaceContainsNoDiagrams() throws Exception {
-        assertEquals(0, plantUMLWriter.toString(new Workspace("", "")).length);
-    }
-
-    @Test
-    public void test_toString_ReturnsAnArrayOfDiagramsWhenThereAreDiagrams() throws Exception {
-        populateWorkspace();
-        String diagrams[] = plantUMLWriter.toString(workspace);
-        assertEquals(6, diagrams.length);
-        assertEquals(SYSTEM_LANDSCAPE_VIEW, diagrams[0]);
-        assertEquals(SYSTEM_CONTEXT_VIEW, diagrams[1]);
-        assertEquals(CONTAINER_VIEW, diagrams[2]);
-        assertEquals(COMPONENT_VIEW, diagrams[3]);
-        assertEquals(DYNAMIC_VIEW, diagrams[4]);
-        assertEquals(DEPLOYMENT_VIEW, diagrams[5]);
-    }
-
-    @Test
-    public void test_toPlantUMLDiagrams_ReturnsAnCollectionOfDiagramsWhenThereAreDiagrams() throws Exception {
-        populateWorkspace();
-        Collection<PlantUMLDiagram> diagrams = plantUMLWriter.toPlantUMLDiagrams(workspace);
-        assertEquals(6, diagrams.size());
-
-        assertEquals(SYSTEM_LANDSCAPE_VIEW, diagrams.stream().filter(d -> d.getKey().equals("enterpriseContext")).findFirst().get().getDefinition());
-        assertEquals(SYSTEM_CONTEXT_VIEW, diagrams.stream().filter(d -> d.getKey().equals("systemContext")).findFirst().get().getDefinition());
-        assertEquals(CONTAINER_VIEW, diagrams.stream().filter(d -> d.getKey().equals("containers")).findFirst().get().getDefinition());
-        assertEquals(COMPONENT_VIEW, diagrams.stream().filter(d -> d.getKey().equals("components")).findFirst().get().getDefinition());
-        assertEquals(DYNAMIC_VIEW, diagrams.stream().filter(d -> d.getKey().equals("dynamic")).findFirst().get().getDefinition());
-        assertEquals(DEPLOYMENT_VIEW, diagrams.stream().filter(d -> d.getKey().equals("deployment")).findFirst().get().getDefinition());
-    }
-
-    @Test
-    public void test_writeView_UsesTheOverridableViewTitle_WhenTheViewTitleIsSet() throws Exception {
-        workspace = new Workspace("", "");
-        workspace.getModel().addSoftwareSystem("My software system", "").setLocation(Location.Internal);
-        workspace.getViews().createSystemLandscapeView("thekey", "").setTitle("A view title");
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=thekey)" + System.lineSeparator() +
-                "scale max 1999x1999" + System.lineSeparator() +
-                "title A view title" + System.lineSeparator() +
-                "" + System.lineSeparator() +
-                "skinparam {" + System.lineSeparator() +
-                "  shadowing false" + System.lineSeparator() +
-                "  arrowColor #707070" + System.lineSeparator() +
-                "  actorBorderColor #707070" + System.lineSeparator() +
-                "  componentBorderColor #707070" + System.lineSeparator() +
-                "  rectangleBorderColor #707070" + System.lineSeparator() +
-                "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-                "  noteBorderColor #707070" + System.lineSeparator() +
-                "  defaultTextAlignment center" + System.lineSeparator() +
-                "}" + System.lineSeparator() +
-                "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeView_IncludesSkinParams_WhenSkinParamsAreAdded() throws Exception {
-        workspace = new Workspace("", "");
-        workspace.getModel().addSoftwareSystem("My software system", "").setLocation(Location.Internal);
-        workspace.getViews().createSystemLandscapeView("thekey", "").addAllElements();
-        plantUMLWriter.addSkinParam("handwritten", "true");
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=thekey)" + System.lineSeparator() +
-                "scale max 1999x1999" + System.lineSeparator() +
-                "title System Landscape" + System.lineSeparator() +
-                "" + System.lineSeparator() +
-                "skinparam {" + System.lineSeparator() +
-                "  shadowing false" + System.lineSeparator() +
-                "  arrowColor #707070" + System.lineSeparator() +
-                "  actorBorderColor #707070" + System.lineSeparator() +
-                "  componentBorderColor #707070" + System.lineSeparator() +
-                "  rectangleBorderColor #707070" + System.lineSeparator() +
-                "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-                "  noteBorderColor #707070" + System.lineSeparator() +
-                "  defaultTextAlignment center" + System.lineSeparator() +
-                "  handwritten true" + System.lineSeparator() +
-                "}" + System.lineSeparator() +
-                "package \"Enterprise\" {" + System.lineSeparator() +
-                "  rectangle \"My software system\" <<Software System>> as 1 #dddddd" + System.lineSeparator() +
-                "}" + System.lineSeparator() +
-                "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeView_IncludesStyling_WhenStylesAreAdded() throws Exception {
-        workspace = new Workspace("", "");
-        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("My software system", "");
-        Person user = workspace.getModel().addPerson("A user", "");
-        user.uses(softwareSystem, "Uses");
-        workspace.getViews().createSystemContextView(softwareSystem, "key", "").addAllElements();
-        workspace.getViews().getConfiguration().getStyles().addElementStyle(Tags.SOFTWARE_SYSTEM).background("#ff0000");
-        workspace.getViews().getConfiguration().getStyles().addElementStyle(Tags.PERSON).background("#00ff00");
-        workspace.getViews().getConfiguration().getStyles().addRelationshipStyle(Tags.RELATIONSHIP).color("#0000ff");
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=key)" + System.lineSeparator() +
-                "scale max 1999x1999" + System.lineSeparator() +
-                "title My software system - System Context" + System.lineSeparator() +
-                "" + System.lineSeparator() +
-                "skinparam {" + System.lineSeparator() +
-                "  shadowing false" + System.lineSeparator() +
-                "  arrowColor #707070" + System.lineSeparator() +
-                "  actorBorderColor #707070" + System.lineSeparator() +
-                "  componentBorderColor #707070" + System.lineSeparator() +
-                "  rectangleBorderColor #707070" + System.lineSeparator() +
-                "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-                "  noteBorderColor #707070" + System.lineSeparator() +
-                "  defaultTextAlignment center" + System.lineSeparator() +
-                "}" + System.lineSeparator() +
-                "rectangle \"A user\" <<Person>> as 2 #00ff00" + System.lineSeparator() +
-                "rectangle \"My software system\" <<Software System>> as 1 #ff0000" + System.lineSeparator() +
-                "2 .[#0000ff].> 1 : Uses" + System.lineSeparator() +
-                "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeView_IncludesIncludes_WhenIncludesAreAdded() throws Exception {
-        workspace = new Workspace("", "");
-        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("My software system", "");
-        Person user = workspace.getModel().addPerson("A user", "");
-        user.uses(softwareSystem, "Uses");
-        workspace.getViews().createSystemContextView(softwareSystem, "thekey", "").addAllElements();
-        workspace.getViews().getConfiguration().getStyles().addElementStyle(Tags.SOFTWARE_SYSTEM).background("#ff0000");
-        workspace.getViews().getConfiguration().getStyles().addElementStyle(Tags.PERSON).background("#00ff00");
-        workspace.getViews().getConfiguration().getStyles().addRelationshipStyle(Tags.RELATIONSHIP).color("#0000ff");
-
-        plantUMLWriter.addIncludeFile("do-not-include-me.puml");
-        plantUMLWriter.clearIncludes();
-        plantUMLWriter.addIncludeFile("whole-file.puml");
-        plantUMLWriter.addIncludeFile("unnamed-diagrams.puml", 0);
-        plantUMLWriter.addIncludeFile("named-diagrams.puml", "diagram-name");
-        plantUMLWriter.addIncludeURL(URI.create("http://example.com/whole-file.puml"));
-        plantUMLWriter.addIncludeURL(URI.create("http://example.com/unnamed-diagrams.puml"), 0);
-        plantUMLWriter.addIncludeURL(URI.create("http://example.com/named-diagrams.puml"), "diagram-name");
-
-        plantUMLWriter.clearSkinParams();
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=thekey)" + System.lineSeparator() +
-            "!include whole-file.puml" + System.lineSeparator() +
-            "!include unnamed-diagrams.puml!0" + System.lineSeparator() +
-            "!include named-diagrams.puml!diagram-name" + System.lineSeparator() +
-            "!includeurl http://example.com/whole-file.puml" + System.lineSeparator() +
-            "!includeurl http://example.com/unnamed-diagrams.puml!0" + System.lineSeparator() +
-            "!includeurl http://example.com/named-diagrams.puml!diagram-name" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title My software system - System Context" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "rectangle \"A user\" <<Person>> as 2 #00ff00" + System.lineSeparator() +
-            "rectangle \"My software system\" <<Software System>> as 1 #ff0000" + System.lineSeparator() +
-            "2 .[#0000ff].> 1 : Uses" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeView_SpaceInKey() throws Exception {
-        workspace = new Workspace("", "");
-        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("My software system", "");
-        Person user = workspace.getModel().addPerson("A user", "");
-        user.uses(softwareSystem, "Uses");
-        workspace.getViews().createSystemContextView(softwareSystem, "the key", "").addAllElements(); // Space in key
-
-        plantUMLWriter.clearSkinParams();
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=the_key)" + System.lineSeparator() + // Quotes added
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title My software system - System Context" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "rectangle \"A user\" <<Person>> as 2 #dddddd" + System.lineSeparator() +
-            "rectangle \"My software system\" <<Software System>> as 1 #dddddd" + System.lineSeparator() +
-            "2 .[#707070].> 1 : Uses" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    @Test
-    public void test_writeView_changeDirection_whenSetDirectionAreChanged() throws Exception {
-        workspace = new Workspace("", "");
-        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("My software system", "");
-        Person user = workspace.getModel().addPerson("A user", "");
-        user.uses(softwareSystem, "Uses");
-        workspace.getViews().createSystemContextView(softwareSystem, "the key", "").addAllElements(); // Space in key
-        plantUMLWriter.clearSkinParams();
-        plantUMLWriter.setDirection("left to right direction");
-
-        plantUMLWriter.write(workspace, stringWriter);
-
-        assertEquals("@startuml(id=the_key)" + System.lineSeparator() + // Quotes added
-                "scale max 1999x1999" + System.lineSeparator() +
-                "left to right direction" + System.lineSeparator() +
-                "title My software system - System Context" + System.lineSeparator() +
-                "" + System.lineSeparator() +
-                "rectangle \"A user\" <<Person>> as 2 #dddddd" + System.lineSeparator() +
-                "rectangle \"My software system\" <<Software System>> as 1 #dddddd" + System.lineSeparator() +
-                "2 .[#707070].> 1 : Uses" + System.lineSeparator() +
-                "@enduml" + System.lineSeparator(), stringWriter.toString());
-    }
-
-    private static final String SYSTEM_LANDSCAPE_VIEW = "@startuml(id=enterpriseContext)" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title System Landscape for Some Enterprise" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
-            "  E-mail System" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  An SMTP relay configured to" + System.lineSeparator() +
-            "  send emails to the users." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "package \"Some Enterprise\" {" + System.lineSeparator() +
-            "  rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "    User" + System.lineSeparator() +
-            "    --" + System.lineSeparator() +
-            "    A detailed description of the" + System.lineSeparator() +
-            "    user to be displayed on the" + System.lineSeparator() +
-            "    diagrams" + System.lineSeparator() +
-            "  ]" + System.lineSeparator() +
-            "  rectangle \"Software System\" <<Software System>> as 2 #dddddd" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "4 .[#707070].> 1 : Delivers e-mails to" + System.lineSeparator() +
-            "2 .[#707070].> 4 : Sends e-mail using" + System.lineSeparator() +
-            "1 .[#707070].> 2 : Uses" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-    private static final String SYSTEM_CONTEXT_VIEW = "@startuml(id=systemContext)" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title Software System - System Context" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
-            "  E-mail System" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  An SMTP relay configured to" + System.lineSeparator() +
-            "  send emails to the users." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "package \"Some Enterprise\" {" + System.lineSeparator() +
-            "  rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "    User" + System.lineSeparator() +
-            "    --" + System.lineSeparator() +
-            "    A detailed description of the" + System.lineSeparator() +
-            "    user to be displayed on the" + System.lineSeparator() +
-            "    diagrams" + System.lineSeparator() +
-            "  ]" + System.lineSeparator() +
-            "  rectangle \"Software System\" <<Software System>> as 2 #dddddd" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "4 .[#707070].> 1 : Delivers e-mails to" + System.lineSeparator() +
-            "2 .[#707070].> 4 : Sends e-mail using" + System.lineSeparator() +
-            "1 .[#707070].> 2 : Uses" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-    private static final String CONTAINER_VIEW = "@startuml(id=containers)" + System.lineSeparator() +
-            "scale max 1999x1413" + System.lineSeparator() +
-            "title Software System - Containers" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
-            "  E-mail System" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  An SMTP relay configured to" + System.lineSeparator() +
-            "  send emails to the users." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "  User" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A detailed description of the" + System.lineSeparator() +
-            "  user to be displayed on the" + System.lineSeparator() +
-            "  diagrams" + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "package \"Software System\" <<Software System>> {" + System.lineSeparator() +
-            "  database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
-            "    Database" + System.lineSeparator() +
-            "    --" + System.lineSeparator() +
-            "    A relational database" + System.lineSeparator() +
-            "    management system, likely" + System.lineSeparator() +
-            "    PostgreSQL or MySQL but" + System.lineSeparator() +
-            "    anything with JDBC drivers" + System.lineSeparator() +
-            "    would be suitable." + System.lineSeparator() +
-            "  ]" + System.lineSeparator() +
-            "  rectangle \"Web Application\" <<Container>> as 7 #dddddd" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "4 .[#707070].> 1 : Delivers e-mails to" + System.lineSeparator() +
-            "1 .[#707070].> 7 : <<HTTP>>\\nUses" + System.lineSeparator() +
-            "7 .[#707070].> 8 : <<JDBC>>\\nReads from and writes to" + System.lineSeparator() +
-            "7 .[#707070].> 4 : Sends e-mail using" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-    private static final String COMPONENT_VIEW = "@startuml(id=components)" + System.lineSeparator() +
-            "scale max 1240x1748" + System.lineSeparator() +
-            "title Software System - Web Application - Components" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
-            "  Database" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A relational database" + System.lineSeparator() +
-            "  management system, likely" + System.lineSeparator() +
-            "  PostgreSQL or MySQL but" + System.lineSeparator() +
-            "  anything with JDBC drivers" + System.lineSeparator() +
-            "  would be suitable." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "rectangle 4 <<Software System>> #dddddd [" + System.lineSeparator() +
-            "  E-mail System" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  An SMTP relay configured to" + System.lineSeparator() +
-            "  send emails to the users." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "  User" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A detailed description of the" + System.lineSeparator() +
-            "  user to be displayed on the" + System.lineSeparator() +
-            "  diagrams" + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "package \"Web Application\" <<Container>> {" + System.lineSeparator() +
-            "  component \"EmailComponent\" <<Component>> as 13 #dddddd" + System.lineSeparator() +
-            "  component \"SomeController\" <<Component: Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
-            "  component \"SomeRepository\" <<Component: Spring Data>> as 14 #dddddd" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "4 .[#707070].> 1 : Delivers e-mails to" + System.lineSeparator() +
-            "13 .[#707070].> 4 : <<SMTP>>\\nSends e-mails using" + System.lineSeparator() +
-            "12 .[#707070].> 13 : Sends e-mail using" + System.lineSeparator() +
-            "12 .[#707070].> 14 : Uses" + System.lineSeparator() +
-            "14 .[#707070].> 8 : <<JDBC>>\\nReads from and writes to" + System.lineSeparator() +
-            "1 .[#707070].> 12 : <<HTTP>>\\nUses" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-    private static final String DYNAMIC_VIEW = "@startuml(id=dynamic)" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title Web Application - Dynamic" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "rectangle 1 <<Person>> #dddddd [" + System.lineSeparator() +
-            "  User" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A detailed description of the" + System.lineSeparator() +
-            "  user to be displayed on the" + System.lineSeparator() +
-            "  diagrams" + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "component \"SomeController\" <<Component: Spring MVC Controller>> as 12 #dddddd" + System.lineSeparator() +
-            "component \"SomeRepository\" <<Component: Spring Data>> as 14 #dddddd" + System.lineSeparator() +
-            "database 8 <<Container: SQL>> #dddddd [" + System.lineSeparator() +
-            "  Database" + System.lineSeparator() +
-            "  --" + System.lineSeparator() +
-            "  A relational database" + System.lineSeparator() +
-            "  management system, likely" + System.lineSeparator() +
-            "  PostgreSQL or MySQL but" + System.lineSeparator() +
-            "  anything with JDBC drivers" + System.lineSeparator() +
-            "  would be suitable." + System.lineSeparator() +
-            "]" + System.lineSeparator() +
-            "1 -[#707070]> 12 : 1. Requests /something" + System.lineSeparator() +
-            "12 -[#707070]> 14 : 2. Uses" + System.lineSeparator() +
-            "14 -[#707070]> 8 : 3. select * from something" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-    private static final String DYNAMIC_VIEW_SEQUENCE = "@startuml(id=dynamic)" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title Web Application - Dynamic" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "participant \"User\" as 1 <<Person>> #dddddd" + System.lineSeparator() +
-            "participant \"SomeController\" as 12 <<Component: Spring MVC Controller>> #dddddd" + System.lineSeparator() +
-            "participant \"SomeRepository\" as 14 <<Component: Spring Data>> #dddddd" + System.lineSeparator() +
-            "database \"Database\" as 8 <<Container: SQL>> #dddddd" + System.lineSeparator() +
-            "1 -[#707070]> 12 : 1. Requests /something" + System.lineSeparator() +
-            "12 -[#707070]> 14 : 2. Uses" + System.lineSeparator() +
-            "14 -[#707070]> 8 : 3. select * from something" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
-
-
-    private static final String DEPLOYMENT_VIEW = "@startuml(id=deployment)" + System.lineSeparator() +
-            "scale max 1999x1999" + System.lineSeparator() +
-            "title Software System - Deployment" + System.lineSeparator() +
-            "" + System.lineSeparator() +
-            "skinparam {" + System.lineSeparator() +
-            "  shadowing false" + System.lineSeparator() +
-            "  arrowColor #707070" + System.lineSeparator() +
-            "  actorBorderColor #707070" + System.lineSeparator() +
-            "  componentBorderColor #707070" + System.lineSeparator() +
-            "  rectangleBorderColor #707070" + System.lineSeparator() +
-            "  noteBackgroundColor #ffffff" + System.lineSeparator() +
-            "  noteBorderColor #707070" + System.lineSeparator() +
-            "  defaultTextAlignment center" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "node \"Database Server\" <<Deployment Node: Ubuntu 12.04 LTS>> as 23 {" + System.lineSeparator() +
-            "  node \"MySQL\" <<Deployment Node: MySQL 5.5.x>> as 24 {" + System.lineSeparator() +
-            "    database \"Database\" <<Container: SQL>> as 25 #dddddd" + System.lineSeparator() +
-            "  }" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "node \"Web Server\" <<Deployment Node: Ubuntu 12.04 LTS>> as 20 {" + System.lineSeparator() +
-            "  node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 21 {" + System.lineSeparator() +
-            "    rectangle \"Web Application\" <<Container>> as 22 #dddddd" + System.lineSeparator() +
-            "  }" + System.lineSeparator() +
-            "}" + System.lineSeparator() +
-            "22 .[#707070].> 25 : <<JDBC>>\\nReads from and writes to" + System.lineSeparator() +
-            "@enduml" + System.lineSeparator();
 
 }

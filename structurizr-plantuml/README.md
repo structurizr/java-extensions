@@ -68,6 +68,10 @@ If you copy/paste this into [PlantUML online](http://www.plantuml.com/plantuml/)
 
 ## Changelog
 
+### 1.4.0 (unreleased)
+
+- Adds a StructurizrPlantUMLWriter, which emulates the style of the Structurizr renderer.
+
 ### 1.3.8 (27th June 2020)
 
 - Adds support for infrastructure nodes.
