@@ -3,6 +3,7 @@ package com.structurizr.io.mermaid;
 import com.structurizr.Workspace;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
+import com.structurizr.view.AutomaticLayout;
 import org.junit.Test;
 
 import java.io.File;
@@ -254,12 +255,13 @@ public class MermaidWriterTests {
     public void test_AmazonWebServicesExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
         ThemeUtils.loadStylesFromThemes(workspace);
+        workspace.getViews().getDeploymentViews().iterator().next().enableAutomaticLayout(AutomaticLayout.RankDirection.LeftRight, 300, 300);
 
         Collection<MermaidDiagram> diagrams = new MermaidWriter().toMermaidDiagrams(workspace);
         assertEquals(1, diagrams.size());
 
         MermaidDiagram diagram = diagrams.stream().findFirst().get();
-        assertEquals("graph TB\n" +
+        assertEquals("graph LR\n" +
                 "  linkStyle default fill:#ffffff\n" +
                 "\n" +
                 "  subgraph 5 [Amazon Web Services]\n" +

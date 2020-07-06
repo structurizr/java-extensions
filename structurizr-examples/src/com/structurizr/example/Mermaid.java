@@ -35,7 +35,7 @@ public class Mermaid {
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
         MermaidWriter mermaidWriter = new MermaidWriter();
-        mermaidWriter.toStdOut(workspace);
+        System.out.println(mermaidWriter.toString(contextView));
     }
 
 }

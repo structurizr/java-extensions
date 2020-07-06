@@ -29,7 +29,7 @@ styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#fffff
 styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
 MermaidWriter mermaidWriter = new MermaidWriter();
-mermaidWriter.toStdOut(workspace);
+System.out.println(mermaidWriter.toString(contextView));
 ```
 
 This code will generate and output a Mermaid diagram definition that looks like this:
@@ -38,9 +38,9 @@ This code will generate and output a Mermaid diagram definition that looks like 
 graph TB
   linkStyle default fill:#ffffff
   1["<div style='font-weight: bold'>User</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>A user of my software system.</div>"]
-  style 1 fill:#08427b,stroke:#bbbbbb,color:#ffffff
+  style 1 fill:#08427b,stroke:#052e56,color:#ffffff
   2["<div style='font-weight: bold'>Software System</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>My software system.</div>"]
-  style 2 fill:#1168bd,stroke:#bbbbbb,color:#ffffff
+  style 2 fill:#1168bd,stroke:#0b4884,color:#ffffff
   1-. "<div>Uses</div><div style='font-size: 70%'></div>" .->2
 ```
 
@@ -56,6 +56,7 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 - Add support for colouring deployment nodes (text and border).
 - Shape borders are now rendered in a darker version of the background, rather than grey.
+- Graph direction is now taken from the view's auto-layout settings.
 
 ### 1.3.5 (27th June 2020)
 

@@ -8,11 +8,9 @@ import com.structurizr.view.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URI;
 import java.util.*;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 
 /**
  * A writer that outputs diagram definitions that can be used to create diagrams
@@ -65,21 +63,6 @@ public class MermaidWriter {
     }
 
     /**
-     * Write the views in the given workspace as PlantUML definitions, to stdout.
-     *
-     * @param workspace     the workspace containing the views to be written
-     */
-    public void toStdOut(Workspace workspace) {
-        if (workspace == null) {
-            throw new IllegalArgumentException("A workspace must be provided.");
-        }
-
-        StringWriter stringWriter = new StringWriter();
-        write(workspace, stringWriter);
-        System.out.println(stringWriter.toString());
-    }
-
-    /**
      * Creates Mermaid diagram definitions based upon the specified workspace.
      *
      * @param workspace     the workspace containing the views to be written
@@ -100,28 +83,6 @@ public class MermaidWriter {
         }
 
         return diagrams;
-    }
-
-    /**
-     * Creates PlantUML diagram definitions based upon the specified workspace, returning them as strings.
-     *
-     * @param workspace     the workspace containing the views to be written
-     * @return  an array of PlantUML diagram definitions, one per view
-     */
-    public String[] toString(Workspace workspace) {
-        if (workspace == null) {
-            throw new IllegalArgumentException("A workspace must be provided.");
-        }
-
-        StringWriter stringWriter = new StringWriter();
-        write(workspace, stringWriter);
-
-        String diagrams = stringWriter.toString();
-        if (diagrams != null && diagrams.contains("graph TB")) {
-            return stringWriter.toString().split("(?=graph TB)");
-        } else {
-            return new String[0];
-        }
     }
 
     /**
@@ -636,7 +597,26 @@ public class MermaidWriter {
     }
 
     protected void writeHeader(View view, Writer writer) throws IOException {
-        writeHeader(view, writer, "TB");
+        String direction = "TB";
+
+        if (view.getAutomaticLayout() != null) {
+            switch (view.getAutomaticLayout().getRankDirection()) {
+                case TopBottom:
+                    direction = "TB";
+                    break;
+                case BottomTop:
+                    direction = "BT";
+                    break;
+                case LeftRight:
+                    direction = "LR";
+                    break;
+                case RightLeft:
+                    direction = "RL";
+                    break;
+            }
+        }
+
+        writeHeader(view, writer, direction);
     }
 
     protected void writeHeader(View view, Writer writer, String direction) throws IOException {
