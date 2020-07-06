@@ -17,7 +17,6 @@ public abstract class AbstractPlantUMLWriter {
 
     private final Map<String, String> skinParams = new LinkedHashMap<>();
     private final List<String> includes = new ArrayList<>();
-    private String direction;
 
     private boolean useSequenceDiagrams = false;
 
@@ -82,14 +81,6 @@ public abstract class AbstractPlantUMLWriter {
 
     public void setUseSequenceDiagrams(boolean useSequenceDiagrams) {
         this.useSequenceDiagrams = useSequenceDiagrams;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
     }
 
     /**

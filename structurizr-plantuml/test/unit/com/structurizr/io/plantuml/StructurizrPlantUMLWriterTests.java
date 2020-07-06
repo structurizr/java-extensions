@@ -3,6 +3,7 @@ package com.structurizr.io.plantuml;
 import com.structurizr.Workspace;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
+import com.structurizr.view.AutomaticLayout;
 import org.junit.Test;
 
 import java.io.File;
@@ -575,6 +576,7 @@ public class StructurizrPlantUMLWriterTests {
     public void test_AmazonWebServicesExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
         ThemeUtils.loadStylesFromThemes(workspace);
+        workspace.getViews().getDeploymentViews().iterator().next().enableAutomaticLayout(AutomaticLayout.RankDirection.LeftRight, 300, 300);
 
         Collection<PlantUMLDiagram> diagrams = new StructurizrPlantUMLWriter().toPlantUMLDiagrams(workspace);
         assertEquals(1, diagrams.size());
@@ -592,6 +594,7 @@ public class StructurizrPlantUMLWriterTests {
                 "  maxMessageSize 100\n" +
                 "}\n" +
                 "hide stereotype\n" +
+                "left to right direction\n" +
                 "skinparam rectangle<<11>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #693cc5\n" +

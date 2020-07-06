@@ -19,6 +19,7 @@ import static java.lang.String.format;
  */
 public class PlantUMLWriter extends AbstractPlantUMLWriter {
 
+    private String direction;
     private boolean includeNotesForActors = true;
 
     /**
@@ -36,6 +37,14 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
         addSkinParam("defaultTextAlignment", "center");
         addSkinParam("wrapWidth", "200");
         addSkinParam("maxMessageSize", "100");
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     protected boolean isIncludeNotesForActors() {
