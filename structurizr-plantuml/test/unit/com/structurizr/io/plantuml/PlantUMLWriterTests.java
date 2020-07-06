@@ -1,6 +1,7 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
+import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class PlantUMLWriterTests {
 
    @Test
-    public void testBigBankPlcExample() throws Exception {
+    public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 
         Collection<PlantUMLDiagram> diagrams = new PlantUMLWriter().toPlantUMLDiagrams(workspace);
@@ -454,6 +455,65 @@ public class PlantUMLWriterTests {
                 "79 .[#707070].> 83 : Replicates data to\n" +
                 "67 .[#707070].> 75 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
                 "71 .[#707070].> 67 : Delivers to the customer's web browser\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_AmazonWebServicesExample() throws Exception {
+        Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
+        ThemeUtils.loadStylesFromThemes(workspace);
+
+        Collection<PlantUMLDiagram> diagrams = new PlantUMLWriter().toPlantUMLDiagrams(workspace);
+        assertEquals(1, diagrams.size());
+
+        PlantUMLDiagram diagram = diagrams.stream().findFirst().get();
+        assertEquals("@startuml(id=AmazonWebServicesDeployment)\n" +
+                "title Spring PetClinic - Deployment - Default\n" +
+                "caption An example deployment diagram.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "node \"Amazon Web Services\" <<Deployment Node>> as 5 {\n" +
+                "  node \"US-East-1\" <<Deployment Node>> as 6 {\n" +
+                "    node \"Amazon RDS\" <<Deployment Node>> as 14 {\n" +
+                "      node \"MySQL\" <<Deployment Node>> as 15 {\n" +
+                "        database 16 <<Container: Relational database schema>> #ffffff [\n" +
+                "          Database\n" +
+                "          --\n" +
+                "          Stores information regarding the veterinarians, the clients, and their pets.\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    }\n" +
+                "    node \"Autoscaling group\" <<Deployment Node>> as 7 {\n" +
+                "      node \"Amazon EC2\" <<Deployment Node>> as 8 {\n" +
+                "        rectangle 9 <<Container: Java and Spring Boot>> #ffffff [\n" +
+                "          Web Application\n" +
+                "          --\n" +
+                "          Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    }\n" +
+                "    rectangle 11 <<Infrastructure Node>> #ffffff [\n" +
+                "      Elastic Load Balancer\n" +
+                "    ]\n" +
+                "    rectangle 10 <<Infrastructure Node>> #ffffff [\n" +
+                "      Route 53\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}\n" +
+                "11 .[#707070].> 9 : <<HTTPS>>\\nForwards requests to\n" +
+                "10 .[#707070].> 11 : <<HTTPS>>\\nForwards requests to\n" +
+                "9 .[#707070].> 16 : <<JDBC/SSL>>\\nReads from and writes to\n" +
                 "@enduml", diagram.getDefinition());
     }
 

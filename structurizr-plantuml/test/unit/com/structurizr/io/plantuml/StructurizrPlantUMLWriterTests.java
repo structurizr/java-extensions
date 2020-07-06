@@ -1,6 +1,7 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
+import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class StructurizrPlantUMLWriterTests {
 
     @Test
-    public void testBigBankPlcExample() throws Exception {
+    public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 
         Collection<PlantUMLDiagram> diagrams = new StructurizrPlantUMLWriter().toPlantUMLDiagrams(workspace);
@@ -567,6 +568,102 @@ public class StructurizrPlantUMLWriterTests {
                 "79 .[#707070].> 83 : \"Replicates data to\"\n" +
                 "67 .[#707070].> 75 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
                 "71 .[#707070].> 67 : \"Delivers to the customer's web browser\"\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_AmazonWebServicesExample() throws Exception {
+        Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
+        ThemeUtils.loadStylesFromThemes(workspace);
+
+        Collection<PlantUMLDiagram> diagrams = new StructurizrPlantUMLWriter().toPlantUMLDiagrams(workspace);
+        assertEquals(1, diagrams.size());
+
+        PlantUMLDiagram diagram = diagrams.stream().findFirst().get();
+        assertEquals("@startuml(id=AmazonWebServicesDeployment)\n" +
+                "title Spring PetClinic - Deployment - Default\n" +
+                "caption An example deployment diagram.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam rectangle<<11>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #693cc5\n" +
+                "  BorderColor #693cc5\n" +
+                "  roundCorner 20\n" +
+                "}\n" +
+                "skinparam node<<14>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #3b48cc\n" +
+                "  BorderColor #3b48cc\n" +
+                "}\n" +
+                "skinparam node<<15>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #3b48cc\n" +
+                "  BorderColor #3b48cc\n" +
+                "}\n" +
+                "skinparam database<<16>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #B2B2B2\n" +
+                "}\n" +
+                "skinparam node<<5>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #232f3e\n" +
+                "  BorderColor #232f3e\n" +
+                "}\n" +
+                "skinparam node<<6>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #147eba\n" +
+                "  BorderColor #147eba\n" +
+                "}\n" +
+                "skinparam node<<7>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #cc2264\n" +
+                "  BorderColor #cc2264\n" +
+                "}\n" +
+                "skinparam node<<8>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #d86613\n" +
+                "  BorderColor #d86613\n" +
+                "}\n" +
+                "skinparam rectangle<<9>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #B2B2B2\n" +
+                "  roundCorner 20\n" +
+                "}\n" +
+                "skinparam rectangle<<10>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #693cc5\n" +
+                "  BorderColor #693cc5\n" +
+                "  roundCorner 20\n" +
+                "}\n" +
+                "node \"Amazon Web Services\\n[Deployment Node]\" <<5>> as 5 {\n" +
+                "  node \"US-East-1\\n[Deployment Node]\" <<6>> as 6 {\n" +
+                "    node \"Amazon RDS\\n[Deployment Node]\" <<14>> as 14 {\n" +
+                "      node \"MySQL\\n[Deployment Node]\" <<15>> as 15 {\n" +
+                "        database \"==Database\\n<size:10>[Container: Relational database schema]</size>\\n\\nStores information regarding the veterinarians, the clients, and their pets.\" <<16>> as 16\n" +
+                "      }\n" +
+                "    }\n" +
+                "    node \"Autoscaling group\\n[Deployment Node]\" <<7>> as 7 {\n" +
+                "      node \"Amazon EC2\\n[Deployment Node]\" <<8>> as 8 {\n" +
+                "        rectangle \"==Web Application\\n<size:10>[Container: Java and Spring Boot]</size>\\n\\nAllows employees to view and manage information regarding the veterinarians, the clients, and their pets.\" <<9>> as 9\n" +
+                "      }\n" +
+                "    }\n" +
+                "    rectangle \"==Elastic Load Balancer\\n<size:10>[Infrastructure Node]</size>\" <<11>> as 11\n" +
+                "    rectangle \"==Route 53\\n<size:10>[Infrastructure Node]</size>\" <<10>> as 10\n" +
+                "  }\n" +
+                "}\n" +
+                "11 .[#707070].> 9 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
+                "10 .[#707070].> 11 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
+                "9 .[#707070].> 16 : \"Reads from and writes to\\n<size:8>[JDBC/SSL]</size>\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 

@@ -1,6 +1,7 @@
 package com.structurizr.io.mermaid;
 
 import com.structurizr.Workspace;
+import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class MermaidWriterTests {
 
     @Test
-    public void test() throws Exception {
+    public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 
         Collection<MermaidDiagram> diagrams = new MermaidWriter().toMermaidDiagrams(workspace);
@@ -247,6 +248,49 @@ public class MermaidWriterTests {
                 "  64-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
                 "  67-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
                 "  71-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->67\n", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_AmazonWebServicesExample() throws Exception {
+        Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
+        ThemeUtils.loadStylesFromThemes(workspace);
+
+        Collection<MermaidDiagram> diagrams = new MermaidWriter().toMermaidDiagrams(workspace);
+        assertEquals(1, diagrams.size());
+
+        MermaidDiagram diagram = diagrams.stream().findFirst().get();
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph 5 [Amazon Web Services]\n" +
+                "    subgraph 6 [US-East-1]\n" +
+                "      subgraph 14 [Amazon RDS]\n" +
+                "        subgraph 15 [MySQL]\n" +
+                "            16[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Relational database schema]</div><div style='font-size: 80%; margin-top:10px'>Stores information regarding<br />the veterinarians, the<br />clients, and their pets.</div>\")]\n" +
+                "            style 16 fill:#ffffff,stroke:#b2b2b2,color:#000000\n" +
+                "        end\n" +
+                "        style 15 fill:#ffffff,stroke:#3b48cc,color:#3b48cc\n" +
+                "      end\n" +
+                "      style 14 fill:#ffffff,stroke:#3b48cc,color:#3b48cc\n" +
+                "      subgraph 7 [Autoscaling group]\n" +
+                "        subgraph 8 [Amazon EC2]\n" +
+                "            9(\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring Boot]</div><div style='font-size: 80%; margin-top:10px'>Allows employees to view and<br />manage information regarding<br />the veterinarians, the<br />clients, and their pets.</div>\")\n" +
+                "            style 9 fill:#ffffff,stroke:#b2b2b2,color:#000000\n" +
+                "        end\n" +
+                "        style 8 fill:#ffffff,stroke:#d86613,color:#d86613\n" +
+                "      end\n" +
+                "      style 7 fill:#ffffff,stroke:#cc2264,color:#cc2264\n" +
+                "        11(\"<div style='font-weight: bold'>Elastic Load Balancer</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div><div style='font-size: 80%; margin-top:10px'></div>\")\n" +
+                "        style 11 fill:#ffffff,stroke:#693cc5,color:#693cc5\n" +
+                "        10(\"<div style='font-weight: bold'>Route 53</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div><div style='font-size: 80%; margin-top:10px'></div>\")\n" +
+                "        style 10 fill:#ffffff,stroke:#693cc5,color:#693cc5\n" +
+                "    end\n" +
+                "    style 6 fill:#ffffff,stroke:#147eba,color:#147eba\n" +
+                "  end\n" +
+                "  style 5 fill:#ffffff,stroke:#232f3e,color:#232f3e\n" +
+                "  11-. \"<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>\" .->9\n" +
+                "  10-. \"<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>\" .->11\n" +
+                "  9-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC/SSL]</div>\" .->16\n", diagram.getDefinition());
     }
 
 }

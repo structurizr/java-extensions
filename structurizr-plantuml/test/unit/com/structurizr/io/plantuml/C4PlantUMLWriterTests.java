@@ -2,6 +2,7 @@ package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.*;
+import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.*;
 
@@ -26,7 +27,7 @@ import static org.junit.Assert.fail;
 public class C4PlantUMLWriterTests {
 
 	@Test
-	public void testBigBankPlcExample() throws Exception {
+	public void test_BigBankPlcExample() throws Exception {
 		Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 		workspace.getModel().getElements().stream().filter(e -> e.getTagsAsSet().contains("Database")).forEach(e -> e.addProperty(C4PlantUMLWriter.C4_ELEMENT_TYPE, "Db"));
 
@@ -256,6 +257,51 @@ public class C4PlantUMLWriterTests {
 				"Rel_D(79, 83, \"Replicates data to\")\n" +
 				"Rel_D(67, 75, \"Makes API calls to\", JSON/HTTPS)\n" +
 				"Rel_D(71, 67, \"Delivers to the customer's web browser\")\n" +
+				"@enduml", diagram.getDefinition());
+	}
+
+	@Test
+	public void test_AmazonWebServicesExample() throws Exception {
+		Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
+		ThemeUtils.loadStylesFromThemes(workspace);
+
+		Collection<PlantUMLDiagram> diagrams = new C4PlantUMLWriter().toPlantUMLDiagrams(workspace);
+		assertEquals(1, diagrams.size());
+
+		PlantUMLDiagram diagram = diagrams.stream().findFirst().get();
+		assertEquals("@startuml(id=AmazonWebServicesDeployment)\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"LAYOUT_WITH_LEGEND()\n" +
+				"\n" +
+				"title Spring PetClinic - Deployment - Default\n" +
+				"caption An example deployment diagram.\n" +
+				"\n" +
+				"node \"Amazon Web Services\" <<Deployment Node>> as 5 {\n" +
+				"  node \"US-East-1\" <<Deployment Node>> as 6 {\n" +
+				"    node \"Amazon RDS\" <<Deployment Node>> as 14 {\n" +
+				"      node \"MySQL\" <<Deployment Node>> as 15 {\n" +
+				"        Container(16, \"Database\", \"Relational database schema\", \"Stores information regarding the veterinarians, the clients, and their pets.\")\n" +
+				"      }\n" +
+				"    }\n" +
+				"    node \"Autoscaling group\" <<Deployment Node>> as 7 {\n" +
+				"      node \"Amazon EC2\" <<Deployment Node>> as 8 {\n" +
+				"        Container(9, \"Web Application\", \"Java and Spring Boot\", \"Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.\")\n" +
+				"      }\n" +
+				"    }\n" +
+				"    rectangle 11 <<Infrastructure Node>> #ffffff [\n" +
+				"      Elastic Load Balancer\n" +
+				"    ]\n" +
+				"    rectangle 10 <<Infrastructure Node>> #ffffff [\n" +
+				"      Route 53\n" +
+				"    ]\n" +
+				"  }\n" +
+				"}\n" +
+				"Rel_D(11, 9, \"Forwards requests to\", HTTPS)\n" +
+				"Rel_D(10, 11, \"Forwards requests to\", HTTPS)\n" +
+				"Rel_D(9, 16, \"Reads from and writes to\", JDBC/SSL)\n" +
 				"@enduml", diagram.getDefinition());
 	}
 
