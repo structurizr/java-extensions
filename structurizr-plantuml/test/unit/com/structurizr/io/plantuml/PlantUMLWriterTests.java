@@ -15,8 +15,9 @@ public class PlantUMLWriterTests {
    @Test
     public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
+        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
 
-        Collection<PlantUMLDiagram> diagrams = new PlantUMLWriter().toPlantUMLDiagrams(workspace);
+        Collection<PlantUMLDiagram> diagrams = plantUMLWriter.toPlantUMLDiagrams(workspace);
         assertEquals(7, diagrams.size());
 
         PlantUMLDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
@@ -456,6 +457,35 @@ public class PlantUMLWriterTests {
                 "67 .[#707070].> 75 : <<JSON/HTTPS>>\\nMakes API calls to\n" +
                 "71 .[#707070].> 67 : Delivers to the customer's web browser\n" +
                 "@enduml", diagram.getDefinition());
+
+       plantUMLWriter.setUseSequenceDiagrams(true);
+       diagrams = plantUMLWriter.toPlantUMLDiagrams(workspace);
+
+       diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
+       assertEquals("@startuml(id=SignIn)\n" +
+               "title API Application - Dynamic\n" +
+               "caption Summarises how the sign in feature works in the single-page application.\n" +
+               "\n" +
+               "skinparam {\n" +
+               "  shadowing false\n" +
+               "  arrowColor #707070\n" +
+               "  actorBorderColor #707070\n" +
+               "  componentBorderColor #707070\n" +
+               "  rectangleBorderColor #707070\n" +
+               "  noteBackgroundColor #ffffff\n" +
+               "  noteBorderColor #707070\n" +
+               "  defaultTextAlignment center\n" +
+               "  wrapWidth 200\n" +
+               "  maxMessageSize 100\n" +
+               "}\n" +
+               "participant \"Single-Page Application\" as 17 <<Container: JavaScript and Angular>> #438dd5\n" +
+               "participant \"Sign In Controller\" as 29 <<Component: Spring MVC Rest Controller>> #85bbf0\n" +
+               "participant \"Security Component\" as 32 <<Component: Spring Bean>> #85bbf0\n" +
+               "database \"Database\" as 21 <<Container: Oracle Database Schema>> #438dd5\n" +
+               "17 -[#707070]> 29 : 1. Submits credentials to\n" +
+               "29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+               "32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
+               "@enduml", diagram.getDefinition());
     }
 
     @Test

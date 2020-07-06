@@ -16,8 +16,9 @@ public class StructurizrPlantUMLWriterTests {
     @Test
     public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
+        StructurizrPlantUMLWriter structurizrPlantUMLWriter = new StructurizrPlantUMLWriter();
 
-        Collection<PlantUMLDiagram> diagrams = new StructurizrPlantUMLWriter().toPlantUMLDiagrams(workspace);
+        Collection<PlantUMLDiagram> diagrams = structurizrPlantUMLWriter.toPlantUMLDiagrams(workspace);
         assertEquals(7, diagrams.size());
 
         PlantUMLDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
@@ -569,6 +570,51 @@ public class StructurizrPlantUMLWriterTests {
                 "79 .[#707070].> 83 : \"Replicates data to\"\n" +
                 "67 .[#707070].> 75 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
                 "71 .[#707070].> 67 : \"Delivers to the customer's web browser\"\n" +
+                "@enduml", diagram.getDefinition());
+
+        structurizrPlantUMLWriter.setUseSequenceDiagrams(true);
+        diagrams = structurizrPlantUMLWriter.toPlantUMLDiagrams(workspace);
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
+        assertEquals("@startuml(id=SignIn)\n" +
+                "title API Application - Dynamic\n" +
+                "caption Summarises how the sign in feature works in the single-page application.\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam sequenceParticipant<<17>> {\n" +
+                "  BackgroundColor #438dd5\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #2E6295\n" +
+                "}\n" +
+                "skinparam sequenceParticipant<<29>> {\n" +
+                "  BackgroundColor #85bbf0\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #5D82A8\n" +
+                "}\n" +
+                "skinparam sequenceParticipant<<32>> {\n" +
+                "  BackgroundColor #85bbf0\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #5D82A8\n" +
+                "}\n" +
+                "skinparam sequenceParticipant<<21>> {\n" +
+                "  BackgroundColor #438dd5\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #2E6295\n" +
+                "}\n" +
+                "participant \"Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\" as 17 <<17>> #438dd5\n" +
+                "participant \"Sign In Controller\\n<size:10>[Component: Spring MVC Rest Controller]</size>\" as 29 <<29>> #85bbf0\n" +
+                "participant \"Security Component\\n<size:10>[Component: Spring Bean]</size>\" as 32 <<32>> #85bbf0\n" +
+                "database \"Database\\n<size:10>[Container: Oracle Database Schema]</size>\" as 21 <<21>> #438dd5\n" +
+                "17 -[#707070]> 29 : 1. Submits credentials to\n" +
+                "29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+                "32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
                 "@enduml", diagram.getDefinition());
     }
 

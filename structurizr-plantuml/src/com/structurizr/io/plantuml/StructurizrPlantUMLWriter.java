@@ -270,16 +270,20 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
         writer.write("hide stereotype");
         writer.write(System.lineSeparator());
 
-        if (view.getAutomaticLayout() != null) {
-            switch (view.getAutomaticLayout().getRankDirection()) {
-                case LeftRight:
-                    writer.write("left to right direction");
-                    break;
-                default:
-                    writer.write("top to bottom direction");
-                    break;
+        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+            // do nothing
+        } else {
+            if (view.getAutomaticLayout() != null) {
+                switch (view.getAutomaticLayout().getRankDirection()) {
+                    case LeftRight:
+                        writer.write("left to right direction");
+                        break;
+                    default:
+                        writer.write("top to bottom direction");
+                        break;
+                }
+                writer.write(System.lineSeparator());
             }
-            writer.write(System.lineSeparator());
         }
 
         for (ElementView elementView : view.getElements()) {

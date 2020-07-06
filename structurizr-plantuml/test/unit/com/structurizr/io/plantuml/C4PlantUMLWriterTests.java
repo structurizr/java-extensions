@@ -30,8 +30,9 @@ public class C4PlantUMLWriterTests {
 	public void test_BigBankPlcExample() throws Exception {
 		Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
 		workspace.getModel().getElements().stream().filter(e -> e.getTagsAsSet().contains("Database")).forEach(e -> e.addProperty(C4PlantUMLWriter.C4_ELEMENT_TYPE, "Db"));
+		C4PlantUMLWriter c4PlantUMLWriter = new C4PlantUMLWriter();
 
-		Collection<PlantUMLDiagram> diagrams = new C4PlantUMLWriter().toPlantUMLDiagrams(workspace);
+		Collection<PlantUMLDiagram> diagrams = c4PlantUMLWriter.toPlantUMLDiagrams(workspace);
 		assertEquals(7, diagrams.size());
 
 		PlantUMLDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
@@ -257,6 +258,29 @@ public class C4PlantUMLWriterTests {
 				"Rel_D(79, 83, \"Replicates data to\")\n" +
 				"Rel_D(67, 75, \"Makes API calls to\", JSON/HTTPS)\n" +
 				"Rel_D(71, 67, \"Delivers to the customer's web browser\")\n" +
+				"@enduml", diagram.getDefinition());
+
+		c4PlantUMLWriter.setUseSequenceDiagrams(true);
+		diagrams = c4PlantUMLWriter.toPlantUMLDiagrams(workspace);
+
+		diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
+		assertEquals("@startuml(id=SignIn)\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"LAYOUT_WITH_LEGEND()\n" +
+				"\n" +
+				"title API Application - Dynamic\n" +
+				"caption Summarises how the sign in feature works in the single-page application.\n" +
+				"\n" +
+				"participant \"Single-Page Application\" as 17 <<Container: JavaScript and Angular>> #438dd5\n" +
+				"participant \"Sign In Controller\" as 29 <<Component: Spring MVC Rest Controller>> #85bbf0\n" +
+				"participant \"Security Component\" as 32 <<Component: Spring Bean>> #85bbf0\n" +
+				"database \"Database\" as 21 <<Container: Oracle Database Schema>> #438dd5\n" +
+				"17 -[#707070]> 29 : 1. Submits credentials to\n" +
+				"29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+				"32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
 				"@enduml", diagram.getDefinition());
 	}
 

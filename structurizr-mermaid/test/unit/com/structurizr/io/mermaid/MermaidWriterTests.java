@@ -18,8 +18,9 @@ public class MermaidWriterTests {
     @Test
     public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
+        MermaidWriter mermaidWriter = new MermaidWriter();
 
-        Collection<MermaidDiagram> diagrams = new MermaidWriter().toMermaidDiagrams(workspace);
+        Collection<MermaidDiagram> diagrams = mermaidWriter.toMermaidDiagrams(workspace);
         assertEquals(7, diagrams.size());
 
         MermaidDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
@@ -249,6 +250,19 @@ public class MermaidWriterTests {
                 "  64-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
                 "  67-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
                 "  71-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->67\n", diagram.getDefinition());
+
+        mermaidWriter.setUseSequenceDiagrams(true);
+        diagrams = mermaidWriter.toMermaidDiagrams(workspace);
+
+        diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
+        assertEquals("sequenceDiagram\n" +
+                "  participant 17 as Single-Page Application\n" +
+                "  participant 29 as Sign In Controller\n" +
+                "  participant 32 as Security Component\n" +
+                "  participant 21 as Database\n" +
+                "  17->>29: Submits credentials to\n" +
+                "  29->>32: Calls isAuthenticated() on\n" +
+                "  32->>21: select * from users where<br />username = ?\n", diagram.getDefinition());
     }
 
     @Test
