@@ -52,7 +52,7 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 ## Changelog
 
-### 1.3.6 (unreleased)
+### 1.3.6 (6th July 2020)
 
 - Add support for colouring deployment nodes (text and border).
 - Shape borders are now rendered in a darker version of the background, rather than grey.

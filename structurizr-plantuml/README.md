@@ -9,7 +9,7 @@ structurizr-plantuml can export the views in a Structurizr workspace to diagram 
 - Dynamic
 - Deployment
 
-Create your software architecture model and views as usual, and use the [PlantUMLWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-plantuml/src/com/structurizr/io/plantuml/PlantUMLWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/PlantUML.java):
+Create your software architecture model and views as usual, and use one of the PlantUML writer classes to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/PlantUML.java):
 
 ```java
 Workspace workspace = new Workspace("Getting Started", "This is a model of my software system.");
@@ -28,37 +28,38 @@ Styles styles = views.getConfiguration().getStyles();
 styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
 styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
-PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
-plantUMLWriter.toStdOut(workspace);
+AbstractPlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
+System.out.println(plantUMLWriter.toString(contextView));
 ```
 
 This code will generate and output a PlantUML diagram definition that looks like this:
 
 ```
-@startuml
-scale max 2000x2000
+@startuml(id=SystemContext)
 title Software System - System Context
 caption An example of a System Context diagram.
 
 skinparam {
   shadowing false
-  arrowColor #707070
-  actorBorderColor #707070
-  componentBorderColor #707070
-  rectangleBorderColor #707070
-  noteBackgroundColor #ffffff
-  noteBorderColor #707070
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
 }
-actor "User" <<Person>> as 1 #08427b
-note right of 1
-  A user of my software system.
-end note
-rectangle 2 <<Software System>> #1168bd [
-  Software System
-  --
-  My software system.
-]
-1 .[#707070].> 2 : Uses
+hide stereotype
+skinparam rectangle<<1>> {
+  BackgroundColor #08427b
+  FontColor #ffffff
+  BorderColor #052E56
+}
+skinparam rectangle<<2>> {
+  BackgroundColor #1168bd
+  FontColor #ffffff
+  BorderColor #0B4884
+}
+rectangle "==User\n<size:10>[Person]</size>\n\nA user of my software system." <<1>> as 1
+rectangle "==Software System\n<size:10>[Software System]</size>\n\nMy software system." <<2>> as 2
+1 .[#707070].> 2 : "Uses"
 @enduml
 ```
 
@@ -66,11 +67,17 @@ If you copy/paste this into [PlantUML online](http://www.plantuml.com/plantuml/)
 
 ![An example PlantUML diagram](docs/images/getting-started.png)
 
+There are three PlantUML writer implementations:
+
+- `StructurizrPlantUMLWriter`: most closely resembles the diagram notation used on the [C4 model website](https://c4model.com), and the [Structurizr](https://structurizr.com) web-based renderer.
+- `PlantUMLWriter`: default PlantUML styling (with UML stereotypes).
+- `C4PlantUMLWriter`: produces diagram definitions that use the [C4-PlantUML macros](https://github.com/RicardoNiepel/C4-PlantUML).
+
 ## Changelog
 
-### 1.4.0 (unreleased)
+### 1.4.0 (6th July 2020)
 
-- Adds a StructurizrPlantUMLWriter, which emulates the style of the Structurizr renderer.
+- Adds a StructurizrPlantUMLWriter, which emulates the style of the Structurizr web-based renderer.
 
 ### 1.3.8 (27th June 2020)
 

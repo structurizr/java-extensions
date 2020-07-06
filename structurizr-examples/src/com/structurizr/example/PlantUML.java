@@ -1,8 +1,10 @@
 package com.structurizr.example;
 
 import com.structurizr.Workspace;
+import com.structurizr.io.plantuml.AbstractPlantUMLWriter;
 import com.structurizr.io.plantuml.PlantUMLDiagram;
 import com.structurizr.io.plantuml.PlantUMLWriter;
+import com.structurizr.io.plantuml.StructurizrPlantUMLWriter;
 import com.structurizr.model.Model;
 import com.structurizr.model.Person;
 import com.structurizr.model.SoftwareSystem;
@@ -37,12 +39,8 @@ public class PlantUML {
         styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
-        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
-        Collection<PlantUMLDiagram> plantUMLDiagrams = plantUMLWriter.toPlantUMLDiagrams(workspace);
-        for (PlantUMLDiagram plantUMLDiagram : plantUMLDiagrams) {
-            System.out.println(plantUMLDiagram.getDefinition());
-            System.out.println("");
-        }
+        AbstractPlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
+        System.out.println(plantUMLWriter.toString(contextView));
     }
 
 }
