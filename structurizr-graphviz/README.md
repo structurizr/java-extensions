@@ -23,6 +23,10 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
+### 1.3.8 (unreleased)
+
+- Fixes a bug where a view's paper size isn't set when the diagram is larger than A0.
+
 ### 1.3.7 (27th June 2020)
 
 - Fixes a bug that assumed some numbers in the SVG output from Graphviz would be integers.

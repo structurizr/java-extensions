@@ -145,6 +145,10 @@ class SVGReader {
             }
         }
 
+        if (view.getPaperSize() == null) {
+            view.setPaperSize(PaperSize.A0_Landscape);
+        }
+
         int deltaX = (view.getPaperSize().getWidth() - maximumX + minimumX) / 2;
         int deltaY = (view.getPaperSize().getHeight() - maximumY + minimumY) / 2;
 
