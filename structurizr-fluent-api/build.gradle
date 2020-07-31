@@ -1,0 +1,29 @@
+version = '1.0.0'
+
+dependencies {
+
+    compile 'com.structurizr:structurizr-core:1.4.7'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.4.0'
+    testCompile 'com.structurizr:structurizr-client:1.4.7'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+            srcDir 'test/unit'
+        }
+    }
+}
