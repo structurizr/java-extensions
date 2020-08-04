@@ -1,6 +1,6 @@
 # structurizr-ilograph
 
-structurizr-ilograph can export a Structurizr workspace to an [Ilograph](https://ilograph.com) definition.
+structurizr-ilograph can export a Structurizr workspace to an [Ilograph](https://www.ilograph.com) definition.
 
 Create your software architecture model and views as usual, and use the [IlographWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-ilograph/src/com/structurizr/io/ilograph/IlographWriter.java) class to export the workspace. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/Ilograph.java):
 

@@ -32,6 +32,7 @@ com.structurizr:structurizr-websequencediagrams:1.3.6 | Provides the ability to 
     * [PlantUML](structurizr-plantuml)
     * [Mermaid](structurizr-mermaid)
     * [WebSequenceDiagrams](structurizr-websequencediagrams)
+    * [Ilograph](structurizr-ilograph)
 * Related projects
     * [java](https://github.com/structurizr/java): Structurizr for Java
     * [java-quickstart](https://github.com/structurizr/java-quickstart): A starting point for using Structurizr for Java
