@@ -44,17 +44,19 @@ public class WebSequenceDiagramsWriterTests {
         view.add(user, "Does something using", a);
         view.add(a, "Does something then using", b);
         view.add(b, "Responds with X", a);
+        view.add(a, "Sends X back", user);
 
         webSequenceDiagramsWriter.write(workspace, stringWriter);
-        assertEquals("title Dynamic - Some Key" + System.lineSeparator() +
-                System.lineSeparator() +
-                "actor <<Person>>>\\nUser as User" + System.lineSeparator() +
-                "participant <<Software System>>>\\nSystem A as System A" + System.lineSeparator() +
-                "participant <<Software System>>>\\nSystem B as System B" + System.lineSeparator() +
-                System.lineSeparator() +
-                "User->System A: Does something using" + System.lineSeparator() +
-                "System A->>System B: Does something then using" + System.lineSeparator() +
-                "System B-->>System A: Responds with X" + System.lineSeparator(), stringWriter.toString());
+        assertEquals("title Dynamic - Some Key\n" +
+                "\n" +
+                "actor <<Person>>>\\nUser as User\n" +
+                "participant <<Software System>>>\\nSystem A as System A\n" +
+                "participant <<Software System>>>\\nSystem B as System B\n" +
+                "\n" +
+                "User->System A: Does something using\n" +
+                "System A->>System B: Does something then using\n" +
+                "System B-->>System A: Responds with X\n" +
+                "System A-->User: Sends X back\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
     }
 
 }
