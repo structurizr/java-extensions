@@ -423,12 +423,11 @@ public abstract class AbstractPlantUMLWriter {
 
     protected void writeRelationships(View view, Writer writer) {
         view.getRelationships().stream()
-                .map(RelationshipView::getRelationship)
-                .sorted(Comparator.comparing(r -> (r.getSource().getName() + r.getDestination().getName())))
+                .sorted(Comparator.comparing(rv -> (rv.getRelationship().getSource().getName() + rv.getRelationship().getDestination().getName())))
                 .forEach(r -> writeRelationship(view, r, writer));
     }
 
-    protected abstract void writeRelationship(View view, Relationship relationship, Writer writer);
+    protected abstract void writeRelationship(View view, RelationshipView relationshipView, Writer writer);
 
     protected void writeFooter(Writer writer) throws IOException {
         writer.write("@enduml");

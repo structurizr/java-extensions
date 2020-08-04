@@ -17,16 +17,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.structurizr.model.Component;
-import com.structurizr.model.Container;
-import com.structurizr.model.ContainerInstance;
-import com.structurizr.model.Element;
-import com.structurizr.model.Location;
-import com.structurizr.model.Person;
-import com.structurizr.model.Relationship;
-import com.structurizr.model.SoftwareSystem;
+import com.structurizr.model.*;
 import com.structurizr.view.ComponentView;
 import com.structurizr.view.ContainerView;
+import com.structurizr.view.RelationshipView;
 import com.structurizr.view.View;
 
 /**
@@ -165,14 +159,31 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		}
 	}
 
+	private class SoftwareSystemInstanceWriter extends C4ElementWriter<SoftwareSystemInstance> {
+		@Override
+		void doWrite(View view, SoftwareSystemInstance element, Writer writer, String prefix, String id, String separator)
+				throws IOException {
+			boolean internal = !element.getSoftwareSystem().getLocation().equals(Location.External);
+			Type type = Type.valueOf(element.getProperties().getOrDefault(C4_ELEMENT_TYPE,
+					element.getSoftwareSystem().getProperties().getOrDefault(C4_ELEMENT_TYPE,Type.Default.name())
+			));
+			String macro = String.format("System%s%s",
+					type==Type.Default ? "" : type.name(),
+					internal ? "" : "_Ext");
+			writer.write(format("%s%s(%s, \"%s\", \"%s\")%s", prefix, macro, id,
+					element.getSoftwareSystem().getName(),
+					element.getSoftwareSystem().getDescription(), separator));
+		}
+	}
+
 	private class ContainerInstanceWriter extends C4ElementWriter<ContainerInstance> {
 		@Override
 		void doWrite(View view, ContainerInstance element, Writer writer, String prefix, String id, String separator)
 				throws IOException {
-			Type type = Type.valueOf(element.getProperties().getOrDefault(C4_ELEMENT_TYPE, 
+			Type type = Type.valueOf(element.getProperties().getOrDefault(C4_ELEMENT_TYPE,
 					element.getContainer().getProperties().getOrDefault(C4_ELEMENT_TYPE,Type.Default.name())
-					));
-			String macro = String.format("Container%s", 
+			));
+			String macro = String.format("Container%s",
 					type==Type.Default ? "" : type.name());
 			writer.write(format("%s%s(%s, \"%s\", \"%s\", \"%s\")%s", prefix, macro, id,
 					element.getContainer().getName(), element.getContainer().getTechnology(),
@@ -317,6 +328,8 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 			return new SoftwareSystemWriter();
 		} else if (element instanceof Container) {
 			return new ContainerWriter();
+		} else if (element instanceof SoftwareSystemInstance) {
+			return new SoftwareSystemInstanceWriter();
 		} else if (element instanceof ContainerInstance) {
 			return new ContainerInstanceWriter();
 		} else if (element instanceof Component) {
@@ -326,7 +339,16 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	}
 
 	@Override
-	protected void writeRelationship(View view, Relationship relationship, Writer writer) {
+	protected void writeRelationship(View view, RelationshipView relationshipView, Writer writer) {
+		Relationship relationship = relationshipView.getRelationship();
+		Element source = relationship.getSource();
+		Element destination = relationship.getDestination();
+
+		if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+			source = relationship.getDestination();
+			destination = relationship.getSource();
+		}
+
 		try {
 			final String separator = System.lineSeparator();
 			String relationshipMacro = null;
@@ -348,19 +370,14 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 				relationshipMacro = String.format("Rel_%s", mode);
 			}
 			if (mode==RelationshipModes.Lay) {
-				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(relationship.getSource()),
-						idOf(relationship.getDestination()), separator));
+				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(source), idOf(destination), separator));
 			} else if (relationship.getDescription() == null) {
-				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(relationship.getSource()),
-						idOf(relationship.getDestination()), separator));
+				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(source), idOf(destination), separator));
 			} else {
 				if (relationship.getTechnology() == null) {
-					writer.write(format("%s(%s, %s, \"%s\")%s", relationshipMacro, idOf(relationship.getSource()),
-							idOf(relationship.getDestination()), relationship.getDescription(), separator));
+					writer.write(format("%s(%s, %s, \"%s\")%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), separator));
 				} else {
-					writer.write(format("%s(%s, %s, \"%s\", %s)%s", relationshipMacro, idOf(relationship.getSource()),
-							idOf(relationship.getDestination()), relationship.getDescription(),
-							relationship.getTechnology(), separator));
+					writer.write(format("%s(%s, %s, \"%s\", %s)%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), relationship.getTechnology(), separator));
 				}
 			}
 		} catch (IOException e) {

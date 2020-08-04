@@ -75,6 +75,11 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+### 1.5.0 (unreleased)
+
+- Adds support for return/response messages on dynamic views.
+- Adds support for software system instances on deployment views.
+
 ### 1.4.0 (6th July 2020)
 
 - Adds a StructurizrPlantUMLWriter, which emulates the style of the Structurizr web-based renderer.

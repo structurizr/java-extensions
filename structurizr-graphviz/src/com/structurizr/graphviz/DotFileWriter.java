@@ -267,6 +267,12 @@ class DotFileWriter {
             }
         }
 
+        for (SoftwareSystemInstance softwareSystemInstance : deploymentNode.getSoftwareSystemInstances()) {
+            if (view.isElementInView(softwareSystemInstance)) {
+                writeElement(view, indent + "  ", softwareSystemInstance, fileWriter);
+            }
+        }
+
         for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
             if (view.isElementInView(containerInstance)) {
                 writeElement(view, indent + "  ", containerInstance, fileWriter);
@@ -298,9 +304,17 @@ class DotFileWriter {
                 continue;
             }
 
+            Element source = relationshipView.getRelationship().getSource();
+            Element destination = relationshipView.getRelationship().getDestination();
+
+            if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+                source = relationshipView.getRelationship().getDestination();
+                destination = relationshipView.getRelationship().getSource();
+            }
+
             writer.write(String.format(locale, "  %s -> %s [id=%s]",
-                    relationshipView.getRelationship().getSourceId(),
-                    relationshipView.getRelationship().getDestinationId(),
+                    source.getId(),
+                    destination.getId(),
                     relationshipView.getId()
             ));
             writer.write("\n");

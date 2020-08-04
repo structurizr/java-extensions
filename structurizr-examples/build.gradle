@@ -8,7 +8,7 @@ dependencies {
     compile project(':structurizr-websequencediagrams')
     compile project(':structurizr-spring')
 
-    compile 'com.structurizr:structurizr-client:1.4.5'
+    compile 'com.structurizr:structurizr-client:1.5.0'
 
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.slf4j:slf4j-simple:1.7.21'

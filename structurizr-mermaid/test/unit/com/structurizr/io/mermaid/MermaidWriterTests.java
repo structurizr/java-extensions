@@ -7,9 +7,7 @@ import com.structurizr.view.AutomaticLayout;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -156,22 +154,33 @@ public class MermaidWriterTests {
                 "  17[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
                 "  style 17 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "  17-->|\"<div style='font-weight: bold'>1. Submits credentials to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\"|29\n" +
-                "  29-->|\"<div style='font-weight: bold'>2. Calls isAuthenticated() on</div><div style='font-size: 70%'></div>\"|32\n" +
-                "  32-->|\"<div style='font-weight: bold'>3. select * from users where<br />username = ?</div><div style='font-size: 70%'>[JDBC]</div>\"|21\n", diagram.getDefinition());
+                "  29-->|\"<div style='font-weight: bold'>2. Validates credentials using</div><div style='font-size: 70%'></div>\"|32\n" +
+                "  32-->|\"<div style='font-weight: bold'>3. select * from users where<br />username = ?</div><div style='font-size: 70%'>[JDBC]</div>\"|21\n" +
+                "  21-->|\"<div style='font-weight: bold'>4. Returns user data to</div><div style='font-size: 70%'>[JDBC]</div>\"|32\n" +
+                "  32-->|\"<div style='font-weight: bold'>5. Returns true if the hashed<br />password matches</div><div style='font-size: 70%'></div>\"|29\n" +
+                "  29-->|\"<div style='font-weight: bold'>6. Sends back an authentication<br />token to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\"|17\n", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
         assertEquals("graph TB\n" +
                 "  linkStyle default fill:#ffffff\n" +
                 "\n" +
-                "  subgraph 50 [Developer Laptop]\n" +
-                "    subgraph 55 [Docker Container - Database Server]\n" +
-                "      subgraph 56 [Database Server]\n" +
-                "          57[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
-                "          style 57 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
-                "      end\n" +
-                "      style 56 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  subgraph 55 [Big Bank plc]\n" +
+                "    subgraph 56 [bigbank-dev001]\n" +
+                "        57[\"<div style='font-weight: bold'>Mainframe Banking System</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Stores all of the core<br />banking information about<br />customers, accounts,<br />transactions, etc.</div>\"]\n" +
+                "        style 57 fill:#999999,stroke:#6b6b6b,color:#ffffff\n" +
                 "    end\n" +
-                "    style 55 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 56 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  end\n" +
+                "  style 55 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  subgraph 50 [Developer Laptop]\n" +
+                "    subgraph 59 [Docker Container - Database Server]\n" +
+                "      subgraph 60 [Database Server]\n" +
+                "          61[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
+                "          style 61 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "      end\n" +
+                "      style 60 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    end\n" +
+                "    style 59 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    subgraph 51 [Docker Container - Web Server]\n" +
                 "      subgraph 52 [Apache Tomcat]\n" +
                 "          54[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
@@ -182,74 +191,81 @@ public class MermaidWriterTests {
                 "      style 52 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    end\n" +
                 "    style 51 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    subgraph 59 [Web Browser]\n" +
-                "        60[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
-                "        style 60 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "    subgraph 63 [Web Browser]\n" +
+                "        64[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
+                "        style 64 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "    end\n" +
-                "    style 59 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 63 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  end\n" +
                 "  style 50 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "  54-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->57\n" +
-                "  60-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->54\n" +
-                "  53-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->60\n", diagram.getDefinition());
+                "  54-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->61\n" +
+                "  54-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[XML/HTTPS]</div>\" .->57\n" +
+                "  64-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->54\n" +
+                "  53-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->64\n", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
         assertEquals("graph TB\n" +
                 "  linkStyle default fill:#ffffff\n" +
                 "\n" +
-                "  subgraph 68 [Big Bank plc]\n" +
-                "    subgraph 73 [bigbank-api***]\n" +
-                "      subgraph 74 [Apache Tomcat]\n" +
-                "          75[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
-                "          style 75 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "  subgraph 72 [Big Bank plc]\n" +
+                "    subgraph 79 [bigbank-api***]\n" +
+                "      subgraph 80 [Apache Tomcat]\n" +
+                "          81[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
+                "          style 81 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 74 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 80 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    end\n" +
+                "    style 79 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 85 [bigbank-db01]\n" +
+                "      subgraph 86 [Oracle - Primary]\n" +
+                "          87[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
+                "          style 87 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "      end\n" +
+                "      style 86 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    end\n" +
+                "    style 85 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 89 [bigbank-db02]\n" +
+                "      subgraph 90 [Oracle - Secondary]\n" +
+                "          91[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
+                "          style 91 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "      end\n" +
+                "      style 90 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    end\n" +
+                "    style 89 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 73 [bigbank-prod001]\n" +
+                "        74[\"<div style='font-weight: bold'>Mainframe Banking System</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Stores all of the core<br />banking information about<br />customers, accounts,<br />transactions, etc.</div>\"]\n" +
+                "        style 74 fill:#999999,stroke:#6b6b6b,color:#ffffff\n" +
                 "    end\n" +
                 "    style 73 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    subgraph 78 [bigbank-db01]\n" +
-                "      subgraph 79 [Oracle - Primary]\n" +
-                "          80[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
-                "          style 80 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "    subgraph 75 [bigbank-web***]\n" +
+                "      subgraph 76 [Apache Tomcat]\n" +
+                "          77[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
+                "          style 77 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 79 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 76 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "    end\n" +
-                "    style 78 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    subgraph 82 [bigbank-db02]\n" +
-                "      subgraph 83 [Oracle - Secondary]\n" +
-                "          84[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
-                "          style 84 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
-                "      end\n" +
-                "      style 83 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    end\n" +
-                "    style 82 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    subgraph 69 [bigbank-web***]\n" +
-                "      subgraph 70 [Apache Tomcat]\n" +
-                "          71[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
-                "          style 71 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
-                "      end\n" +
-                "      style 70 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "    end\n" +
-                "    style 69 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 75 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  end\n" +
-                "  style 68 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "  subgraph 65 [Customer's computer]\n" +
-                "    subgraph 66 [Web Browser]\n" +
-                "        67[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
-                "        style 67 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "  style 72 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  subgraph 69 [Customer's computer]\n" +
+                "    subgraph 70 [Web Browser]\n" +
+                "        71[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
+                "        style 71 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "    end\n" +
-                "    style 66 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 70 fill:#ffffff,stroke:#000000,color:#000000\n" +
                 "  end\n" +
-                "  style 65 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "  subgraph 63 [Customer's mobile device]\n" +
-                "      64[\"<div style='font-weight: bold'>Mobile App</div><div style='font-size: 70%; margin-top: 0px'>[Container: Xamarin]</div><div style='font-size: 80%; margin-top:10px'>Provides a limited subset of<br />the Internet banking<br />functionality to customers<br />via their mobile device.</div>\"]\n" +
-                "      style 64 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
+                "  style 69 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  subgraph 67 [Customer's mobile device]\n" +
+                "      68[\"<div style='font-weight: bold'>Mobile App</div><div style='font-size: 70%; margin-top: 0px'>[Container: Xamarin]</div><div style='font-size: 80%; margin-top:10px'>Provides a limited subset of<br />the Internet banking<br />functionality to customers<br />via their mobile device.</div>\"]\n" +
+                "      style 68 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "  end\n" +
-                "  style 63 fill:#ffffff,stroke:#000000,color:#000000\n" +
-                "  75-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->80\n" +
-                "  75-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->84\n" +
-                "  64-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
-                "  67-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->75\n" +
-                "  71-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->67\n", diagram.getDefinition());
+                "  style 67 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  81-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->91\n" +
+                "  81-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->87\n" +
+                "  81-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[XML/HTTPS]</div>\" .->74\n" +
+                "  68-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->81\n" +
+                "  71-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->81\n" +
+                "  77-. \"<div>Delivers to the customer's<br />web browser</div><div style='font-size: 70%'></div>\" .->71\n", diagram.getDefinition());
 
         mermaidWriter.setUseSequenceDiagrams(true);
         diagrams = mermaidWriter.toMermaidDiagrams(workspace);
@@ -261,8 +277,11 @@ public class MermaidWriterTests {
                 "  participant 32 as Security Component\n" +
                 "  participant 21 as Database\n" +
                 "  17->>29: Submits credentials to\n" +
-                "  29->>32: Calls isAuthenticated() on\n" +
-                "  32->>21: select * from users where<br />username = ?\n", diagram.getDefinition());
+                "  29->>32: Validates credentials using\n" +
+                "  32->>21: select * from users where<br />username = ?\n" +
+                "  21-->>32: Returns user data to\n" +
+                "  32-->>29: Returns true if the hashed<br />password matches\n" +
+                "  29-->>17: Sends back an authentication<br />token to\n", diagram.getDefinition());
     }
 
     @Test

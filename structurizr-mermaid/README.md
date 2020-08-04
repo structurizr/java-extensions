@@ -52,6 +52,11 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 ## Changelog
 
+### 1.4.0 (unreleased)
+
+- Adds support for return/response messages on dynamic views.
+- Adds support for software system instances on deployment views.
+
 ### 1.3.6 (6th July 2020)
 
 - Add support for colouring deployment nodes (text and border).

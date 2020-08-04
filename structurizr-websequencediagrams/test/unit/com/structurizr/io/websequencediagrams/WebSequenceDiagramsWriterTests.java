@@ -43,6 +43,7 @@ public class WebSequenceDiagramsWriterTests {
         DynamicView view = workspace.getViews().createDynamicView("Some Key", "A description of the diagram");
         view.add(user, "Does something using", a);
         view.add(a, "Does something then using", b);
+        view.add(b, "Responds with X", a);
 
         webSequenceDiagramsWriter.write(workspace, stringWriter);
         assertEquals("title Dynamic - Some Key" + System.lineSeparator() +
@@ -52,7 +53,8 @@ public class WebSequenceDiagramsWriterTests {
                 "participant <<Software System>>>\\nSystem B as System B" + System.lineSeparator() +
                 System.lineSeparator() +
                 "User->System A: Does something using" + System.lineSeparator() +
-                "System A->>System B: Does something then using" + System.lineSeparator(), stringWriter.toString());
+                "System A->>System B: Does something then using" + System.lineSeparator() +
+                "System B-->>System A: Responds with X" + System.lineSeparator(), stringWriter.toString());
     }
 
 }

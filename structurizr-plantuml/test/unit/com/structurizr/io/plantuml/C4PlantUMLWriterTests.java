@@ -175,8 +175,11 @@ public class C4PlantUMLWriterTests {
 				"Component(32, \"Security Component\", \"Spring Bean\", \"Provides functionality related to signing in, changing passwords, etc.\")\n" +
 				"ContainerDb(21, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
 				"17 -[#707070]> 29 : 1. Submits credentials to\n" +
-				"29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+				"29 -[#707070]> 32 : 2. Validates credentials using\n" +
 				"32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
+				"21 -[#707070]-> 32 : 4. Returns user data to\n" +
+				"32 -[#707070]-> 29 : 5. Returns true if the hashed password matches\n" +
+				"29 -[#707070]-> 17 : 6. Sends back an authentication token to\n" +
 				"@enduml", diagram.getDefinition());
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
@@ -190,10 +193,15 @@ public class C4PlantUMLWriterTests {
 				"title Internet Banking System - Deployment - Development\n" +
 				"caption An example development deployment scenario for the Internet Banking System.\n" +
 				"\n" +
+				"node \"Big Bank plc\" <<Deployment Node: Big Bank plc data center>> as 55 {\n" +
+				"  node \"bigbank-dev001\" <<Deployment Node>> as 56 {\n" +
+				"    System(57, \"Mainframe Banking System\", \"Stores all of the core banking information about customers, accounts, transactions, etc.\")\n" +
+				"  }\n" +
+				"}\n" +
 				"node \"Developer Laptop\" <<Deployment Node: Microsoft Windows 10 or Apple macOS>> as 50 {\n" +
-				"  node \"Docker Container - Database Server\" <<Deployment Node: Docker>> as 55 {\n" +
-				"    node \"Database Server\" <<Deployment Node: Oracle 12c>> as 56 {\n" +
-				"      ContainerDb(57, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
+				"  node \"Docker Container - Database Server\" <<Deployment Node: Docker>> as 59 {\n" +
+				"    node \"Database Server\" <<Deployment Node: Oracle 12c>> as 60 {\n" +
+				"      ContainerDb(61, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
 				"    }\n" +
 				"  }\n" +
 				"  node \"Docker Container - Web Server\" <<Deployment Node: Docker>> as 51 {\n" +
@@ -202,13 +210,14 @@ public class C4PlantUMLWriterTests {
 				"      Container(53, \"Web Application\", \"Java and Spring MVC\", \"Delivers the static content and the Internet banking single page application.\")\n" +
 				"    }\n" +
 				"  }\n" +
-				"  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 59 {\n" +
-				"    Container(60, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
+				"  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 63 {\n" +
+				"    Container(64, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
 				"  }\n" +
 				"}\n" +
-				"Rel_D(54, 57, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(60, 54, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(53, 60, \"Delivers to the customer's web browser\")\n" +
+				"Rel_D(54, 61, \"Reads from and writes to\", JDBC)\n" +
+				"Rel_D(54, 57, \"Makes API calls to\", XML/HTTPS)\n" +
+				"Rel_D(64, 54, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(53, 64, \"Delivers to the customer's web browser\")\n" +
 				"@enduml", diagram.getDefinition());
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
@@ -222,42 +231,46 @@ public class C4PlantUMLWriterTests {
 				"title Internet Banking System - Deployment - Live\n" +
 				"caption An example live deployment scenario for the Internet Banking System.\n" +
 				"\n" +
-				"node \"Big Bank plc\" <<Deployment Node: Big Bank plc data center>> as 68 {\n" +
-				"  node \"bigbank-api*** (x8)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 73 {\n" +
-				"    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 74 {\n" +
-				"      Container(75, \"API Application\", \"Java and Spring MVC\", \"Provides Internet banking functionality via a JSON/HTTPS API.\")\n" +
+				"node \"Big Bank plc\" <<Deployment Node: Big Bank plc data center>> as 72 {\n" +
+				"  node \"bigbank-api*** (x8)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 79 {\n" +
+				"    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 80 {\n" +
+				"      Container(81, \"API Application\", \"Java and Spring MVC\", \"Provides Internet banking functionality via a JSON/HTTPS API.\")\n" +
 				"    }\n" +
 				"  }\n" +
-				"  node \"bigbank-db01\" <<Deployment Node: Ubuntu 16.04 LTS>> as 78 {\n" +
-				"    node \"Oracle - Primary\" <<Deployment Node: Oracle 12c>> as 79 {\n" +
-				"      ContainerDb(80, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
+				"  node \"bigbank-db01\" <<Deployment Node: Ubuntu 16.04 LTS>> as 85 {\n" +
+				"    node \"Oracle - Primary\" <<Deployment Node: Oracle 12c>> as 86 {\n" +
+				"      ContainerDb(87, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
 				"    }\n" +
 				"  }\n" +
-				"  node \"bigbank-db02\" <<Deployment Node: Ubuntu 16.04 LTS>> as 82 {\n" +
-				"    node \"Oracle - Secondary\" <<Deployment Node: Oracle 12c>> as 83 {\n" +
-				"      ContainerDb(84, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
+				"  node \"bigbank-db02\" <<Deployment Node: Ubuntu 16.04 LTS>> as 89 {\n" +
+				"    node \"Oracle - Secondary\" <<Deployment Node: Oracle 12c>> as 90 {\n" +
+				"      ContainerDb(91, \"Database\", \"Oracle Database Schema\", \"Stores user registration information, hashed authentication credentials, access logs, etc.\")\n" +
 				"    }\n" +
 				"  }\n" +
-				"  node \"bigbank-web*** (x4)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 69 {\n" +
-				"    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 70 {\n" +
-				"      Container(71, \"Web Application\", \"Java and Spring MVC\", \"Delivers the static content and the Internet banking single page application.\")\n" +
+				"  node \"bigbank-prod001\" <<Deployment Node>> as 73 {\n" +
+				"    System(74, \"Mainframe Banking System\", \"Stores all of the core banking information about customers, accounts, transactions, etc.\")\n" +
+				"  }\n" +
+				"  node \"bigbank-web*** (x4)\" <<Deployment Node: Ubuntu 16.04 LTS>> as 75 {\n" +
+				"    node \"Apache Tomcat\" <<Deployment Node: Apache Tomcat 8.x>> as 76 {\n" +
+				"      Container(77, \"Web Application\", \"Java and Spring MVC\", \"Delivers the static content and the Internet banking single page application.\")\n" +
 				"    }\n" +
 				"  }\n" +
 				"}\n" +
-				"node \"Customer's computer\" <<Deployment Node: Microsoft Windows or Apple macOS>> as 65 {\n" +
-				"  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 66 {\n" +
-				"    Container(67, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
+				"node \"Customer's computer\" <<Deployment Node: Microsoft Windows or Apple macOS>> as 69 {\n" +
+				"  node \"Web Browser\" <<Deployment Node: Chrome, Firefox, Safari, or Edge>> as 70 {\n" +
+				"    Container(71, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
 				"  }\n" +
 				"}\n" +
-				"node \"Customer's mobile device\" <<Deployment Node: Apple iOS or Android>> as 63 {\n" +
-				"  Container(64, \"Mobile App\", \"Xamarin\", \"Provides a limited subset of the Internet banking functionality to customers via their mobile device.\")\n" +
+				"node \"Customer's mobile device\" <<Deployment Node: Apple iOS or Android>> as 67 {\n" +
+				"  Container(68, \"Mobile App\", \"Xamarin\", \"Provides a limited subset of the Internet banking functionality to customers via their mobile device.\")\n" +
 				"}\n" +
-				"Rel_D(75, 80, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(75, 84, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(64, 75, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(79, 83, \"Replicates data to\")\n" +
-				"Rel_D(67, 75, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(71, 67, \"Delivers to the customer's web browser\")\n" +
+				"Rel_D(81, 91, \"Reads from and writes to\", JDBC)\n" +
+				"Rel_D(81, 87, \"Reads from and writes to\", JDBC)\n" +
+				"Rel_D(81, 74, \"Makes API calls to\", XML/HTTPS)\n" +
+				"Rel_D(68, 81, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(86, 90, \"Replicates data to\")\n" +
+				"Rel_D(71, 81, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(77, 71, \"Delivers to the customer's web browser\")\n" +
 				"@enduml", diagram.getDefinition());
 
 		c4PlantUMLWriter.setUseSequenceDiagrams(true);
@@ -279,8 +292,11 @@ public class C4PlantUMLWriterTests {
 				"participant \"Security Component\" as 32 <<Component: Spring Bean>> #85bbf0\n" +
 				"database \"Database\" as 21 <<Container: Oracle Database Schema>> #438dd5\n" +
 				"17 -[#707070]> 29 : 1. Submits credentials to\n" +
-				"29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+				"29 -[#707070]> 32 : 2. Validates credentials using\n" +
 				"32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
+				"21 -[#707070]-> 32 : 4. Returns user data to\n" +
+				"32 -[#707070]-> 29 : 5. Returns true if the hashed password matches\n" +
+				"29 -[#707070]-> 17 : 6. Sends back an authentication token to\n" +
 				"@enduml", diagram.getDefinition());
 	}
 

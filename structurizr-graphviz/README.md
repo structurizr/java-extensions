@@ -23,8 +23,10 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
-### 1.3.8 (unreleased)
+### 1.4.0 (unreleased)
 
+- Adds support for return/response messages on dynamic views.
+- Adds support for software system instances on deployment views.
 - Fixes a bug where a view's paper size isn't set when the diagram is larger than A0.
 
 ### 1.3.7 (27th June 2020)

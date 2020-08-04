@@ -343,8 +343,11 @@ public class StructurizrPlantUMLWriterTests {
                 "rectangle \"==Security Component\\n<size:10>[Component: Spring Bean]</size>\\n\\nProvides functionality related to signing in, changing passwords, etc.\" <<32>> as 32\n" +
                 "database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<21>> as 21\n" +
                 "17 .[#707070].> 29 : \"1. Submits credentials to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "29 .[#707070].> 32 : \"2. Calls isAuthenticated() on\"\n" +
+                "29 .[#707070].> 32 : \"2. Validates credentials using\"\n" +
                 "32 .[#707070].> 21 : \"3. select * from users where username = ?\\n<size:8>[JDBC]</size>\"\n" +
+                "32 <.[#707070]. 21 : \"4. Returns user data to\\n<size:8>[JDBC]</size>\"\n" +
+                "29 <.[#707070]. 32 : \"5. Returns true if the hashed password matches\"\n" +
+                "17 <.[#707070]. 29 : \"6. Sends back an authentication token to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
@@ -370,17 +373,22 @@ public class StructurizrPlantUMLWriterTests {
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam database<<57>> {\n" +
-                "  BackgroundColor #438dd5\n" +
+                "skinparam rectangle<<57>> {\n" +
+                "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #6B6B6B\n" +
                 "}\n" +
                 "skinparam node<<59>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam rectangle<<60>> {\n" +
+                "skinparam node<<60>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam database<<61>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
@@ -395,10 +403,20 @@ public class StructurizrPlantUMLWriterTests {
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
+                "skinparam node<<63>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
                 "skinparam node<<52>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam rectangle<<64>> {\n" +
+                "  BackgroundColor #438dd5\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #2E6295\n" +
                 "}\n" +
                 "skinparam rectangle<<53>> {\n" +
                 "  BackgroundColor #438dd5\n" +
@@ -410,10 +428,15 @@ public class StructurizrPlantUMLWriterTests {
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
                 "}\n" +
+                "node \"Big Bank plc\\n[Deployment Node: Big Bank plc data center]\" <<55>> as 55 {\n" +
+                "  node \"bigbank-dev001\\n[Deployment Node]\" <<56>> as 56 {\n" +
+                "    rectangle \"==Mainframe Banking System\\n<size:10>[Software System]</size>\\n\\nStores all of the core banking information about customers, accounts, transactions, etc.\" <<57>> as 57\n" +
+                "  }\n" +
+                "}\n" +
                 "node \"Developer Laptop\\n[Deployment Node: Microsoft Windows 10 or Apple macOS]\" <<50>> as 50 {\n" +
-                "  node \"Docker Container - Database Server\\n[Deployment Node: Docker]\" <<55>> as 55 {\n" +
-                "    node \"Database Server\\n[Deployment Node: Oracle 12c]\" <<56>> as 56 {\n" +
-                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<57>> as 57\n" +
+                "  node \"Docker Container - Database Server\\n[Deployment Node: Docker]\" <<59>> as 59 {\n" +
+                "    node \"Database Server\\n[Deployment Node: Oracle 12c]\" <<60>> as 60 {\n" +
+                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<61>> as 61\n" +
                 "    }\n" +
                 "  }\n" +
                 "  node \"Docker Container - Web Server\\n[Deployment Node: Docker]\" <<51>> as 51 {\n" +
@@ -422,13 +445,14 @@ public class StructurizrPlantUMLWriterTests {
                 "      rectangle \"==Web Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nDelivers the static content and the Internet banking single page application.\" <<53>> as 53\n" +
                 "    }\n" +
                 "  }\n" +
-                "  node \"Web Browser\\n[Deployment Node: Chrome, Firefox, Safari, or Edge]\" <<59>> as 59 {\n" +
-                "    rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<60>> as 60\n" +
+                "  node \"Web Browser\\n[Deployment Node: Chrome, Firefox, Safari, or Edge]\" <<63>> as 63 {\n" +
+                "    rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<64>> as 64\n" +
                 "  }\n" +
                 "}\n" +
-                "54 .[#707070].> 57 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "60 .[#707070].> 54 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "53 .[#707070].> 60 : \"Delivers to the customer's web browser\"\n" +
+                "54 .[#707070].> 61 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "54 .[#707070].> 57 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "64 .[#707070].> 54 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "53 .[#707070].> 64 : \"Delivers to the customer's web browser\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
@@ -444,37 +468,52 @@ public class StructurizrPlantUMLWriterTests {
                 "  maxMessageSize 100\n" +
                 "}\n" +
                 "hide stereotype\n" +
-                "skinparam node<<66>> {\n" +
-                "  BackgroundColor #ffffff\n" +
-                "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
-                "}\n" +
-                "skinparam node<<78>> {\n" +
-                "  BackgroundColor #ffffff\n" +
-                "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
-                "}\n" +
-                "skinparam rectangle<<67>> {\n" +
+                "skinparam rectangle<<77>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
+                "}\n" +
+                "skinparam node<<89>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam node<<67>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
                 "}\n" +
                 "skinparam node<<79>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam node<<68>> {\n" +
-                "  BackgroundColor #ffffff\n" +
-                "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "skinparam rectangle<<68>> {\n" +
+                "  BackgroundColor #438dd5\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #2E6295\n" +
                 "}\n" +
                 "skinparam node<<69>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam database<<80>> {\n" +
+                "skinparam node<<90>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam database<<91>> {\n" +
+                "  BackgroundColor #438dd5\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #2E6295\n" +
+                "}\n" +
+                "skinparam node<<80>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam rectangle<<81>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
@@ -489,87 +528,86 @@ public class StructurizrPlantUMLWriterTests {
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
                 "}\n" +
-                "skinparam node<<82>> {\n" +
+                "skinparam node<<72>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
-                "}\n" +
-                "skinparam node<<83>> {\n" +
-                "  BackgroundColor #ffffff\n" +
-                "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
-                "}\n" +
-                "skinparam database<<84>> {\n" +
-                "  BackgroundColor #438dd5\n" +
-                "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
                 "}\n" +
                 "skinparam node<<73>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam node<<74>> {\n" +
+                "skinparam rectangle<<74>> {\n" +
+                "  BackgroundColor #999999\n" +
+                "  FontColor #ffffff\n" +
+                "  BorderColor #6B6B6B\n" +
+                "}\n" +
+                "skinparam node<<85>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam node<<63>> {\n" +
+                "skinparam node<<86>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "skinparam rectangle<<75>> {\n" +
+                "skinparam node<<75>> {\n" +
+                "  BackgroundColor #ffffff\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #000000\n" +
+                "}\n" +
+                "skinparam database<<87>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
                 "}\n" +
-                "skinparam rectangle<<64>> {\n" +
-                "  BackgroundColor #438dd5\n" +
-                "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
-                "}\n" +
-                "skinparam node<<65>> {\n" +
+                "skinparam node<<76>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #000000\n" +
                 "}\n" +
-                "node \"Big Bank plc\\n[Deployment Node: Big Bank plc data center]\" <<68>> as 68 {\n" +
-                "  node \"bigbank-api*** (x8)\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<73>> as 73 {\n" +
-                "    node \"Apache Tomcat\\n[Deployment Node: Apache Tomcat 8.x]\" <<74>> as 74 {\n" +
-                "      rectangle \"==API Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nProvides Internet banking functionality via a JSON/HTTPS API.\" <<75>> as 75\n" +
+                "node \"Big Bank plc\\n[Deployment Node: Big Bank plc data center]\" <<72>> as 72 {\n" +
+                "  node \"bigbank-api*** (x8)\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<79>> as 79 {\n" +
+                "    node \"Apache Tomcat\\n[Deployment Node: Apache Tomcat 8.x]\" <<80>> as 80 {\n" +
+                "      rectangle \"==API Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nProvides Internet banking functionality via a JSON/HTTPS API.\" <<81>> as 81\n" +
                 "    }\n" +
                 "  }\n" +
-                "  node \"bigbank-db01\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<78>> as 78 {\n" +
-                "    node \"Oracle - Primary\\n[Deployment Node: Oracle 12c]\" <<79>> as 79 {\n" +
-                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<80>> as 80\n" +
+                "  node \"bigbank-db01\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<85>> as 85 {\n" +
+                "    node \"Oracle - Primary\\n[Deployment Node: Oracle 12c]\" <<86>> as 86 {\n" +
+                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<87>> as 87\n" +
                 "    }\n" +
                 "  }\n" +
-                "  node \"bigbank-db02\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<82>> as 82 {\n" +
-                "    node \"Oracle - Secondary\\n[Deployment Node: Oracle 12c]\" <<83>> as 83 {\n" +
-                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<84>> as 84\n" +
+                "  node \"bigbank-db02\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<89>> as 89 {\n" +
+                "    node \"Oracle - Secondary\\n[Deployment Node: Oracle 12c]\" <<90>> as 90 {\n" +
+                "      database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<91>> as 91\n" +
                 "    }\n" +
                 "  }\n" +
-                "  node \"bigbank-web*** (x4)\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<69>> as 69 {\n" +
-                "    node \"Apache Tomcat\\n[Deployment Node: Apache Tomcat 8.x]\" <<70>> as 70 {\n" +
-                "      rectangle \"==Web Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nDelivers the static content and the Internet banking single page application.\" <<71>> as 71\n" +
+                "  node \"bigbank-prod001\\n[Deployment Node]\" <<73>> as 73 {\n" +
+                "    rectangle \"==Mainframe Banking System\\n<size:10>[Software System]</size>\\n\\nStores all of the core banking information about customers, accounts, transactions, etc.\" <<74>> as 74\n" +
+                "  }\n" +
+                "  node \"bigbank-web*** (x4)\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<75>> as 75 {\n" +
+                "    node \"Apache Tomcat\\n[Deployment Node: Apache Tomcat 8.x]\" <<76>> as 76 {\n" +
+                "      rectangle \"==Web Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nDelivers the static content and the Internet banking single page application.\" <<77>> as 77\n" +
                 "    }\n" +
                 "  }\n" +
                 "}\n" +
-                "node \"Customer's computer\\n[Deployment Node: Microsoft Windows or Apple macOS]\" <<65>> as 65 {\n" +
-                "  node \"Web Browser\\n[Deployment Node: Chrome, Firefox, Safari, or Edge]\" <<66>> as 66 {\n" +
-                "    rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<67>> as 67\n" +
+                "node \"Customer's computer\\n[Deployment Node: Microsoft Windows or Apple macOS]\" <<69>> as 69 {\n" +
+                "  node \"Web Browser\\n[Deployment Node: Chrome, Firefox, Safari, or Edge]\" <<70>> as 70 {\n" +
+                "    rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<71>> as 71\n" +
                 "  }\n" +
                 "}\n" +
-                "node \"Customer's mobile device\\n[Deployment Node: Apple iOS or Android]\" <<63>> as 63 {\n" +
-                "  rectangle \"==Mobile App\\n<size:10>[Container: Xamarin]</size>\\n\\nProvides a limited subset of the Internet banking functionality to customers via their mobile device.\" <<64>> as 64\n" +
+                "node \"Customer's mobile device\\n[Deployment Node: Apple iOS or Android]\" <<67>> as 67 {\n" +
+                "  rectangle \"==Mobile App\\n<size:10>[Container: Xamarin]</size>\\n\\nProvides a limited subset of the Internet banking functionality to customers via their mobile device.\" <<68>> as 68\n" +
                 "}\n" +
-                "75 .[#707070].> 80 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "75 .[#707070].> 84 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "64 .[#707070].> 75 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "79 .[#707070].> 83 : \"Replicates data to\"\n" +
-                "67 .[#707070].> 75 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "71 .[#707070].> 67 : \"Delivers to the customer's web browser\"\n" +
+                "81 .[#707070].> 91 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "81 .[#707070].> 87 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "81 .[#707070].> 74 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "68 .[#707070].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "86 .[#707070].> 90 : \"Replicates data to\"\n" +
+                "71 .[#707070].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "77 .[#707070].> 71 : \"Delivers to the customer's web browser\"\n" +
                 "@enduml", diagram.getDefinition());
 
         structurizrPlantUMLWriter.setUseSequenceDiagrams(true);
@@ -613,8 +651,11 @@ public class StructurizrPlantUMLWriterTests {
                 "participant \"Security Component\\n<size:10>[Component: Spring Bean]</size>\" as 32 <<32>> #85bbf0\n" +
                 "database \"Database\\n<size:10>[Container: Oracle Database Schema]</size>\" as 21 <<21>> #438dd5\n" +
                 "17 -[#707070]> 29 : 1. Submits credentials to\n" +
-                "29 -[#707070]> 32 : 2. Calls isAuthenticated() on\n" +
+                "29 -[#707070]> 32 : 2. Validates credentials using\n" +
                 "32 -[#707070]> 21 : 3. select * from users where username = ?\n" +
+                "32 <-[#707070]- 21 : 4. Returns user data to\n" +
+                "29 <-[#707070]- 32 : 5. Returns true if the hashed password matches\n" +
+                "17 <-[#707070]- 29 : 6. Sends back an authentication token to\n" +
                 "@enduml", diagram.getDefinition());
     }
 

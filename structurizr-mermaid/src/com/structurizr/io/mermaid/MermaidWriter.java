@@ -280,11 +280,23 @@ public class MermaidWriter {
 
                 for (RelationshipView relationshipView : view.getRelationships()) {
                     Relationship relationship = relationshipView.getRelationship();
+
+                    String arrow = "->>";
+                    Element source = relationship.getSource();
+                    Element destination = relationship.getDestination();
+
+                    if (relationshipView.isResponse()) {
+                        arrow = "-->>";
+                        source = relationship.getDestination();
+                        destination = relationship.getSource();
+                    }
+
                     writer.write(format(
-                            "%s%s->>%s: %s",
+                            "%s%s%s%s: %s",
                             calculateIndent(1),
-                            relationship.getSourceId(),
-                            relationship.getDestinationId(),
+                            idOf(source),
+                            arrow,
+                            idOf(destination),
                             lines(hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationship.getDescription()) ? relationship.getDescription() : "")
                     ));
                     writer.write(System.lineSeparator());
@@ -299,14 +311,22 @@ public class MermaidWriter {
                 view.getRelationships().stream()
                         .sorted(Comparator.comparing(RelationshipView::getOrder))
                         .forEach(relationship -> {
+                            Element source = relationship.getRelationship().getSource();
+                            Element destination = relationship.getRelationship().getDestination();
+
+                            if (relationship.isResponse()) {
+                                source = relationship.getRelationship().getDestination();
+                                destination = relationship.getRelationship().getSource();
+                            }
+
                             try {
                                 writer.write(
                                         format("  %s-->|\"<div style='font-weight: bold'>%s. %s</div><div style='font-size: 70%%'>%s</div>\"|%s",
-                                                idOf(relationship.getRelationship().getSource()),
+                                                idOf(source),
                                                 relationship.getOrder(),
                                                 lines(hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""),
                                                 !StringUtils.isNullOrEmpty(relationship.getRelationship().getTechnology()) ? "[" + relationship.getRelationship().getTechnology() + "]" : "",
-                                                idOf(relationship.getRelationship().getDestination())
+                                                idOf(destination)
                                         )
                                 );
 
@@ -369,6 +389,12 @@ public class MermaidWriter {
                 write(view, infrastructureNode, writer, indent+1);
             }
 
+            List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
+            softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
+            for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                write(view, softwareSystemInstance, writer, indent+1);
+            }
+
             List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
             containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
             for (ContainerInstance containerInstance : containerInstances) {
@@ -406,8 +432,8 @@ public class MermaidWriter {
             String nodeClosingSymbol = "]";
 
             Shape shape = shapeOf(view, element);
-            if (element instanceof ContainerInstance) {
-                shape = shapeOf(view, ((ContainerInstance)element).getContainer());
+            if (element instanceof StaticStructureElementInstance) {
+                shape = shapeOf(view, ((StaticStructureElementInstance)element).getElement());
             }
 
             if (shape == Shape.RoundedBox) {
@@ -418,13 +444,13 @@ public class MermaidWriter {
                     nodeClosingSymbol = ")]";
             }
 
-            if (element instanceof ContainerInstance) {
-                Container container = ((ContainerInstance) element).getContainer();
+            if (element instanceof StaticStructureElementInstance) {
+                Element e = ((StaticStructureElementInstance)element).getElement();
                 writer.write(format(ELEMENT_DEFINITION,
                         calculateIndent(indent),
                         idOf(element),
                         nodeOpeningSymbol,
-                        container.getName(), typeOf(container), lines(container.getDescription()),
+                        e.getName(), typeOf(e), lines(e.getDescription()),
                         nodeClosingSymbol
                 ));
             } else {
@@ -443,9 +469,9 @@ public class MermaidWriter {
                 writer.write(format("%s", separator));
             }
 
-            if (element instanceof ContainerInstance) {
-                Container container = ((ContainerInstance) element).getContainer();
-                writer.write(format("  %sstyle %s fill:%s,stroke:%s,color:%s", calculateIndent(indent),idOf(element), backgroundOf(view, container), strokeOf(view, container), colorOf(view, container)));
+            if (element instanceof StaticStructureElementInstance) {
+                Element e = ((StaticStructureElementInstance)element).getElement();
+                writer.write(format("  %sstyle %s fill:%s,stroke:%s,color:%s", calculateIndent(indent),idOf(element), backgroundOf(view, e), strokeOf(view, e), colorOf(view, e)));
             } else {
                 writer.write(format("  %sstyle %s fill:%s,stroke:%s,color:%s", calculateIndent(indent),idOf(element), backgroundOf(view, element), strokeOf(view, element), colorOf(view, element)));
             }
@@ -582,6 +608,8 @@ public class MermaidWriter {
         } else if (e instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)e;
             type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
+        } else if (e instanceof SoftwareSystemInstance) {
+            type = "Software System";
         } else if (e instanceof ContainerInstance) {
             Container container = ((ContainerInstance)e).getContainer();
             type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");

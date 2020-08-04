@@ -40,6 +40,10 @@ If you copy/paste this into [WebSequenceDiagrams](https://www.websequencediagram
 
 ## Changelog
 
+### 1.4.0 (unreleased)
+
+- Adds support for return/response messages on dynamic views.
+
 ### 1.3.6 (19th June 2020)
 
 - Fixes the ordering of elements on a sequence diagram.

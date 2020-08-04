@@ -2,10 +2,8 @@
     "id": 36141,
     "name": "Big Bank plc",
     "description": "This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.",
-    "revision": 28,
-    "lastModifiedDate": "2020-03-24T18:29:55Z",
-    "lastModifiedUser": "simon@structurizr-simon.localdomain",
-    "lastModifiedAgent": "structurizr-java/null",
+    "revision": 39,
+    "lastModifiedDate": "2020-08-04T08:32:14Z",
     "model": {
         "enterprise": {
             "name": "Big Bank plc"
@@ -19,11 +17,10 @@
                 "relationships": [
                     {
                         "id": "16",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "15",
                         "destinationId": "4",
-                        "description": "Uses",
-                        "interactionStyle": "Synchronous"
+                        "description": "Uses"
                     }
                 ],
                 "location": "Internal"
@@ -36,11 +33,10 @@
                 "relationships": [
                     {
                         "id": "13",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "12",
                         "destinationId": "4",
-                        "description": "Uses",
-                        "interactionStyle": "Synchronous"
+                        "description": "Uses"
                     }
                 ],
                 "location": "Internal"
@@ -52,20 +48,40 @@
                 "description": "A customer of the bank, with personal bank accounts.",
                 "relationships": [
                     {
+                        "id": "3",
+                        "tags": "Relationship",
+                        "sourceId": "1",
+                        "destinationId": "2",
+                        "description": "Views account balances, and makes payments using"
+                    },
+                    {
                         "id": "23",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "1",
                         "destinationId": "17",
-                        "description": "Views account balances, and makes payments using",
-                        "interactionStyle": "Synchronous"
+                        "description": "Views account balances, and makes payments using"
+                    },
+                    {
+                        "id": "22",
+                        "tags": "Relationship",
+                        "sourceId": "1",
+                        "destinationId": "19",
+                        "description": "Visits bigbank.com/ib using",
+                        "technology": "HTTPS"
+                    },
+                    {
+                        "id": "24",
+                        "tags": "Relationship",
+                        "sourceId": "1",
+                        "destinationId": "18",
+                        "description": "Views account balances, and makes payments using"
                     },
                     {
                         "id": "11",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "1",
                         "destinationId": "9",
-                        "description": "Withdraws cash using",
-                        "interactionStyle": "Synchronous"
+                        "description": "Withdraws cash using"
                     },
                     {
                         "id": "14",
@@ -74,31 +90,6 @@
                         "destinationId": "12",
                         "description": "Asks questions to",
                         "technology": "Telephone",
-                        "interactionStyle": "Synchronous"
-                    },
-                    {
-                        "id": "3",
-                        "tags": "Relationship,Synchronous",
-                        "sourceId": "1",
-                        "destinationId": "2",
-                        "description": "Views account balances, and makes payments using",
-                        "interactionStyle": "Synchronous"
-                    },
-                    {
-                        "id": "24",
-                        "tags": "Relationship,Synchronous",
-                        "sourceId": "1",
-                        "destinationId": "18",
-                        "description": "Views account balances, and makes payments using",
-                        "interactionStyle": "Synchronous"
-                    },
-                    {
-                        "id": "22",
-                        "tags": "Relationship,Synchronous",
-                        "sourceId": "1",
-                        "destinationId": "19",
-                        "description": "Visits bigbank.com/ib using",
-                        "technology": "HTTPS",
                         "interactionStyle": "Synchronous"
                     }
                 ],
@@ -114,11 +105,10 @@
                 "relationships": [
                     {
                         "id": "10",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "9",
                         "destinationId": "4",
-                        "description": "Uses",
-                        "interactionStyle": "Synchronous"
+                        "description": "Uses"
                     }
                 ],
                 "location": "Internal"
@@ -131,11 +121,10 @@
                 "relationships": [
                     {
                         "id": "8",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "6",
                         "destinationId": "1",
-                        "description": "Sends e-mails to",
-                        "interactionStyle": "Synchronous"
+                        "description": "Sends e-mails to"
                     }
                 ],
                 "location": "Internal"
@@ -147,20 +136,18 @@
                 "description": "Allows customers to view information about their bank accounts, and make payments.",
                 "relationships": [
                     {
-                        "id": "7",
-                        "tags": "Relationship,Synchronous",
-                        "sourceId": "2",
-                        "destinationId": "6",
-                        "description": "Sends e-mail using",
-                        "interactionStyle": "Synchronous"
-                    },
-                    {
                         "id": "5",
-                        "tags": "Relationship,Synchronous",
+                        "tags": "Relationship",
                         "sourceId": "2",
                         "destinationId": "4",
-                        "description": "Gets account information from, and makes payments using",
-                        "interactionStyle": "Synchronous"
+                        "description": "Gets account information from, and makes payments using"
+                    },
+                    {
+                        "id": "7",
+                        "tags": "Relationship",
+                        "sourceId": "2",
+                        "destinationId": "6",
+                        "description": "Sends e-mail using"
                     }
                 ],
                 "location": "Internal",
@@ -172,31 +159,28 @@
                         "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
                         "relationships": [
                             {
-                                "id": "27",
-                                "tags": "Relationship,Synchronous",
-                                "sourceId": "20",
-                                "destinationId": "4",
-                                "description": "Makes API calls to",
-                                "technology": "XML/HTTPS",
-                                "interactionStyle": "Synchronous"
-                            },
-                            {
                                 "id": "26",
-                                "tags": "Relationship,Synchronous",
+                                "tags": "Relationship",
                                 "sourceId": "20",
                                 "destinationId": "21",
                                 "description": "Reads from and writes to",
-                                "technology": "JDBC",
-                                "interactionStyle": "Synchronous"
+                                "technology": "JDBC"
+                            },
+                            {
+                                "id": "27",
+                                "tags": "Relationship",
+                                "sourceId": "20",
+                                "destinationId": "4",
+                                "description": "Makes API calls to",
+                                "technology": "XML/HTTPS"
                             },
                             {
                                 "id": "28",
-                                "tags": "Relationship,Synchronous",
+                                "tags": "Relationship",
                                 "sourceId": "20",
                                 "destinationId": "6",
                                 "description": "Sends e-mail using",
-                                "technology": "SMTP",
-                                "interactionStyle": "Synchronous"
+                                "technology": "SMTP"
                             }
                         ],
                         "technology": "Java and Spring MVC",
@@ -208,12 +192,11 @@
                                 "description": "Provides customers with a summary of their bank accounts.",
                                 "relationships": [
                                     {
-                                        "id": "42",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "44",
+                                        "tags": "Relationship",
                                         "sourceId": "30",
                                         "destinationId": "33",
-                                        "description": "Uses",
-                                        "interactionStyle": "Synchronous"
+                                        "description": "Uses"
                                     }
                                 ],
                                 "technology": "Spring MVC Rest Controller",
@@ -226,12 +209,11 @@
                                 "description": "Sends e-mails to users.",
                                 "relationships": [
                                     {
-                                        "id": "47",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "49",
+                                        "tags": "Relationship",
                                         "sourceId": "34",
                                         "destinationId": "6",
-                                        "description": "Sends e-mail using",
-                                        "interactionStyle": "Synchronous"
+                                        "description": "Sends e-mail using"
                                     }
                                 ],
                                 "technology": "Spring Bean",
@@ -244,13 +226,12 @@
                                 "description": "A facade onto the mainframe banking system.",
                                 "relationships": [
                                     {
-                                        "id": "46",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "48",
+                                        "tags": "Relationship",
                                         "sourceId": "33",
                                         "destinationId": "4",
                                         "description": "Uses",
-                                        "technology": "XML/HTTPS",
-                                        "interactionStyle": "Synchronous"
+                                        "technology": "XML/HTTPS"
                                     }
                                 ],
                                 "technology": "Spring Bean",
@@ -263,20 +244,18 @@
                                 "description": "Allows users to reset their passwords with a single use URL.",
                                 "relationships": [
                                     {
-                                        "id": "44",
-                                        "tags": "Relationship,Synchronous",
-                                        "sourceId": "31",
-                                        "destinationId": "34",
-                                        "description": "Uses",
-                                        "interactionStyle": "Synchronous"
-                                    },
-                                    {
-                                        "id": "43",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "45",
+                                        "tags": "Relationship",
                                         "sourceId": "31",
                                         "destinationId": "32",
-                                        "description": "Uses",
-                                        "interactionStyle": "Synchronous"
+                                        "description": "Uses"
+                                    },
+                                    {
+                                        "id": "46",
+                                        "tags": "Relationship",
+                                        "sourceId": "31",
+                                        "destinationId": "34",
+                                        "description": "Uses"
                                     }
                                 ],
                                 "technology": "Spring MVC Rest Controller",
@@ -289,13 +268,12 @@
                                 "description": "Provides functionality related to signing in, changing passwords, etc.",
                                 "relationships": [
                                     {
-                                        "id": "45",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "47",
+                                        "tags": "Relationship",
                                         "sourceId": "32",
                                         "destinationId": "21",
                                         "description": "Reads from and writes to",
-                                        "technology": "JDBC",
-                                        "interactionStyle": "Synchronous"
+                                        "technology": "JDBC"
                                     }
                                 ],
                                 "technology": "Spring Bean",
@@ -308,12 +286,11 @@
                                 "description": "Allows users to sign in to the Internet Banking System.",
                                 "relationships": [
                                     {
-                                        "id": "41",
-                                        "tags": "Relationship,Synchronous",
+                                        "id": "43",
+                                        "tags": "Relationship",
                                         "sourceId": "29",
                                         "destinationId": "32",
-                                        "description": "Uses",
-                                        "interactionStyle": "Synchronous"
+                                        "description": "Uses"
                                     }
                                 ],
                                 "technology": "Spring MVC Rest Controller",
@@ -336,39 +313,35 @@
                         "relationships": [
                             {
                                 "id": "39",
-                                "tags": "Relationship,Synchronous",
-                                "sourceId": "18",
-                                "destinationId": "31",
-                                "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
-                            },
-                            {
-                                "id": "49",
-                                "tags": "Relationship,Synchronous",
-                                "sourceId": "18",
-                                "destinationId": "20",
-                                "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
-                            },
-                            {
-                                "id": "38",
-                                "tags": "Relationship,Synchronous",
+                                "tags": "Relationship",
                                 "sourceId": "18",
                                 "destinationId": "29",
                                 "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
+                                "technology": "JSON/HTTPS"
                             },
                             {
-                                "id": "40",
-                                "tags": "Relationship,Synchronous",
+                                "id": "41",
+                                "tags": "Relationship",
+                                "sourceId": "18",
+                                "destinationId": "31",
+                                "description": "Makes API calls to",
+                                "technology": "JSON/HTTPS"
+                            },
+                            {
+                                "id": "42",
+                                "tags": "Relationship",
                                 "sourceId": "18",
                                 "destinationId": "30",
                                 "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
+                                "technology": "JSON/HTTPS"
+                            },
+                            {
+                                "id": "40",
+                                "tags": "Relationship",
+                                "sourceId": "18",
+                                "destinationId": "20",
+                                "description": "Makes API calls to",
+                                "technology": "JSON/HTTPS"
                             }
                         ],
                         "technology": "Xamarin"
@@ -380,40 +353,36 @@
                         "description": "Provides all of the Internet banking functionality to customers via their web browser.",
                         "relationships": [
                             {
-                                "id": "37",
-                                "tags": "Relationship,Synchronous",
+                                "id": "38",
+                                "tags": "Relationship",
                                 "sourceId": "17",
                                 "destinationId": "30",
                                 "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
-                            },
-                            {
-                                "id": "35",
-                                "tags": "Relationship,Synchronous",
-                                "sourceId": "17",
-                                "destinationId": "29",
-                                "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
-                            },
-                            {
-                                "id": "48",
-                                "tags": "Relationship,Synchronous",
-                                "sourceId": "17",
-                                "destinationId": "20",
-                                "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
+                                "technology": "JSON/HTTPS"
                             },
                             {
                                 "id": "36",
-                                "tags": "Relationship,Synchronous",
+                                "tags": "Relationship",
+                                "sourceId": "17",
+                                "destinationId": "20",
+                                "description": "Makes API calls to",
+                                "technology": "JSON/HTTPS"
+                            },
+                            {
+                                "id": "37",
+                                "tags": "Relationship",
                                 "sourceId": "17",
                                 "destinationId": "31",
                                 "description": "Makes API calls to",
-                                "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous"
+                                "technology": "JSON/HTTPS"
+                            },
+                            {
+                                "id": "35",
+                                "tags": "Relationship",
+                                "sourceId": "17",
+                                "destinationId": "29",
+                                "description": "Makes API calls to",
+                                "technology": "JSON/HTTPS"
                             }
                         ],
                         "technology": "JavaScript and Angular"
@@ -426,11 +395,10 @@
                         "relationships": [
                             {
                                 "id": "25",
-                                "tags": "Relationship,Synchronous",
+                                "tags": "Relationship",
                                 "sourceId": "19",
                                 "destinationId": "17",
-                                "description": "Delivers to the customer's web browser",
-                                "interactionStyle": "Synchronous"
+                                "description": "Delivers to the customer's web browser"
                             }
                         ],
                         "technology": "Java and Spring MVC"
@@ -447,6 +415,39 @@
         ],
         "deploymentNodes": [
             {
+                "id": "55",
+                "tags": "Element,Deployment Node",
+                "name": "Big Bank plc",
+                "environment": "Development",
+                "technology": "Big Bank plc data center",
+                "instances": 1,
+                "children": [
+                    {
+                        "id": "56",
+                        "tags": "Element,Deployment Node",
+                        "name": "bigbank-dev001",
+                        "environment": "Development",
+                        "instances": 1,
+                        "softwareSystemInstances": [
+                            {
+                                "id": "57",
+                                "tags": "Software System Instance",
+                                "environment": "Development",
+                                "instanceId": 1,
+                                "softwareSystemId": "4",
+                                "properties": {}
+                            }
+                        ],
+                        "children": [],
+                        "containerInstances": [],
+                        "infrastructureNodes": []
+                    }
+                ],
+                "softwareSystemInstances": [],
+                "containerInstances": [],
+                "infrastructureNodes": []
+            },
+            {
                 "id": "50",
                 "tags": "Element,Deployment Node",
                 "name": "Developer Laptop",
@@ -456,7 +457,7 @@
                 "instances": 1,
                 "children": [
                     {
-                        "id": "55",
+                        "id": "59",
                         "tags": "Element,Deployment Node",
                         "name": "Docker Container - Database Server",
                         "description": "A Docker container.",
@@ -465,7 +466,7 @@
                         "instances": 1,
                         "children": [
                             {
-                                "id": "56",
+                                "id": "60",
                                 "tags": "Element,Deployment Node",
                                 "name": "Database Server",
                                 "description": "A development database.",
@@ -474,18 +475,20 @@
                                 "instances": 1,
                                 "containerInstances": [
                                     {
-                                        "id": "57",
+                                        "id": "61",
                                         "tags": "Container Instance",
                                         "environment": "Development",
-                                        "containerId": "21",
                                         "instanceId": 1,
+                                        "containerId": "21",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     },
@@ -517,18 +520,25 @@
                                         "tags": "Container Instance",
                                         "relationships": [
                                             {
+                                                "id": "62",
+                                                "sourceId": "54",
+                                                "destinationId": "61",
+                                                "description": "Reads from and writes to",
+                                                "technology": "JDBC",
+                                                "linkedRelationshipId": "26"
+                                            },
+                                            {
                                                 "id": "58",
                                                 "sourceId": "54",
                                                 "destinationId": "57",
-                                                "description": "Reads from and writes to",
-                                                "technology": "JDBC",
-                                                "interactionStyle": "Synchronous",
-                                                "linkedRelationshipId": "26"
+                                                "description": "Makes API calls to",
+                                                "technology": "XML/HTTPS",
+                                                "linkedRelationshipId": "27"
                                             }
                                         ],
                                         "environment": "Development",
-                                        "containerId": "20",
                                         "instanceId": 1,
+                                        "containerId": "20",
                                         "properties": {}
                                     },
                                     {
@@ -536,29 +546,30 @@
                                         "tags": "Container Instance",
                                         "relationships": [
                                             {
-                                                "id": "62",
+                                                "id": "66",
                                                 "sourceId": "53",
-                                                "destinationId": "60",
+                                                "destinationId": "64",
                                                 "description": "Delivers to the customer's web browser",
-                                                "interactionStyle": "Synchronous",
                                                 "linkedRelationshipId": "25"
                                             }
                                         ],
                                         "environment": "Development",
-                                        "containerId": "19",
                                         "instanceId": 1,
+                                        "containerId": "19",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     },
                     {
-                        "id": "59",
+                        "id": "63",
                         "tags": "Element,Deployment Node",
                         "name": "Web Browser",
                         "environment": "Development",
@@ -566,34 +577,35 @@
                         "instances": 1,
                         "containerInstances": [
                             {
-                                "id": "60",
+                                "id": "64",
                                 "tags": "Container Instance",
                                 "relationships": [
                                     {
-                                        "id": "61",
-                                        "sourceId": "60",
+                                        "id": "65",
+                                        "sourceId": "64",
                                         "destinationId": "54",
                                         "description": "Makes API calls to",
                                         "technology": "JSON/HTTPS",
-                                        "interactionStyle": "Synchronous",
-                                        "linkedRelationshipId": "48"
+                                        "linkedRelationshipId": "36"
                                     }
                                 ],
                                 "environment": "Development",
-                                "containerId": "17",
                                 "instanceId": 1,
+                                "containerId": "17",
                                 "properties": {}
                             }
                         ],
                         "children": [],
+                        "softwareSystemInstances": [],
                         "infrastructureNodes": []
                     }
                 ],
+                "softwareSystemInstances": [],
                 "containerInstances": [],
                 "infrastructureNodes": []
             },
             {
-                "id": "68",
+                "id": "72",
                 "tags": "Element,Deployment Node",
                 "name": "Big Bank plc",
                 "environment": "Live",
@@ -601,7 +613,7 @@
                 "instances": 1,
                 "children": [
                     {
-                        "id": "73",
+                        "id": "79",
                         "tags": "Element,Deployment Node",
                         "properties": {
                             "Location": "London and Reading"
@@ -613,7 +625,7 @@
                         "instances": 8,
                         "children": [
                             {
-                                "id": "74",
+                                "id": "80",
                                 "tags": "Element,Deployment Node",
                                 "properties": {
                                     "Java Version": "8",
@@ -627,44 +639,52 @@
                                 "instances": 1,
                                 "containerInstances": [
                                     {
-                                        "id": "75",
+                                        "id": "81",
                                         "tags": "Container Instance",
                                         "relationships": [
                                             {
-                                                "id": "81",
-                                                "sourceId": "75",
-                                                "destinationId": "80",
+                                                "id": "88",
+                                                "sourceId": "81",
+                                                "destinationId": "87",
                                                 "description": "Reads from and writes to",
                                                 "technology": "JDBC",
-                                                "interactionStyle": "Synchronous",
                                                 "linkedRelationshipId": "26"
                                             },
                                             {
-                                                "id": "85",
+                                                "id": "84",
+                                                "sourceId": "81",
+                                                "destinationId": "74",
+                                                "description": "Makes API calls to",
+                                                "technology": "XML/HTTPS",
+                                                "linkedRelationshipId": "27"
+                                            },
+                                            {
+                                                "id": "92",
                                                 "tags": "Failover",
-                                                "sourceId": "75",
-                                                "destinationId": "84",
+                                                "sourceId": "81",
+                                                "destinationId": "91",
                                                 "description": "Reads from and writes to",
                                                 "technology": "JDBC",
-                                                "interactionStyle": "Synchronous",
                                                 "linkedRelationshipId": "26"
                                             }
                                         ],
                                         "environment": "Live",
-                                        "containerId": "20",
                                         "instanceId": 2,
+                                        "containerId": "20",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     },
                     {
-                        "id": "78",
+                        "id": "85",
                         "tags": "Element,Deployment Node",
                         "properties": {
                             "Location": "London"
@@ -676,16 +696,16 @@
                         "instances": 1,
                         "children": [
                             {
-                                "id": "79",
+                                "id": "86",
                                 "tags": "Element,Deployment Node",
                                 "name": "Oracle - Primary",
                                 "description": "The primary, live database server.",
                                 "relationships": [
                                     {
-                                        "id": "86",
+                                        "id": "93",
                                         "tags": "Relationship,Synchronous",
-                                        "sourceId": "79",
-                                        "destinationId": "83",
+                                        "sourceId": "86",
+                                        "destinationId": "90",
                                         "description": "Replicates data to",
                                         "interactionStyle": "Synchronous"
                                     }
@@ -695,23 +715,25 @@
                                 "instances": 1,
                                 "containerInstances": [
                                     {
-                                        "id": "80",
+                                        "id": "87",
                                         "tags": "Container Instance",
                                         "environment": "Live",
-                                        "containerId": "21",
                                         "instanceId": 2,
+                                        "containerId": "21",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     },
                     {
-                        "id": "82",
+                        "id": "89",
                         "tags": "Element,Deployment Node,Failover",
                         "properties": {
                             "Location": "Reading"
@@ -723,7 +745,7 @@
                         "instances": 1,
                         "children": [
                             {
-                                "id": "83",
+                                "id": "90",
                                 "tags": "Element,Deployment Node,Failover",
                                 "name": "Oracle - Secondary",
                                 "description": "A secondary, standby database server, used for failover purposes only.",
@@ -732,23 +754,45 @@
                                 "instances": 1,
                                 "containerInstances": [
                                     {
-                                        "id": "84",
+                                        "id": "91",
                                         "tags": "Container Instance,Failover",
                                         "environment": "Live",
-                                        "containerId": "21",
                                         "instanceId": 3,
+                                        "containerId": "21",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     },
                     {
-                        "id": "69",
+                        "id": "73",
+                        "tags": "Element,Deployment Node",
+                        "name": "bigbank-prod001",
+                        "environment": "Live",
+                        "instances": 1,
+                        "softwareSystemInstances": [
+                            {
+                                "id": "74",
+                                "tags": "Software System Instance",
+                                "environment": "Live",
+                                "instanceId": 2,
+                                "softwareSystemId": "4",
+                                "properties": {}
+                            }
+                        ],
+                        "children": [],
+                        "containerInstances": [],
+                        "infrastructureNodes": []
+                    },
+                    {
+                        "id": "75",
                         "tags": "Element,Deployment Node",
                         "properties": {
                             "Location": "London and Reading"
@@ -760,7 +804,7 @@
                         "instances": 4,
                         "children": [
                             {
-                                "id": "70",
+                                "id": "76",
                                 "tags": "Element,Deployment Node",
                                 "properties": {
                                     "Java Version": "8",
@@ -774,37 +818,39 @@
                                 "instances": 1,
                                 "containerInstances": [
                                     {
-                                        "id": "71",
+                                        "id": "77",
                                         "tags": "Container Instance",
                                         "relationships": [
                                             {
-                                                "id": "72",
-                                                "sourceId": "71",
-                                                "destinationId": "67",
+                                                "id": "78",
+                                                "sourceId": "77",
+                                                "destinationId": "71",
                                                 "description": "Delivers to the customer's web browser",
-                                                "interactionStyle": "Synchronous",
                                                 "linkedRelationshipId": "25"
                                             }
                                         ],
                                         "environment": "Live",
-                                        "containerId": "19",
                                         "instanceId": 2,
+                                        "containerId": "19",
                                         "properties": {}
                                     }
                                 ],
                                 "children": [],
+                                "softwareSystemInstances": [],
                                 "infrastructureNodes": []
                             }
                         ],
+                        "softwareSystemInstances": [],
                         "containerInstances": [],
                         "infrastructureNodes": []
                     }
                 ],
+                "softwareSystemInstances": [],
                 "containerInstances": [],
                 "infrastructureNodes": []
             },
             {
-                "id": "65",
+                "id": "69",
                 "tags": "Element,Deployment Node",
                 "name": "Customer's computer",
                 "environment": "Live",
@@ -812,7 +858,7 @@
                 "instances": 1,
                 "children": [
                     {
-                        "id": "66",
+                        "id": "70",
                         "tags": "Element,Deployment Node",
                         "name": "Web Browser",
                         "environment": "Live",
@@ -820,34 +866,35 @@
                         "instances": 1,
                         "containerInstances": [
                             {
-                                "id": "67",
+                                "id": "71",
                                 "tags": "Container Instance",
                                 "relationships": [
                                     {
-                                        "id": "77",
-                                        "sourceId": "67",
-                                        "destinationId": "75",
+                                        "id": "83",
+                                        "sourceId": "71",
+                                        "destinationId": "81",
                                         "description": "Makes API calls to",
                                         "technology": "JSON/HTTPS",
-                                        "interactionStyle": "Synchronous",
-                                        "linkedRelationshipId": "48"
+                                        "linkedRelationshipId": "36"
                                     }
                                 ],
                                 "environment": "Live",
-                                "containerId": "17",
                                 "instanceId": 2,
+                                "containerId": "17",
                                 "properties": {}
                             }
                         ],
                         "children": [],
+                        "softwareSystemInstances": [],
                         "infrastructureNodes": []
                     }
                 ],
+                "softwareSystemInstances": [],
                 "containerInstances": [],
                 "infrastructureNodes": []
             },
             {
-                "id": "63",
+                "id": "67",
                 "tags": "Element,Deployment Node",
                 "name": "Customer's mobile device",
                 "environment": "Live",
@@ -855,26 +902,26 @@
                 "instances": 1,
                 "containerInstances": [
                     {
-                        "id": "64",
+                        "id": "68",
                         "tags": "Container Instance",
                         "relationships": [
                             {
-                                "id": "76",
-                                "sourceId": "64",
-                                "destinationId": "75",
+                                "id": "82",
+                                "sourceId": "68",
+                                "destinationId": "81",
                                 "description": "Makes API calls to",
                                 "technology": "JSON/HTTPS",
-                                "interactionStyle": "Synchronous",
-                                "linkedRelationshipId": "49"
+                                "linkedRelationshipId": "40"
                             }
                         ],
                         "environment": "Live",
-                        "containerId": "18",
                         "instanceId": 1,
+                        "containerId": "18",
                         "properties": {}
                     }
                 ],
                 "children": [],
+                "softwareSystemInstances": [],
                 "infrastructureNodes": []
             }
         ]
@@ -1179,10 +1226,10 @@
                             "20"
                         ],
                         "relationships": [
-                            "48",
+                            "36",
                             "27",
-                            "49",
-                            "28"
+                            "28",
+                            "40"
                         ]
                     },
                     {
@@ -1252,6 +1299,12 @@
                         "id": "25"
                     },
                     {
+                        "id": "36"
+                    },
+                    {
+                        "id": "40"
+                    },
+                    {
                         "id": "24"
                     },
                     {
@@ -1262,12 +1315,6 @@
                     },
                     {
                         "id": "8"
-                    },
-                    {
-                        "id": "48"
-                    },
-                    {
-                        "id": "49"
                     }
                 ]
             }
@@ -1296,10 +1343,10 @@
                             "32"
                         ],
                         "relationships": [
-                            "45",
                             "35",
-                            "38",
-                            "41"
+                            "47",
+                            "39",
+                            "43"
                         ]
                     },
                     {
@@ -1309,9 +1356,9 @@
                             "30"
                         ],
                         "relationships": [
-                            "46",
-                            "37",
-                            "40",
+                            "44",
+                            "48",
+                            "38",
                             "42"
                         ]
                     },
@@ -1322,15 +1369,16 @@
                             "31"
                         ],
                         "relationships": [
-                            "44",
-                            "36",
-                            "47",
-                            "39",
-                            "43"
+                            "45",
+                            "46",
+                            "37",
+                            "49",
+                            "41"
                         ]
                     }
                 ],
                 "containerId": "20",
+                "externalContainerBoundariesVisible": false,
                 "elements": [
                     {
                         "id": "33",
@@ -1390,26 +1438,19 @@
                 ],
                 "relationships": [
                     {
-                        "id": "40",
+                        "id": "41",
                         "position": 40
                     },
                     {
-                        "id": "41",
+                        "id": "42",
+                        "position": 40
+                    },
+                    {
+                        "id": "43",
                         "position": 55
                     },
                     {
-                        "id": "42",
-                        "position": 50
-                    },
-                    {
-                        "id": "43"
-                    },
-                    {
                         "id": "37",
-                        "position": 85
-                    },
-                    {
-                        "id": "36",
                         "position": 45
                     },
                     {
@@ -1417,25 +1458,32 @@
                         "position": 35
                     },
                     {
-                        "id": "44"
+                        "id": "44",
+                        "position": 50
                     },
                     {
-                        "id": "45",
-                        "position": 60
+                        "id": "45"
                     },
                     {
                         "id": "46"
                     },
                     {
-                        "id": "47"
+                        "id": "47",
+                        "position": 60
+                    },
+                    {
+                        "id": "48"
                     },
                     {
                         "id": "38",
                         "position": 85
                     },
                     {
+                        "id": "49"
+                    },
+                    {
                         "id": "39",
-                        "position": 40
+                        "position": 85
                     }
                 ]
             }
@@ -1450,39 +1498,103 @@
                     {
                         "id": "35",
                         "description": "Submits credentials to",
-                        "order": "1"
+                        "order": "1",
+                        "response": false,
+                        "vertices": [
+                            {
+                                "x": 1238,
+                                "y": 236
+                            }
+                        ],
+                        "routing": "Curved",
+                        "position": 50
                     },
                     {
-                        "id": "41",
-                        "description": "Calls isAuthenticated() on",
-                        "order": "2"
+                        "id": "43",
+                        "description": "Validates credentials using",
+                        "order": "2",
+                        "response": false,
+                        "vertices": [
+                            {
+                                "x": 2065,
+                                "y": 845
+                            }
+                        ],
+                        "routing": "Curved"
                     },
                     {
-                        "id": "45",
+                        "id": "47",
                         "description": "select * from users where username = ?",
-                        "order": "3"
+                        "order": "3",
+                        "response": false,
+                        "vertices": [
+                            {
+                                "x": 1218,
+                                "y": 1416
+                            }
+                        ],
+                        "routing": "Curved"
+                    },
+                    {
+                        "id": "47",
+                        "description": "Returns user data to",
+                        "order": "4",
+                        "response": true,
+                        "vertices": [
+                            {
+                                "x": 1240,
+                                "y": 1220
+                            }
+                        ],
+                        "routing": "Curved"
+                    },
+                    {
+                        "id": "43",
+                        "description": "Returns true if the hashed password matches",
+                        "order": "5",
+                        "response": true,
+                        "vertices": [
+                            {
+                                "x": 1828,
+                                "y": 841
+                            }
+                        ],
+                        "routing": "Curved"
+                    },
+                    {
+                        "id": "35",
+                        "description": "Sends back an authentication token to",
+                        "order": "6",
+                        "response": true,
+                        "vertices": [
+                            {
+                                "x": 1210,
+                                "y": 450
+                            }
+                        ],
+                        "routing": "Curved"
                     }
                 ],
                 "elements": [
                     {
                         "id": "17",
-                        "x": 552,
-                        "y": 211
+                        "x": 290,
+                        "y": 192
                     },
                     {
                         "id": "29",
-                        "x": 1477,
-                        "y": 211
+                        "x": 1720,
+                        "y": 192
                     },
                     {
                         "id": "32",
-                        "x": 1477,
-                        "y": 1116
+                        "x": 1720,
+                        "y": 1182
                     },
                     {
                         "id": "21",
-                        "x": 552,
-                        "y": 1116
+                        "x": 290,
+                        "y": 1182
                     }
                 ]
             }
@@ -1492,80 +1604,89 @@
                 "softwareSystemId": "2",
                 "description": "An example live deployment scenario for the Internet Banking System.",
                 "key": "LiveDeployment",
-                "paperSize": "A5_Landscape",
+                "paperSize": "A4_Landscape",
                 "environment": "Live",
                 "animations": [
                     {
                         "order": 1,
                         "elements": [
-                            "66",
-                            "67",
-                            "65"
+                            "69",
+                            "70",
+                            "71"
                         ]
                     },
                     {
                         "order": 2,
                         "elements": [
-                            "63",
-                            "64"
+                            "67",
+                            "68"
                         ]
                     },
                     {
                         "order": 3,
                         "elements": [
-                            "68",
-                            "69",
-                            "70",
-                            "71",
-                            "73",
-                            "74",
-                            "75"
+                            "77",
+                            "79",
+                            "80",
+                            "81",
+                            "72",
+                            "75",
+                            "76"
                         ],
                         "relationships": [
-                            "77",
-                            "72",
-                            "76"
+                            "78",
+                            "82",
+                            "83"
                         ]
                     },
                     {
                         "order": 4,
                         "elements": [
-                            "78",
-                            "79",
-                            "80"
+                            "85",
+                            "86",
+                            "87"
                         ],
                         "relationships": [
-                            "81"
+                            "88"
                         ]
                     },
                     {
                         "order": 5,
                         "elements": [
-                            "82",
-                            "83",
-                            "84"
+                            "89",
+                            "90",
+                            "91"
                         ],
                         "relationships": [
-                            "85",
-                            "86"
+                            "92",
+                            "93"
+                        ]
+                    },
+                    {
+                        "order": 6,
+                        "elements": [
+                            "74"
+                        ],
+                        "relationships": [
+                            "84"
                         ]
                     }
                 ],
                 "elements": [
                     {
-                        "id": "66",
-                        "x": 0,
-                        "y": 0
+                        "id": "77",
+                        "x": 1504,
+                        "y": 184
                     },
                     {
-                        "id": "78",
+                        "id": "89",
                         "x": 0,
                         "y": 0
                     },
                     {
                         "id": "67",
-                        "x": 150,
-                        "y": 1026
+                        "x": 0,
+                        "y": 0
                     },
                     {
                         "id": "79",
@@ -1574,8 +1695,8 @@
                     },
                     {
                         "id": "68",
-                        "x": 0,
-                        "y": 0
+                        "x": 424,
+                        "y": 1071
                     },
                     {
                         "id": "69",
@@ -1583,9 +1704,24 @@
                         "y": 0
                     },
                     {
+                        "id": "90",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "91",
+                        "x": 2584,
+                        "y": 184
+                    },
+                    {
                         "id": "80",
-                        "x": 1820,
-                        "y": 176
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "81",
+                        "x": 1504,
+                        "y": 1071
                     },
                     {
                         "id": "70",
@@ -1594,23 +1730,13 @@
                     },
                     {
                         "id": "71",
-                        "x": 985,
-                        "y": 1026
+                        "x": 424,
+                        "y": 184
                     },
                     {
-                        "id": "82",
+                        "id": "72",
                         "x": 0,
                         "y": 0
-                    },
-                    {
-                        "id": "83",
-                        "x": 0,
-                        "y": 0
-                    },
-                    {
-                        "id": "84",
-                        "x": 1820,
-                        "y": 1026
                     },
                     {
                         "id": "73",
@@ -1619,48 +1745,56 @@
                     },
                     {
                         "id": "74",
+                        "x": 2584,
+                        "y": 1959
+                    },
+                    {
+                        "id": "85",
                         "x": 0,
                         "y": 0
                     },
                     {
-                        "id": "63",
+                        "id": "86",
                         "x": 0,
                         "y": 0
                     },
                     {
                         "id": "75",
-                        "x": 985,
-                        "y": 176
+                        "x": 0,
+                        "y": 0
                     },
                     {
-                        "id": "64",
-                        "x": 150,
-                        "y": 176
+                        "id": "87",
+                        "x": 2584,
+                        "y": 1071
                     },
                     {
-                        "id": "65",
+                        "id": "76",
                         "x": 0,
                         "y": 0
                     }
                 ],
                 "relationships": [
                     {
-                        "id": "72"
+                        "id": "93"
                     },
                     {
-                        "id": "81"
+                        "id": "82"
                     },
                     {
-                        "id": "86"
+                        "id": "83"
                     },
                     {
-                        "id": "76"
+                        "id": "92"
                     },
                     {
-                        "id": "85"
+                        "id": "84"
                     },
                     {
-                        "id": "77"
+                        "id": "78"
+                    },
+                    {
+                        "id": "88"
                     }
                 ]
             },
@@ -1674,9 +1808,9 @@
                     {
                         "order": 1,
                         "elements": [
-                            "59",
-                            "60",
-                            "50"
+                            "50",
+                            "63",
+                            "64"
                         ]
                     },
                     {
@@ -1688,15 +1822,24 @@
                             "54"
                         ],
                         "relationships": [
-                            "61",
-                            "62"
+                            "66",
+                            "65"
                         ]
                     },
                     {
                         "order": 3,
                         "elements": [
-                            "55",
-                            "56",
+                            "59",
+                            "60",
+                            "61"
+                        ],
+                        "relationships": [
+                            "62"
+                        ]
+                    },
+                    {
+                        "order": 4,
+                        "elements": [
                             "57"
                         ],
                         "relationships": [
@@ -1717,8 +1860,8 @@
                     },
                     {
                         "id": "57",
-                        "x": 1840,
-                        "y": 834
+                        "x": 1827,
+                        "y": 1236
                     },
                     {
                         "id": "59",
@@ -1727,8 +1870,13 @@
                     },
                     {
                         "id": "60",
-                        "x": 140,
-                        "y": 664
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "61",
+                        "x": 1827,
+                        "y": 176
                     },
                     {
                         "id": "50",
@@ -1741,31 +1889,44 @@
                         "y": 0
                     },
                     {
+                        "id": "63",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
                         "id": "52",
                         "x": 0,
                         "y": 0
                     },
                     {
+                        "id": "64",
+                        "x": 152,
+                        "y": 346
+                    },
+                    {
                         "id": "53",
-                        "x": 990,
-                        "y": 494
+                        "x": 989,
+                        "y": 176
                     },
                     {
                         "id": "54",
-                        "x": 990,
-                        "y": 834
+                        "x": 989,
+                        "y": 516
                     }
                 ],
                 "relationships": [
                     {
-                        "id": "61"
-                    },
-                    {
-                        "id": "62"
-                    },
-                    {
-                        "id": "58",
+                        "id": "62",
                         "position": 50
+                    },
+                    {
+                        "id": "65"
+                    },
+                    {
+                        "id": "66"
+                    },
+                    {
+                        "id": "58"
                     }
                 ]
             }
@@ -1774,9 +1935,6 @@
             "branding": {},
             "styles": {
                 "elements": [
-                    {
-                        "tag": "Element"
-                    },
                     {
                         "tag": "Software System",
                         "background": "#1168bd",
@@ -1835,7 +1993,7 @@
                 ]
             },
             "terminology": {},
-            "lastSavedView": "Components",
+            "lastSavedView": "SignIn",
             "themes": []
         },
         "filteredViews": []

@@ -161,15 +161,28 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
             } else {
                 elements.forEach(e -> write(view, e, writer, false));
             }
-            view.getRelationships().forEach(relationship -> {
+
+            view.getRelationships().forEach(relationshipView -> {
                 try {
+                    Relationship relationship = relationshipView.getRelationship();
+                    Element source = relationship.getSource();
+                    Element destination = relationship.getDestination();
+                    String arrowEnd = ">";
+
+                    if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+                        source = relationship.getDestination();
+                        destination = relationship.getSource();
+                        arrowEnd = "->";
+                    }
+
                     writer.write(
-                        format("%s -[%s]> %s : %s. %s",
-                                idOf(relationship.getRelationship().getSource()),
-                                view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship.getRelationship()).getColor(),
-                                idOf(relationship.getRelationship().getDestination()),
-                                relationship.getOrder(),
-                                hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""
+                        format("%s -[%s]%s %s : %s. %s",
+                                idOf(source),
+                                view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship).getColor(),
+                                arrowEnd,
+                                idOf(destination),
+                                relationshipView.getOrder(),
+                                hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationship.getDescription()) ? relationship.getDescription() : ""
                         )
                     );
                     writer.write(System.lineSeparator());
@@ -210,6 +223,12 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
                 write(view, infrastructureNode, writer, indent+1);
             }
 
+            List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
+            softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
+            for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                write(view, softwareSystemInstance, writer, indent+1);
+            }
+
             List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
             containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
             for (ContainerInstance containerInstance : containerInstances) {
@@ -247,13 +266,13 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
                 String description = element.getDescription();
                 String type = typeOf(element, false);
 
-                if (element instanceof ContainerInstance) {
-                    ContainerInstance containerInstance = (ContainerInstance)element;
-                    name = containerInstance.getContainer().getName();
-                    description = containerInstance.getContainer().getDescription();
-                    type = typeOf(containerInstance.getContainer(), false);
-                    shape = plantUMLShapeOf(view, containerInstance.getContainer());
-                    background = backgroundOf(view, containerInstance.getContainer());
+                if (element instanceof StaticStructureElementInstance) {
+                    StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
+                    name = elementInstance.getElement().getName();
+                    description = elementInstance.getElement().getDescription();
+                    type = typeOf(elementInstance.getElement(), false);
+                    shape = plantUMLShapeOf(view, elementInstance.getElement());
+                    background = backgroundOf(view, elementInstance.getElement());
                 }
 
                 writer.write(format("%s%s %s <<%s>> %s [%s",
@@ -294,8 +313,10 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
     }
 
     @Override
-    protected void writeRelationship(View view, Relationship relationship, Writer writer) {
+    protected void writeRelationship(View view, RelationshipView relationshipView, Writer writer) {
         try {
+            Relationship relationship = relationshipView.getRelationship();
+
             String stereotypeAndDescription =
                 (hasValue(relationship.getTechnology()) ? "<<" + relationship.getTechnology() + ">>\\n" : "") +
                 (hasValue(relationship.getDescription()) ? relationship.getDescription() : "");

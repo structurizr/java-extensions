@@ -23,6 +23,8 @@ public final class WebSequenceDiagramsWriter {
 
     private static final String SYNCHRONOUS_INTERACTION = "->";
     private static final String ASYNCHRONOUS_INTERACTION = "->>";
+    private static final String SYNCHRONOUS_INTERACTION_RETURN = "-->";
+    private static final String ASYNCHRONOUS_INTERACTION_RETURN = "-->>";
 
     /**
      * Gets a single view as a WebSequenceDiagrams diagram definition.
@@ -93,11 +95,22 @@ public final class WebSequenceDiagramsWriter {
 
             for (RelationshipView relationshipView : view.getRelationships()) {
                 Relationship r = relationshipView.getRelationship();
+
+                Element source = r.getSource();
+                Element destination = r.getDestination();
+                String arrow = r.getInteractionStyle() == InteractionStyle.Asynchronous ? ASYNCHRONOUS_INTERACTION : SYNCHRONOUS_INTERACTION;
+
+                if (relationshipView.isResponse()) {
+                    source = r.getDestination();
+                    destination = r.getSource();
+                    arrow = r.getInteractionStyle() == InteractionStyle.Asynchronous ? ASYNCHRONOUS_INTERACTION_RETURN : SYNCHRONOUS_INTERACTION_RETURN;
+                }
+
                 // Thing A->Thing B: Description
                 writer.write(String.format("%s%s%s: %s",
-                        r.getSource().getName(),
-                        r.getInteractionStyle() == InteractionStyle.Synchronous ? SYNCHRONOUS_INTERACTION : ASYNCHRONOUS_INTERACTION,
-                        r.getDestination().getName(),
+                        source.getName(),
+                        arrow,
+                        destination.getName(),
                         relationshipView.getDescription()
                 ));
                 writer.write(System.lineSeparator());

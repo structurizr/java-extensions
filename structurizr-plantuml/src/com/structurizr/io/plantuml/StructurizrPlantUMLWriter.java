@@ -126,10 +126,20 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
 
                 view.getRelationships().forEach(relationship -> {
                     try {
+                        String arrowStart = "-";
+                        String arrowEnd = ">";
+
+                        if (relationship.isResponse()) {
+                            arrowStart = "<-";
+                            arrowEnd = "-";
+                        }
+
                         writer.write(
-                                format("%s -[%s]> %s : %s. %s",
+                                format("%s %s[%s]%s %s : %s. %s",
                                         idOf(relationship.getRelationship().getSource()),
+                                        arrowStart,
                                         view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship.getRelationship()).getColor(),
+                                        arrowEnd,
                                         idOf(relationship.getRelationship().getDestination()),
                                         relationship.getOrder(),
                                         hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""
@@ -145,7 +155,7 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
                 elements.forEach(e -> write(view, e, writer, false));
 
                 view.getRelationships().forEach(relationship -> {
-                    writeRelationship(view, relationship.getRelationship(), relationship.getOrder() + ". " + (hasValue(relationship.getDescription()) ? relationship.getDescription() : hasValue(relationship.getRelationship().getDescription()) ? relationship.getRelationship().getDescription() : ""), writer);
+                    writeRelationship(view, relationship, writer);
                 });
             }
 
@@ -188,6 +198,12 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
                 write(view, containerInstance, writer, indent+1);
             }
 
+            List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
+            softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
+            for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                write(view, softwareSystemInstance, writer, indent+1);
+            }
+
             writer.write(
                     format("%s}", calculateIndent(indent))
             );
@@ -207,12 +223,12 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
             String description = element.getDescription();
             String type = typeOf(element, true);
 
-            if (element instanceof ContainerInstance) {
-                ContainerInstance containerInstance = (ContainerInstance)element;
-                name = containerInstance.getContainer().getName();
-                description = containerInstance.getContainer().getDescription();
-                type = typeOf(containerInstance.getContainer(), true);
-                shape = plantUMLShapeOf(view, containerInstance.getContainer());
+            if (element instanceof StaticStructureElementInstance) {
+                StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
+                name = elementInstance.getElement().getName();
+                description = elementInstance.getElement().getDescription();
+                type = typeOf(elementInstance.getElement(), true);
+                shape = plantUMLShapeOf(view, elementInstance.getElement());
             }
 
             final String prefix = calculateIndent(indent);
@@ -236,23 +252,39 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
     }
 
     @Override
-    protected void writeRelationship(View view, Relationship relationship, Writer writer) {
-        writeRelationship(view, relationship, relationship.getDescription(), writer);
-    }
+    protected void writeRelationship(View view, RelationshipView relationshipView, Writer writer) {
+        String description = "";
 
-    private void writeRelationship(View view, Relationship relationship, String description, Writer writer) {
+        if (!StringUtils.isNullOrEmpty(relationshipView.getOrder())) {
+            description = relationshipView.getOrder() + ". ";
+        }
+
+        description += (hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationshipView.getRelationship().getDescription()) ? relationshipView.getRelationship().getDescription() : "");
+
         try {
+            Relationship relationship = relationshipView.getRelationship();
             RelationshipStyle style = relationshipStyleOf(view, relationship);
             if (style.getDashed() == null) {
                 style.setDashed(true);
             }
 
+            String arrowStart;
+            String arrowEnd;
+
+            if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+                arrowStart = style.getDashed() ? "<." : "<-";
+                arrowEnd = style.getDashed() ? "." : "-";
+            } else {
+                arrowStart = style.getDashed() ? "." : "-";
+                arrowEnd = style.getDashed() ? ".>" : "->";
+            }
+
             // 1 .[#rrggbb].> 2 : "...\n<size:8>...</size>
-            writer.write(format("%s %s[%s]%s> %s : \"%s%s\"%s",
+            writer.write(format("%s %s[%s]%s %s : \"%s%s\"%s",
                     idOf(relationship.getSource()),
-                    style.getDashed() ? "." : "-",
+                    arrowStart,
                     style.getColor(),
-                    style.getDashed() ? "." : "-",
+                    arrowEnd,
                     idOf(relationship.getDestination()),
                     description,
                     (StringUtils.isNullOrEmpty(relationship.getTechnology()) ? "" : "\\n<size:8>[" + relationship.getTechnology() + "]</size>"),
@@ -291,8 +323,8 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
 
             String id = idOf(element);
 
-            if (element instanceof ContainerInstance) {
-                element = ((ContainerInstance)element).getContainer();
+            if (element instanceof StaticStructureElementInstance) {
+                element = (( StaticStructureElementInstance)element).getElement();
             }
 
             String type = plantUMLShapeOf(view, element);
