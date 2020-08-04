@@ -1,0 +1,23 @@
+version = '1.0.0'
+
+dependencies {
+
+    compile 'com.structurizr:structurizr-core:1.5.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.structurizr:structurizr-client:1.5.0'
+
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+            srcDir 'test/unit'
+        }
+    }
+}
