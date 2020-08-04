@@ -100,7 +100,7 @@ public final class WebSequenceDiagramsWriter {
                 Element destination = r.getDestination();
                 String arrow = r.getInteractionStyle() == InteractionStyle.Asynchronous ? ASYNCHRONOUS_INTERACTION : SYNCHRONOUS_INTERACTION;
 
-                if (relationshipView.isResponse()) {
+                if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
                     source = r.getDestination();
                     destination = r.getSource();
                     arrow = r.getInteractionStyle() == InteractionStyle.Asynchronous ? ASYNCHRONOUS_INTERACTION_RETURN : SYNCHRONOUS_INTERACTION_RETURN;

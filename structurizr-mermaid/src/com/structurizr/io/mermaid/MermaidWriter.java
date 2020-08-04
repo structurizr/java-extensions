@@ -285,7 +285,7 @@ public class MermaidWriter {
                     Element source = relationship.getSource();
                     Element destination = relationship.getDestination();
 
-                    if (relationshipView.isResponse()) {
+                    if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
                         arrow = "-->>";
                         source = relationship.getDestination();
                         destination = relationship.getSource();
@@ -314,7 +314,7 @@ public class MermaidWriter {
                             Element source = relationship.getRelationship().getSource();
                             Element destination = relationship.getRelationship().getDestination();
 
-                            if (relationship.isResponse()) {
+                            if (relationship.isResponse() != null && relationship.isResponse()) {
                                 source = relationship.getRelationship().getDestination();
                                 destination = relationship.getRelationship().getSource();
                             }
