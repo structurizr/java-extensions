@@ -2,12 +2,23 @@
     "id": 54915,
     "name": "Amazon Web Services Example",
     "description": "An example AWS deployment architecture.",
-    "revision": 39,
+    "revision": 40,
     "lastModifiedDate": "2020-06-29T11:07:28Z",
-    "lastModifiedUser": "simon",
-    "lastModifiedAgent": "structurizr-dotnet/0.9.6",
     "model": {
         "softwareSystems": [
+            {
+                "id": "18",
+                "tags": "Element,Software System",
+                "name": "Another System",
+                "location": "Unspecified",
+                "containers": [
+                    {
+                        "id": "19",
+                        "tags": "Element,Container",
+                        "name": "Another App"
+                    }
+                ]
+            },
             {
                 "id": "1",
                 "tags": "Element,Software System",
@@ -101,6 +112,14 @@
                                         "environment": "Default",
                                         "instances": 1,
                                         "containerInstances": [
+                                            {
+                                                "id": "20",
+                                                "tags": "Container Instance",
+                                                "environment": "Default",
+                                                "instanceId": 1,
+                                                "containerId": "19",
+                                                "properties": {}
+                                            },
                                             {
                                                 "id": "9",
                                                 "tags": "Container Instance",
