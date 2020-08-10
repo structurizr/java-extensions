@@ -163,6 +163,9 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		@Override
 		void doWrite(View view, SoftwareSystemInstance element, Writer writer, String prefix, String id, String separator)
 				throws IOException {
+			if (view.getElementView(element) == null) {
+					return;
+			}
 			boolean internal = !element.getSoftwareSystem().getLocation().equals(Location.External);
 			Type type = Type.valueOf(element.getProperties().getOrDefault(C4_ELEMENT_TYPE,
 					element.getSoftwareSystem().getProperties().getOrDefault(C4_ELEMENT_TYPE,Type.Default.name())
@@ -180,6 +183,9 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 		@Override
 		void doWrite(View view, ContainerInstance element, Writer writer, String prefix, String id, String separator)
 				throws IOException {
+			if (view.getElementView(element) == null) {
+					return;
+			}
 			Type type = Type.valueOf(element.getProperties().getOrDefault(C4_ELEMENT_TYPE,
 					element.getContainer().getProperties().getOrDefault(C4_ELEMENT_TYPE,Type.Default.name())
 			));

@@ -214,24 +214,36 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
             List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
             children.sort(Comparator.comparing(DeploymentNode::getName));
             for (DeploymentNode child : children) {
+                if (view.getElementView(child) == null) {
+                    continue;
+                }
                 write(view, child, writer, indent + 1);
             }
 
             List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
             infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
             for (InfrastructureNode infrastructureNode : infrastructureNodes) {
+                if (view.getElementView(infrastructureNode) == null) {
+                    continue;
+                }
                 write(view, infrastructureNode, writer, indent+1);
             }
 
             List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
             softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
             for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                if (view.getElementView(softwareSystemInstance) == null) {
+                    continue;
+                }
                 write(view, softwareSystemInstance, writer, indent+1);
             }
 
             List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
             containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
             for (ContainerInstance containerInstance : containerInstances) {
+                if (view.getElementView(containerInstance) == null) {
+                    continue;
+                }
                 write(view, containerInstance, writer, indent+1);
             }
 
