@@ -1,12 +1,17 @@
 package com.structurizr.io.mermaid;
 
 import com.structurizr.Workspace;
+import com.structurizr.model.Container;
+import com.structurizr.model.DeploymentNode;
+import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.AutomaticLayout;
+import com.structurizr.view.DeploymentView;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
@@ -326,6 +331,58 @@ public class MermaidWriterTests {
                 "  11-. \"<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>\" .->9\n" +
                 "  10-. \"<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>\" .->11\n" +
                 "  9-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC/SSL]</div>\" .->16\n", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDeploymentViewAssociatedWithASoftwareSystem_OnlyIncludesContainerInstancesAssociatedWithThatSoftwareSystem() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1", "Description", "Technology");
+        SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+        Container container2 = softwareSystem2.addContainer("Container 2", "Description", "Technology");
+
+        DeploymentNode deploymentNode = workspace.getModel().addDeploymentNode("Deployment Node");
+        deploymentNode.addDeploymentNode("Child 1").add(container1);
+        deploymentNode.addDeploymentNode("Child 2").add(container2);
+
+        DeploymentView viewAll = workspace.getViews().createDeploymentView("all", "description");
+        viewAll.addAllDeploymentNodes();
+
+        DeploymentView view1 = workspace.getViews().createDeploymentView(softwareSystem1, "softwaresystem1", "description");
+        view1.addAllDeploymentNodes();
+
+        StringWriter stringWriter = new StringWriter();
+        new MermaidWriter().write(viewAll, stringWriter);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph 5 [Deployment Node]\n" +
+                "    subgraph 6 [Child 1]\n" +
+                "        7[\"<div style='font-weight: bold'>Container 1</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
+                "        style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "    end\n" +
+                "    style 6 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    subgraph 8 [Child 2]\n" +
+                "        9[\"<div style='font-weight: bold'>Container 2</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
+                "        style 9 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "    end\n" +
+                "    style 8 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  end\n" +
+                "  style 5 fill:#ffffff,stroke:#000000,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+
+        stringWriter = new StringWriter();
+        new MermaidWriter().write(view1, stringWriter);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph 5 [Deployment Node]\n" +
+                "    subgraph 6 [Child 1]\n" +
+                "        7[\"<div style='font-weight: bold'>Container 1</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
+                "        style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "    end\n" +
+                "    style 6 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  end\n" +
+                "  style 5 fill:#ffffff,stroke:#000000,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
     }
 
 }

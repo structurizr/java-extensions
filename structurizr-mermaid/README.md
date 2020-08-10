@@ -56,6 +56,7 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 - Adds support for return/response messages on dynamic views.
 - Adds support for software system instances on deployment views.
+- Fixes a bug where all children of a deployment node would be rendered on a deployment view, irrespective of the defined elements.
 
 ### 1.3.6 (6th July 2020)
 

@@ -168,58 +168,56 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
     @Override
     protected void write(View view, DeploymentNode deploymentNode, Writer writer, int indent) {
         try {
-            writer.write(
-                    format("%snode \"%s\\n%s\" <<%s>> as %s {",
-                            calculateIndent(indent),
-                            deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
-                            typeOf(deploymentNode, true),
-                            idOf(deploymentNode),
-                            idOf(deploymentNode)
-                    )
-            );
+            if (view.isElementInView(deploymentNode)) {
+                writer.write(
+                        format("%snode \"%s\\n%s\" <<%s>> as %s {",
+                                calculateIndent(indent),
+                                deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
+                                typeOf(deploymentNode, true),
+                                idOf(deploymentNode),
+                                idOf(deploymentNode)
+                        )
+                );
 
-            writer.write(System.lineSeparator());
+                writer.write(System.lineSeparator());
 
-            List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
-            children.sort(Comparator.comparing(DeploymentNode::getName));
-            for (DeploymentNode child : children) {
-                if (view.getElementView(child) == null) {
-                    continue;
+                List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
+                children.sort(Comparator.comparing(DeploymentNode::getName));
+                for (DeploymentNode child : children) {
+                    if (view.isElementInView(child)) {
+                        write(view, child, writer, indent + 1);
+                    }
                 }
-                write(view, child, writer, indent + 1);
-            }
 
-            List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
-            infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
-            for (InfrastructureNode infrastructureNode : infrastructureNodes) {
-                if (view.getElementView(infrastructureNode) == null) {
-                    continue;
+                List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
+                infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
+                for (InfrastructureNode infrastructureNode : infrastructureNodes) {
+                    if (view.isElementInView(infrastructureNode)) {
+                        write(view, infrastructureNode, writer, indent + 1);
+                    }
                 }
-                write(view, infrastructureNode, writer, indent+1);
-            }
 
-            List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
-            containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
-            for (ContainerInstance containerInstance : containerInstances) {
-                if (view.getElementView(containerInstance) == null) {
-                    continue;
+                List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
+                containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
+                for (ContainerInstance containerInstance : containerInstances) {
+                    if (view.isElementInView(containerInstance)) {
+                        write(view, containerInstance, writer, indent + 1);
+                    }
                 }
-                write(view, containerInstance, writer, indent+1);
-            }
 
-            List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
-            softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
-            for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
-                if (view.getElementView(softwareSystemInstance) == null) {
-                    continue;
+                List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
+                softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
+                for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                    if (view.isElementInView(softwareSystemInstance)) {
+                        write(view, softwareSystemInstance, writer, indent + 1);
+                    }
                 }
-                write(view, softwareSystemInstance, writer, indent+1);
-            }
 
-            writer.write(
-                    format("%s}", calculateIndent(indent))
-            );
-            writer.write(System.lineSeparator());
+                writer.write(
+                        format("%s}", calculateIndent(indent))
+                );
+                writer.write(System.lineSeparator());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

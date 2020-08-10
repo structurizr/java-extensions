@@ -364,51 +364,61 @@ public class MermaidWriter {
 
     protected void write(View view, DeploymentNode deploymentNode, Writer writer, int indent) {
         try {
-            String stroke = strokeOf(view, deploymentNode);
-            String color = colorOf(view, deploymentNode);
+            if (view.isElementInView(deploymentNode)) {
+                String stroke = strokeOf(view, deploymentNode);
+                String color = colorOf(view, deploymentNode);
 
-            writer.write(
-                    format("%ssubgraph %s [%s]",
-                            calculateIndent(indent),
-                            deploymentNode.getId(),
-                            deploymentNode.getName()
-                    )
-            );
+                writer.write(
+                        format("%ssubgraph %s [%s]",
+                                calculateIndent(indent),
+                                deploymentNode.getId(),
+                                deploymentNode.getName()
+                        )
+                );
 
-            writer.write(System.lineSeparator());
+                writer.write(System.lineSeparator());
 
-            List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
-            children.sort(Comparator.comparing(DeploymentNode::getName));
-            for (DeploymentNode child : children) {
-                write(view, child, writer, indent+1);
+                List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
+                children.sort(Comparator.comparing(DeploymentNode::getName));
+                for (DeploymentNode child : children) {
+                    if (view.isElementInView(child)) {
+                        write(view, child, writer, indent + 1);
+                    }
+                }
+
+                List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
+                infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
+                for (InfrastructureNode infrastructureNode : infrastructureNodes) {
+                    if (view.isElementInView(infrastructureNode)) {
+                        write(view, infrastructureNode, writer, indent + 1);
+                    }
+                }
+
+                List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
+                softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
+                for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
+                    if (view.isElementInView(softwareSystemInstance)) {
+                        write(view, softwareSystemInstance, writer, indent + 1);
+                    }
+                }
+
+                List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
+                containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
+                for (ContainerInstance containerInstance : containerInstances) {
+                    if (view.isElementInView(containerInstance)) {
+                        write(view, containerInstance, writer, indent + 1);
+                    }
+                }
+
+                writer.write(
+                        format("%send", calculateIndent(indent))
+                );
+                writer.write(System.lineSeparator());
+
+                writer.write(
+                        format("%sstyle %s fill:#ffffff,stroke:%s,color:%s", calculateIndent(indent), deploymentNode.getId(), stroke, color));
+                writer.write(System.lineSeparator());
             }
-
-            List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
-            infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
-            for (InfrastructureNode infrastructureNode : infrastructureNodes) {
-                write(view, infrastructureNode, writer, indent+1);
-            }
-
-            List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
-            softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
-            for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
-                write(view, softwareSystemInstance, writer, indent+1);
-            }
-
-            List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
-            containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
-            for (ContainerInstance containerInstance : containerInstances) {
-                write(view, containerInstance, writer, indent+1);
-            }
-
-            writer.write(
-                    format("%send", calculateIndent(indent))
-            );
-            writer.write(System.lineSeparator());
-
-            writer.write(
-                    format("%sstyle %s fill:#ffffff,stroke:%s,color:%s", calculateIndent(indent), deploymentNode.getId(), stroke, color));
-            writer.write(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }

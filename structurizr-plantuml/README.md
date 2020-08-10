@@ -79,6 +79,7 @@ There are three PlantUML writer implementations:
 
 - Adds support for return/response messages on dynamic views.
 - Adds support for software system instances on deployment views.
+- Fixes a bug where all children of a deployment node would be rendered on a deployment view, irrespective of the defined elements.
 
 ### 1.4.0 (6th July 2020)
 

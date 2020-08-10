@@ -1,11 +1,16 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
+import com.structurizr.model.Container;
+import com.structurizr.model.DeploymentNode;
+import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
+import com.structurizr.view.DeploymentView;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
@@ -569,6 +574,90 @@ public class PlantUMLWriterTests {
                 "10 .[#707070].> 11 : <<HTTPS>>\\nForwards requests to\n" +
                 "9 .[#707070].> 16 : <<JDBC/SSL>>\\nReads from and writes to\n" +
                 "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDeploymentViewAssociatedWithASoftwareSystem_OnlyIncludesContainerInstancesAssociatedWithThatSoftwareSystem() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1", "Description", "Technology");
+        SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+        Container container2 = softwareSystem2.addContainer("Container 2", "Description", "Technology");
+
+        DeploymentNode deploymentNode = workspace.getModel().addDeploymentNode("Deployment Node");
+        deploymentNode.addDeploymentNode("Child 1").add(container1);
+        deploymentNode.addDeploymentNode("Child 2").add(container2);
+
+        DeploymentView viewAll = workspace.getViews().createDeploymentView("all", "description");
+        viewAll.addAllDeploymentNodes();
+
+        DeploymentView view1 = workspace.getViews().createDeploymentView(softwareSystem1, "softwaresystem1", "description");
+        view1.addAllDeploymentNodes();
+
+        StringWriter stringWriter = new StringWriter();
+        new PlantUMLWriter().write(viewAll, stringWriter);
+        assertEquals("@startuml(id=all)\n" +
+                "title Deployment\n" +
+                "caption description\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +
+                "  node \"Child 1\" <<Deployment Node>> as 6 {\n" +
+                "    rectangle 7 <<Container: Technology>> #dddddd [\n" +
+                "      Container 1\n" +
+                "      --\n" +
+                "      Description\n" +
+                "    ]\n" +
+                "  }\n" +
+                "  node \"Child 2\" <<Deployment Node>> as 8 {\n" +
+                "    rectangle 9 <<Container: Technology>> #dddddd [\n" +
+                "      Container 2\n" +
+                "      --\n" +
+                "      Description\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}\n" +
+                "@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+
+        stringWriter = new StringWriter();
+        new PlantUMLWriter().write(view1, stringWriter);
+        assertEquals("@startuml(id=softwaresystem1)\n" +
+                "title Software System 1 - Deployment\n" +
+                "caption description\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowColor #707070\n" +
+                "  actorBorderColor #707070\n" +
+                "  componentBorderColor #707070\n" +
+                "  rectangleBorderColor #707070\n" +
+                "  noteBackgroundColor #ffffff\n" +
+                "  noteBorderColor #707070\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +
+                "  node \"Child 1\" <<Deployment Node>> as 6 {\n" +
+                "    rectangle 7 <<Container: Technology>> #dddddd [\n" +
+                "      Container 1\n" +
+                "      --\n" +
+                "      Description\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}\n" +
+                "@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
     }
 
 }

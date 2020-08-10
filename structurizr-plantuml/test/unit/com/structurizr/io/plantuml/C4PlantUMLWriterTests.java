@@ -345,6 +345,66 @@ public class C4PlantUMLWriterTests {
 				"@enduml", diagram.getDefinition());
 	}
 
+	@Test
+	public void test_renderDeploymentViewAssociatedWithASoftwareSystem_OnlyIncludesContainerInstancesAssociatedWithThatSoftwareSystem() {
+		Workspace workspace = new Workspace("Name", "Description");
+		SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+		Container container1 = softwareSystem1.addContainer("Container 1", "Description", "Technology");
+		SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+		Container container2 = softwareSystem2.addContainer("Container 2", "Description", "Technology");
+
+		DeploymentNode deploymentNode = workspace.getModel().addDeploymentNode("Deployment Node");
+		deploymentNode.addDeploymentNode("Child 1").add(container1);
+		deploymentNode.addDeploymentNode("Child 2").add(container2);
+
+		DeploymentView viewAll = workspace.getViews().createDeploymentView("all", "description");
+		viewAll.addAllDeploymentNodes();
+
+		DeploymentView view1 = workspace.getViews().createDeploymentView(softwareSystem1, "softwaresystem1", "description");
+		view1.addAllDeploymentNodes();
+
+		StringWriter stringWriter = new StringWriter();
+		new C4PlantUMLWriter().write(viewAll, stringWriter);
+		assertEquals("@startuml(id=all)\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"LAYOUT_WITH_LEGEND()\n" +
+				"\n" +
+				"title Deployment\n" +
+				"caption description\n" +
+				"\n" +
+				"node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +
+				"  node \"Child 1\" <<Deployment Node>> as 6 {\n" +
+				"    Container(7, \"Container 1\", \"Technology\", \"Description\")\n" +
+				"  }\n" +
+				"  node \"Child 2\" <<Deployment Node>> as 8 {\n" +
+				"    Container(9, \"Container 2\", \"Technology\", \"Description\")\n" +
+				"  }\n" +
+				"}\n" +
+				"@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+
+		stringWriter = new StringWriter();
+		new C4PlantUMLWriter().write(view1, stringWriter);
+		assertEquals("@startuml(id=softwaresystem1)\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"LAYOUT_WITH_LEGEND()\n" +
+				"\n" +
+				"title Software System 1 - Deployment\n" +
+				"caption description\n" +
+				"\n" +
+				"node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +
+				"  node \"Child 1\" <<Deployment Node>> as 6 {\n" +
+				"    Container(7, \"Container 1\", \"Technology\", \"Description\")\n" +
+				"  }\n" +
+				"}\n" +
+				"@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+	}
+
 	public static class ValidateURLCanonicalizer {
 
 	    @Test
