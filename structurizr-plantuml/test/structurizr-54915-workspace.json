@@ -16,6 +16,11 @@
                         "id": "19",
                         "tags": "Element,Container",
                         "name": "Another App"
+                    },
+                    {
+                        "id": "20",
+                        "tags": "Element,Container,Database",
+                        "name": "App Database"
                     }
                 ]
             },
@@ -93,6 +98,25 @@
                                         ],
                                         "children": [],
                                         "infrastructureNodes": []
+                                    },
+                                    {
+                                        "id": "22",
+                                        "tags": "Element,Deployment Node,Amazon Web Services - RDS_PostgreSQL_instance",
+                                        "name": "PostgreSQL",
+                                        "environment": "Default",
+                                        "instances": 1,
+                                        "containerInstances": [
+                                            {
+                                                "id": "23",
+                                                "tags": "Container Instance",
+                                                "environment": "Default",
+                                                "containerId": "20",
+                                                "instanceId": 1,
+                                                "properties": {}
+                                            }
+                                        ],
+                                        "children": [],
+                                        "infrastructureNodes": []
                                     }
                                 ],
                                 "containerInstances": [],
@@ -113,7 +137,7 @@
                                         "instances": 1,
                                         "containerInstances": [
                                             {
-                                                "id": "20",
+                                                "id": "21",
                                                 "tags": "Container Instance",
                                                 "environment": "Default",
                                                 "instanceId": 1,
