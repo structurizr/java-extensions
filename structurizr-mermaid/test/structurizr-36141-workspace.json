@@ -2,8 +2,6 @@
     "id": 36141,
     "name": "Big Bank plc",
     "description": "This is an example workspace to illustrate the key features of Structurizr, based around a fictional online banking system.",
-    "revision": 39,
-    "lastModifiedDate": "2020-08-04T08:32:14Z",
     "model": {
         "enterprise": {
             "name": "Big Bank plc"

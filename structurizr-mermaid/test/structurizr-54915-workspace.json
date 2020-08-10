@@ -2,10 +2,6 @@
     "id": 54915,
     "name": "Amazon Web Services Example",
     "description": "An example AWS deployment architecture.",
-    "revision": 39,
-    "lastModifiedDate": "2020-06-29T11:07:28Z",
-    "lastModifiedUser": "simon",
-    "lastModifiedAgent": "structurizr-dotnet/0.9.6",
     "model": {
         "softwareSystems": [
             {
