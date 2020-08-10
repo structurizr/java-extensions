@@ -195,6 +195,9 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
             List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
             containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
             for (ContainerInstance containerInstance : containerInstances) {
+                if (view.getElementView(containerInstance) == null) {
+                    continue;
+                }
                 write(view, containerInstance, writer, indent+1);
             }
 
