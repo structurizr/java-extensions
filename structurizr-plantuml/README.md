@@ -75,7 +75,7 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
-### 1.5.0 (unreleased)
+### 1.5.0 (14th August 2020)
 
 - Adds support for return/response messages on dynamic views.
 - Adds support for software system instances on deployment views.

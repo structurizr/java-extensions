@@ -52,7 +52,7 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 ## Changelog
 
-### 1.4.0 (unreleased)
+### 1.4.0 (14th August 2020)
 
 - Adds support for return/response messages on dynamic views.
 - Adds support for software system instances on deployment views.

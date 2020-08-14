@@ -64,6 +64,6 @@ Here's what the [Big Bank plc workspace](https://structurizr.com/share/36141/) l
 
 ## Changelog
 
-### 1.0.0 (unreleased)
+### 1.0.0 (14th August 2020)
 
 - Initial version.

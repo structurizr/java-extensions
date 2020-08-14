@@ -40,7 +40,7 @@ If you copy/paste this into [WebSequenceDiagrams](https://www.websequencediagram
 
 ## Changelog
 
-### 1.4.0 (unreleased)
+### 1.4.0 (14th August 2020)
 
 - Adds support for return/response messages on dynamic views.
 
