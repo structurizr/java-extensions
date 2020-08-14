@@ -249,7 +249,11 @@ public class IlographWriter {
                 writer.append(LINE_SEPARATOR);
                 writer.append(String.format("      - to: \"%s\"", relationship.getDestinationId()));
             } else {
-                writer.append(String.format("      - to: \"%s\"", relationship.getDestinationId()));
+                if (relationshipView.isResponse()) {
+                    writer.append(String.format("      - to: \"%s\"", relationship.getSourceId()));
+                } else {
+                    writer.append(String.format("      - to: \"%s\"", relationship.getDestinationId()));
+                }
             }
 
             writer.append(LINE_SEPARATOR);

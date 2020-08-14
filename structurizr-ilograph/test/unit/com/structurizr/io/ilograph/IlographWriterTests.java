@@ -558,14 +558,14 @@ public class IlographWriterTests {
                 "        label: \"3. select * from users where username = ?\"\n" +
                 "        description: \"JDBC\"\n" +
                 "\n" +
-                "      - to: \"21\"\n" +
+                "      - to: \"32\"\n" +
                 "        label: \"4. Returns user data to\"\n" +
                 "        description: \"JDBC\"\n" +
                 "\n" +
-                "      - to: \"32\"\n" +
+                "      - to: \"29\"\n" +
                 "        label: \"5. Returns true if the hashed password matches\"\n" +
                 "\n" +
-                "      - to: \"29\"\n" +
+                "      - to: \"17\"\n" +
                 "        label: \"6. Sends back an authentication token to\"\n" +
                 "        description: \"JSON/HTTPS\"\n" +
                 "\n" +
