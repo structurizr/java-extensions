@@ -62,7 +62,7 @@ public class C4PlantUMLWriterTests {
 				"Rel_D(2, 6, \"Sends e-mail using\")\n" +
 				"Rel_D(2, 4, \"Gets account information from, and makes payments using\")\n" +
 				"Rel_D(1, 9, \"Withdraws cash using\")\n" +
-				"Rel_D(1, 12, \"Asks questions to\", Telephone)\n" +
+				"Rel_D(1, 12, \"Asks questions to\", \"Telephone\")\n" +
 				"Rel_D(1, 2, \"Views account balances, and makes payments using\")\n" +
 				"@enduml", diagram.getDefinition());
 
@@ -108,15 +108,15 @@ public class C4PlantUMLWriterTests {
 				"  Container(17, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
 				"  Container(19, \"Web Application\", \"Java and Spring MVC\", \"Delivers the static content and the Internet banking single page application.\")\n" +
 				"}\n" +
-				"Rel_D(20, 21, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(20, 6, \"Sends e-mail using\", SMTP)\n" +
-				"Rel_D(20, 4, \"Makes API calls to\", XML/HTTPS)\n" +
+				"Rel_D(20, 21, \"Reads from and writes to\", \"JDBC\")\n" +
+				"Rel_D(20, 6, \"Sends e-mail using\", \"SMTP\")\n" +
+				"Rel_D(20, 4, \"Makes API calls to\", \"XML/HTTPS\")\n" +
 				"Rel_D(6, 1, \"Sends e-mails to\")\n" +
-				"Rel_D(18, 20, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(18, 20, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(1, 18, \"Views account balances, and makes payments using\")\n" +
 				"Rel_D(1, 17, \"Views account balances, and makes payments using\")\n" +
-				"Rel_D(1, 19, \"Visits bigbank.com/ib using\", HTTPS)\n" +
-				"Rel_D(17, 20, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(1, 19, \"Visits bigbank.com/ib using\", \"HTTPS\")\n" +
+				"Rel_D(17, 20, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(19, 17, \"Delivers to the customer's web browser\")\n" +
 				"@enduml", diagram.getDefinition());
 
@@ -146,17 +146,17 @@ public class C4PlantUMLWriterTests {
 				"}\n" +
 				"Rel_D(30, 33, \"Uses\")\n" +
 				"Rel_D(34, 6, \"Sends e-mail using\")\n" +
-				"Rel_D(33, 4, \"Uses\", XML/HTTPS)\n" +
-				"Rel_D(18, 30, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(18, 31, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(18, 29, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(33, 4, \"Uses\", \"XML/HTTPS\")\n" +
+				"Rel_D(18, 30, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
+				"Rel_D(18, 31, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
+				"Rel_D(18, 29, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(31, 34, \"Uses\")\n" +
 				"Rel_D(31, 32, \"Uses\")\n" +
-				"Rel_D(32, 21, \"Reads from and writes to\", JDBC)\n" +
+				"Rel_D(32, 21, \"Reads from and writes to\", \"JDBC\")\n" +
 				"Rel_D(29, 32, \"Uses\")\n" +
-				"Rel_D(17, 30, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(17, 31, \"Makes API calls to\", JSON/HTTPS)\n" +
-				"Rel_D(17, 29, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(17, 30, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
+				"Rel_D(17, 31, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
+				"Rel_D(17, 29, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"@enduml", diagram.getDefinition());
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
@@ -214,9 +214,9 @@ public class C4PlantUMLWriterTests {
 				"    Container(64, \"Single-Page Application\", \"JavaScript and Angular\", \"Provides all of the Internet banking functionality to customers via their web browser.\")\n" +
 				"  }\n" +
 				"}\n" +
-				"Rel_D(54, 61, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(54, 57, \"Makes API calls to\", XML/HTTPS)\n" +
-				"Rel_D(64, 54, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(54, 61, \"Reads from and writes to\", \"JDBC\")\n" +
+				"Rel_D(54, 57, \"Makes API calls to\", \"XML/HTTPS\")\n" +
+				"Rel_D(64, 54, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(53, 64, \"Delivers to the customer's web browser\")\n" +
 				"@enduml", diagram.getDefinition());
 
@@ -264,12 +264,12 @@ public class C4PlantUMLWriterTests {
 				"node \"Customer's mobile device\" <<Deployment Node: Apple iOS or Android>> as 67 {\n" +
 				"  Container(68, \"Mobile App\", \"Xamarin\", \"Provides a limited subset of the Internet banking functionality to customers via their mobile device.\")\n" +
 				"}\n" +
-				"Rel_D(81, 91, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(81, 87, \"Reads from and writes to\", JDBC)\n" +
-				"Rel_D(81, 74, \"Makes API calls to\", XML/HTTPS)\n" +
-				"Rel_D(68, 81, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(81, 91, \"Reads from and writes to\", \"JDBC\")\n" +
+				"Rel_D(81, 87, \"Reads from and writes to\", \"JDBC\")\n" +
+				"Rel_D(81, 74, \"Makes API calls to\", \"XML/HTTPS\")\n" +
+				"Rel_D(68, 81, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(86, 90, \"Replicates data to\")\n" +
-				"Rel_D(71, 81, \"Makes API calls to\", JSON/HTTPS)\n" +
+				"Rel_D(71, 81, \"Makes API calls to\", \"JSON/HTTPS\")\n" +
 				"Rel_D(77, 71, \"Delivers to the customer's web browser\")\n" +
 				"@enduml", diagram.getDefinition());
 
@@ -339,9 +339,9 @@ public class C4PlantUMLWriterTests {
 				"    ]\n" +
 				"  }\n" +
 				"}\n" +
-				"Rel_D(11, 9, \"Forwards requests to\", HTTPS)\n" +
-				"Rel_D(10, 11, \"Forwards requests to\", HTTPS)\n" +
-				"Rel_D(9, 16, \"Reads from and writes to\", JDBC/SSL)\n" +
+				"Rel_D(11, 9, \"Forwards requests to\", \"HTTPS\")\n" +
+				"Rel_D(10, 11, \"Forwards requests to\", \"HTTPS\")\n" +
+				"Rel_D(9, 16, \"Reads from and writes to\", \"JDBC/SSL\")\n" +
 				"@enduml", diagram.getDefinition());
 	}
 
