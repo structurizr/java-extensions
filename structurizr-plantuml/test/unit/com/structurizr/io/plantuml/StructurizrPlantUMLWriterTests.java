@@ -341,8 +341,6 @@ public class StructurizrPlantUMLWriterTests {
                 "  FontColor #ffffff\n" +
                 "  BorderColor #2E6295\n" +
                 "}\n" +
-                "left to right direction\n" +
-                "\n" +
                 "rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<17>> as 17\n" +
                 "rectangle \"==Sign In Controller\\n<size:10>[Component: Spring MVC Rest Controller]</size>\\n\\nAllows users to sign in to the Internet Banking System.\" <<29>> as 29\n" +
                 "rectangle \"==Security Component\\n<size:10>[Component: Spring Bean]</size>\\n\\nProvides functionality related to signing in, changing passwords, etc.\" <<32>> as 32\n" +

@@ -96,12 +96,6 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
         try {
             writeHeader(view, writer);
 
-            if (!isUseSequenceDiagrams()) {
-                writer.write("left to right direction");
-                writer.write(System.lineSeparator());
-                writer.write(System.lineSeparator());
-            }
-
             Set<Element> elements = new LinkedHashSet<>();
             for (RelationshipView relationshipView : view.getRelationships()) {
                 elements.add(relationshipView.getRelationship().getSource());

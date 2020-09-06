@@ -75,6 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+### 1.5.1 (6th September 2020)
+
+- Fixes a bug where the auto-layout direction could not be set for dynamic views.
+
 ### 1.5.0 (14th August 2020)
 
 - Adds support for return/response messages on dynamic views.
