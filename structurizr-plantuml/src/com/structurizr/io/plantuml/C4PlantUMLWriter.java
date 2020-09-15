@@ -385,7 +385,7 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 				if (relationship.getTechnology() == null) {
 					writer.write(format("%s(%s, %s, \"%s\")%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), separator));
 				} else {
-					writer.write(format("%s(%s, %s, \"%s\", %s)%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), relationship.getTechnology(), separator));
+					writer.write(format("%s(%s, %s, \"%s\", \"%s\")%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), relationship.getTechnology(), separator));
 				}
 			}
 		} catch (IOException e) {
