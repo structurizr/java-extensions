@@ -75,6 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+### 1.5.2 (15th September 2020)
+
+- Fixes issue #34 (Function Rel_D does not found while using C4PlantUMLWriter).
+
 ### 1.5.1 (6th September 2020)
 
 - Fixes a bug where the auto-layout direction could not be set for dynamic views.
