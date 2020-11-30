@@ -107,7 +107,9 @@ public class AdrToolsImporter {
         if (softwareSystem == null) {
             return "#" + urlEncode("/") + ":" + urlEncode(id);
         } else {
-            return "#" + urlEncode(softwareSystem.getCanonicalName()) + ":" + urlEncode(id);
+            String name = softwareSystem.getCanonicalName();
+            name = name.substring("/SoftwareSystem".length() + 1);
+            return "#" + urlEncode(name) + ":" + urlEncode(id);
         }
     }
 
