@@ -33,7 +33,7 @@ import com.structurizr.view.View;
  * It is possible to change relationships directions and rendering using the
  * {@link #C4_LAYOUT_DIRECTION} and {@link #C4_LAYOUT_MODE} mode properties.
  * 
- * @see <a href="https://github.com/RicardoNiepel/C4-PlantUML">https://github.com/RicardoNiepel/C4-PlantUML</a>
+ * @see <a href="https://github.com/plantuml-stdlib/C4-PlantUML">https://github.com/plantuml-stdlib/C4-PlantUML</a>
  * @author nicolas-delsaux
  *
  */
@@ -44,7 +44,7 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 
 	/**
 	 * Various layout abilities as provided by C4-PlantUML
-	 * @see <a href="https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md">https://github.com/RicardoNiepel/C4-PlantUML/blob/master/LayoutOptions.md</a>
+	 * @see <a href="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md">https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md</a>
 	 * @author nicolas-delsaux
 	 */
 	public static enum Layout {
@@ -251,17 +251,17 @@ public class C4PlantUMLWriter extends PlantUMLWriter {
 	}
 
 	public C4PlantUMLWriter() {
-		this(Layout.LAYOUT_WITH_LEGEND, "https://github.com/RicardoNiepel/C4-PlantUML");
+		this(Layout.LAYOUT_WITH_LEGEND, "https://github.com/plantuml-stdlib/C4-PlantUML");
 	}
 	/**
 	 * Constructur providing a base url and a layout
 	 * @param layout layout to use for each graph
 	 * @param c4PlantUMLBaseUrl base url of repository. The following GitHub url kinds are supported
 	 * <ul>
-	 * <li>raw content (i.e. "https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/")</li>
-	 * <li>Official repository name with branch or tag (i.e. "https://github.com/RicardoNiepel/C4-PlantUML/tree/master")</li>
+	 * <li>raw content (i.e. "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/")</li>
+	 * <li>Official repository name with branch or tag (i.e. "https://github.com/plantuml-stdlib/C4-PlantUML/tree/master")</li>
 	 * <li>Official repository name without branch. Master is assumed in that case
-	 * (i.ie "https://github.com/RicardoNiepel/C4-PlantUML/")</li>
+	 * (i.ie "https://github.com/plantuml-stdlib/C4-PlantUML/")</li>
 	 * </ul>
 	 * @see #inferC4PlantUMLLibraryFrom
 	 */
