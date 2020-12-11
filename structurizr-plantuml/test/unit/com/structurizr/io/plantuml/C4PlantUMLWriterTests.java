@@ -37,10 +37,10 @@ public class C4PlantUMLWriterTests {
 
 		PlantUMLDiagram diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemLandscape")).findFirst().get();
 		assertEquals("@startuml(id=SystemLandscape)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title System Landscape for Big Bank plc\n" +
@@ -68,10 +68,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemContext")).findFirst().get();
 		assertEquals("@startuml(id=SystemContext)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Internet Banking System - System Context\n" +
@@ -89,10 +89,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("Containers")).findFirst().get();
 		assertEquals("@startuml(id=Containers)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Internet Banking System - Containers\n" +
@@ -122,10 +122,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("Components")).findFirst().get();
 		assertEquals("@startuml(id=Components)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Internet Banking System - API Application - Components\n" +
@@ -161,10 +161,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
 		assertEquals("@startuml(id=SignIn)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title API Application - Dynamic\n" +
@@ -184,10 +184,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
 		assertEquals("@startuml(id=DevelopmentDeployment)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Internet Banking System - Deployment - Development\n" +
@@ -222,10 +222,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
 		assertEquals("@startuml(id=LiveDeployment)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Internet Banking System - Deployment - Live\n" +
@@ -278,10 +278,10 @@ public class C4PlantUMLWriterTests {
 
 		diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
 		assertEquals("@startuml(id=SignIn)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title API Application - Dynamic\n" +
@@ -310,10 +310,10 @@ public class C4PlantUMLWriterTests {
 
 		PlantUMLDiagram diagram = diagrams.stream().findFirst().get();
 		assertEquals("@startuml(id=AmazonWebServicesDeployment)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Spring PetClinic - Deployment - Default\n" +
@@ -366,10 +366,10 @@ public class C4PlantUMLWriterTests {
 		StringWriter stringWriter = new StringWriter();
 		new C4PlantUMLWriter().write(viewAll, stringWriter);
 		assertEquals("@startuml(id=all)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Deployment\n" +
@@ -388,10 +388,10 @@ public class C4PlantUMLWriterTests {
 		stringWriter = new StringWriter();
 		new C4PlantUMLWriter().write(view1, stringWriter);
 		assertEquals("@startuml(id=softwaresystem1)\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml\n" +
-				"!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
 				"title Software System 1 - Deployment\n" +
