@@ -75,6 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+### 1.5.3 (unreleased)
+
+- Uses new C4-PlantUML macros at https://github.com/plantuml-stdlib/C4-PlantUML
+
 ### 1.5.2 (15th September 2020)
 
 - Fixes issue #34 (Function Rel_D does not found while using C4PlantUMLWriter).
