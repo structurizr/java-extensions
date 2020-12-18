@@ -13,7 +13,7 @@ com.structurizr:structurizr-adr-tools:1.3.7 | Imports architecture decision reco
 com.structurizr:structurizr-analysis:1.3.5 | Provides analysis capabilities, using reflection on compiled bytecode to find components.
 com.structurizr:structurizr-annotations:1.3.5 | A very small, standalone, library that allows you to add software architecture hints into your own code.
 com.structurizr:structurizr-dot:1.3.5 | Provides the ability to export view definitions to a DOT file, so they can be rendered with graphviz.
-com.structurizr:structurizr-graphviz:1.3.7 | Applies the Graphviz automatic layout algorithm to the views in a Structurizr workspace.
+com.structurizr:structurizr-graphviz:1.4.0 | Applies the Graphviz automatic layout algorithm to the views in a Structurizr workspace.
 com.structurizr:structurizr-ilograph:1.0.0 | Provides the ability to export the model to an Ilograph definition.
 com.structurizr:structurizr-mermaid:1.4.0  | Provides the ability to export view definitions to Mermaid diagram definitions.
 com.structurizr:structurizr-plantuml:1.5.0 | Provides the ability to export view definitions to PlantUML diagram definitions.
