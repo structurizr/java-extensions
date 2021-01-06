@@ -372,7 +372,7 @@ public class C4PlantUMLWriterTests {
 				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
-				"title Deployment\n" +
+				"title Deployment - Default\n" +
 				"caption description\n" +
 				"\n" +
 				"node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +
@@ -394,7 +394,7 @@ public class C4PlantUMLWriterTests {
 				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
 				"LAYOUT_WITH_LEGEND()\n" +
 				"\n" +
-				"title Software System 1 - Deployment\n" +
+				"title Software System 1 - Deployment - Default\n" +
 				"caption description\n" +
 				"\n" +
 				"node \"Deployment Node\" <<Deployment Node>> as 5 {\n" +

@@ -75,9 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
-### 1.5.3 (unreleased)
+### 1.5.3 (6th January 2021)
 
 - Uses new C4-PlantUML macros at https://github.com/plantuml-stdlib/C4-PlantUML
+- Adds support for line thickness to the StructurizrPlantUMLWriter.
 
 ### 1.5.2 (15th September 2020)
 

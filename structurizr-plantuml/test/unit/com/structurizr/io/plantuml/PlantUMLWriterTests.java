@@ -597,7 +597,7 @@ public class PlantUMLWriterTests {
         StringWriter stringWriter = new StringWriter();
         new PlantUMLWriter().write(viewAll, stringWriter);
         assertEquals("@startuml(id=all)\n" +
-                "title Deployment\n" +
+                "title Deployment - Default\n" +
                 "caption description\n" +
                 "\n" +
                 "skinparam {\n" +
@@ -633,7 +633,7 @@ public class PlantUMLWriterTests {
         stringWriter = new StringWriter();
         new PlantUMLWriter().write(view1, stringWriter);
         assertEquals("@startuml(id=softwaresystem1)\n" +
-                "title Software System 1 - Deployment\n" +
+                "title Software System 1 - Deployment - Default\n" +
                 "caption description\n" +
                 "\n" +
                 "skinparam {\n" +

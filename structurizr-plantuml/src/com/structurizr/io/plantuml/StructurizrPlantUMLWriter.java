@@ -274,6 +274,11 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
 
             String arrowStart;
             String arrowEnd;
+            String relationshipStyle = style.getColor();
+
+            if (style.getThickness() != null) {
+                relationshipStyle += ",thickness=" + style.getThickness();
+            }
 
             if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
                 arrowStart = style.getDashed() ? "<." : "<-";
@@ -283,11 +288,11 @@ public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
                 arrowEnd = style.getDashed() ? ".>" : "->";
             }
 
-            // 1 .[#rrggbb].> 2 : "...\n<size:8>...</size>
+            // 1 .[#rrggbb,thickness=n].> 2 : "...\n<size:8>...</size>
             writer.write(format("%s %s[%s]%s %s : \"%s%s\"%s",
                     idOf(relationship.getSource()),
                     arrowStart,
-                    style.getColor(),
+                    relationshipStyle,
                     arrowEnd,
                     idOf(relationship.getDestination()),
                     description,
