@@ -75,6 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+### 1.6.0 (12th January 2021)
+
+- Renamed `PlantUMLWriter` to `BasicPlantUMLWriter`.
+
 ### 1.5.3 (6th January 2021)
 
 - Uses new C4-PlantUML macros at https://github.com/plantuml-stdlib/C4-PlantUML

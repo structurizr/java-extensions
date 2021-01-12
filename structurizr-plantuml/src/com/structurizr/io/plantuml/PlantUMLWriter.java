@@ -1,78 +1,228 @@
 package com.structurizr.io.plantuml;
 
+import com.structurizr.Workspace;
 import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
 import com.structurizr.view.*;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 import static java.lang.String.format;
 
-/**
- * A writer that outputs diagram definitions that can be used to create diagrams
- * using PlantUML (http://plantuml.com/plantuml/).
- *
- * System landscape, system context, container, component, dynamic and deployment diagrams are supported.
- */
-public class PlantUMLWriter extends AbstractPlantUMLWriter {
+public abstract class PlantUMLWriter {
 
-    private String direction;
-    private boolean includeNotesForActors = true;
+    private final Map<String, String> skinParams = new LinkedHashMap<>();
+    private final List<String> includes = new ArrayList<>();
+
+    private boolean useSequenceDiagrams = false;
+
+    PlantUMLWriter() {
+    }
+
+    public List<String> getIncludes() {
+        return includes;
+    }
+
+    public void addIncludeFile(String file) {
+        addIncludeFile(file, null);
+    }
+
+    public void addIncludeFile(String file, int id) {
+        addIncludeFile(file, String.valueOf(id));
+    }
+
+    public void addIncludeFile(String file, String id) {
+        if (id==null) {
+            includes.add(format("!include %s", file));
+        } else {
+            includes.add(format("!include %s!%s", file, id));
+        }
+    }
+
+    public void addIncludeURL(URI file) {
+        addIncludeURL(file, null);
+    }
+
+    public void addIncludeURL(URI file, int id) {
+        addIncludeURL(file, String.valueOf(id));
+    }
+
+    public void addIncludeURL(URI file, String id) {
+        if (id==null) {
+            includes.add(format("!includeurl %s", file));
+        } else {
+            includes.add(format("!includeurl %s!%s", file, id));
+        }
+    }
+
+    public void clearIncludes() {
+        includes.clear();
+    }
+
+    protected Map<String, String> getSkinParams() {
+        return skinParams;
+    }
+
+    public void addSkinParam(String name, String value) {
+        skinParams.put(name, value);
+    }
+
+    public void clearSkinParams() {
+        skinParams.clear();
+    }
+
+    public boolean isUseSequenceDiagrams() {
+        return useSequenceDiagrams;
+    }
+
+    public void setUseSequenceDiagrams(boolean useSequenceDiagrams) {
+        this.useSequenceDiagrams = useSequenceDiagrams;
+    }
 
     /**
-     * Creates a new PlantUMLWriter, with some default skin params.
+     * Writes the views in the given workspace as PlantUML definitions, to the specified writer.
+     *
+     * @param workspace     the workspace containing the views to be written
+     * @param writer        the Writer to write to
      */
-    public PlantUMLWriter() {
-        // add some default skin params
-        addSkinParam("shadowing", "false");
-        addSkinParam("arrowColor", "#707070");
-        addSkinParam("actorBorderColor", "#707070");
-        addSkinParam("componentBorderColor", "#707070");
-        addSkinParam("rectangleBorderColor", "#707070");
-        addSkinParam("noteBackgroundColor", "#ffffff");
-        addSkinParam("noteBorderColor", "#707070");
-        addSkinParam("defaultTextAlignment", "center");
-        addSkinParam("wrapWidth", "200");
-        addSkinParam("maxMessageSize", "100");
+    public final void write(Workspace workspace, Writer writer) {
+        if (workspace == null) {
+            throw new IllegalArgumentException("A workspace must be provided.");
+        }
+
+        if (writer == null) {
+            throw new IllegalArgumentException("A writer must be provided.");
+        }
+
+        workspace.getViews().getSystemLandscapeViews().forEach(v -> write(v, writer));
+        workspace.getViews().getSystemContextViews().forEach(v -> write(v, writer));
+        workspace.getViews().getContainerViews().forEach(v -> write(v, writer));
+        workspace.getViews().getComponentViews().forEach(v -> write(v, writer));
+        workspace.getViews().getDynamicViews().forEach(v -> write(v, writer));
+        workspace.getViews().getDeploymentViews().forEach(v -> write(v, writer));
     }
 
-    public String getDirection() {
-        return direction;
+    /**
+     * Gets a single view as a PlantUML diagram definition.
+     *
+     * @param view      the view to write
+     * @return          the PlantUML definition as a String
+     */
+    public final String toString(View view) {
+        StringWriter stringWriter = new StringWriter();
+        write(view, stringWriter);
+        return stringWriter.toString();
     }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
+    /**
+     * Creates PlantUML diagram definitions based upon the specified workspace.
+     *
+     * @param workspace     the workspace containing the views to be written
+     * @return  a collection of PlantUML diagram definitions, one per view
+     */
+    public final Collection<PlantUMLDiagram> toPlantUMLDiagrams(Workspace workspace) {
+        if (workspace == null) {
+            throw new IllegalArgumentException("A workspace must be provided.");
+        }
+
+        Collection<PlantUMLDiagram> diagrams = new ArrayList<>();
+
+        for (View view : workspace.getViews().getViews()) {
+            StringWriter stringWriter = new StringWriter();
+            write(view, stringWriter);
+
+            diagrams.add(new PlantUMLDiagram(view.getKey(), view.getName(), stringWriter.toString()));
+        }
+
+        return diagrams;
     }
 
-    protected boolean isIncludeNotesForActors() {
-        return includeNotesForActors;
+    /**
+     * Writes a single view as a PlantUML diagram definition, to the specified writer.
+     *
+     * @param view      the view to write
+     * @param writer    the Writer to write the PlantUML definition to
+     */
+    public final void write(View view, Writer writer) {
+        if (view == null) {
+            throw new IllegalArgumentException("A view must be provided.");
+        }
+
+        if (writer == null) {
+            throw new IllegalArgumentException("A writer must be provided.");
+        }
+
+        if (SystemLandscapeView.class.isAssignableFrom(view.getClass())) {
+            write((SystemLandscapeView) view, writer);
+        } else if (SystemContextView.class.isAssignableFrom(view.getClass())) {
+            write((SystemContextView) view, writer);
+        } else if (ContainerView.class.isAssignableFrom(view.getClass())) {
+            write((ContainerView) view, writer);
+        } else if (ComponentView.class.isAssignableFrom(view.getClass())) {
+            write((ComponentView) view, writer);
+        } else if (DynamicView.class.isAssignableFrom(view.getClass())) {
+            write((DynamicView) view, writer);
+        } else if (DeploymentView.class.isAssignableFrom(view.getClass())) {
+            write((DeploymentView) view, writer);
+        }
     }
 
-    public void setIncludeNotesForActors(boolean includeNotesForActors) {
-        this.includeNotesForActors = includeNotesForActors;
+    protected void write(SystemLandscapeView view, Writer writer) {
+        writeSystemLandscapeOrContextView(view, writer, view.isEnterpriseBoundaryVisible());
     }
 
-    @Override
-    protected void write(ContainerView view, Writer writer) {
+    protected void write(SystemContextView view, Writer writer) {
+        writeSystemLandscapeOrContextView(view, writer, view.isEnterpriseBoundaryVisible());
+    }
+
+    void writeSystemLandscapeOrContextView(View view, Writer writer, boolean showEnterpriseBoundary) {
         try {
             writeHeader(view, writer);
 
+            boolean enterpriseBoundaryVisible;
+            enterpriseBoundaryVisible =
+                    showEnterpriseBoundary &&
+                            (view.getElements().stream().map(ElementView::getElement).anyMatch(e -> e instanceof Person && ((Person)e).getLocation() == Location.Internal) ||
+                                    view.getElements().stream().map(ElementView::getElement).anyMatch(e -> e instanceof SoftwareSystem && ((SoftwareSystem)e).getLocation() == Location.Internal));
+
             view.getElements().stream()
-                    .filter(ev -> !(ev.getElement() instanceof Container))
                     .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+                    .filter(e -> e instanceof Person && ((Person)e).getLocation() != Location.Internal)
+                    .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, false));
 
-            writeContainerForSoftwareSystem(view, writer, (writtenView, usedWriter) -> {
-                writtenView.getElements().stream()
-                        .filter(ev -> ev.getElement() instanceof Container)
-                        .map(ElementView::getElement)
-                        .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-                        .forEach(e -> write(writtenView, e, usedWriter, true));
-            });
+            view.getElements().stream()
+                    .map(ElementView::getElement)
+                    .filter(e -> e instanceof SoftwareSystem && ((SoftwareSystem)e).getLocation() != Location.Internal)
+                    .sorted(Comparator.comparing(Element::getName))
+                    .forEach(e -> write(view, e, writer, false));
+
+            if (enterpriseBoundaryVisible) {
+                String name = view.getModel().getEnterprise() != null ? view.getModel().getEnterprise().getName() : "Enterprise";
+                writer.write("package \"" + name + "\" {");
+                writer.write(System.lineSeparator());
+            }
+
+            view.getElements().stream()
+                    .map(ElementView::getElement)
+                    .filter(e -> e instanceof Person && ((Person)e).getLocation() == Location.Internal)
+                    .sorted(Comparator.comparing(Element::getName))
+                    .forEach(e -> write(view, e, writer, true));
+
+            view.getElements().stream()
+                    .map(ElementView::getElement)
+                    .filter(e -> e instanceof SoftwareSystem && ((SoftwareSystem)e).getLocation() == Location.Internal)
+                    .sorted(Comparator.comparing(Element::getName))
+                    .forEach(e -> write(view, e, writer, true));
+
+            if (enterpriseBoundaryVisible) {
+                writer.write("}");
+                writer.write(System.lineSeparator());
+            }
 
             writeRelationships(view, writer);
 
@@ -82,35 +232,21 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
         }
     }
 
-    protected void writeContainerForSoftwareSystem(ContainerView view, Writer writer,
-                                                 BiConsumer<ContainerView, Writer> packageContentWriter) throws IOException {
-        writer.write("package \"" + view.getSoftwareSystem().getName() + "\" <<" + typeOf(view.getSoftwareSystem(), false) + ">> {");
-        writer.write(System.lineSeparator());
+    protected abstract void write(ContainerView view, Writer writer);
 
-        packageContentWriter.accept(view, writer);
+    protected abstract void write(ComponentView view, Writer writer);
 
-        writer.write("}");
-        writer.write(System.lineSeparator());
-    }
+    protected abstract void write(DynamicView view, Writer writer);
 
-    @Override
-    protected void write(ComponentView view, Writer writer) {
+    void write(DeploymentView view, Writer writer) {
         try {
             writeHeader(view, writer);
 
             view.getElements().stream()
-                    .filter(ev -> !(ev.getElement() instanceof Component))
-                    .map(ElementView::getElement)
-                    .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-                    .forEach(e -> write(view, e, writer, false));
-
-            writeContainerForContainer(view, writer, (writtenView, usedWriter) -> {
-                writtenView.getElements().stream()
-                        .filter(ev -> ev.getElement() instanceof Component)
-                        .map(ElementView::getElement)
-                        .sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-                        .forEach(e -> write(writtenView, e, usedWriter, true));
-            });
+                    .filter(ev -> ev.getElement() instanceof DeploymentNode && ev.getElement().getParent() == null)
+                    .map(ev -> (DeploymentNode)ev.getElement())
+                    .sorted(Comparator.comparing(Element::getName))
+                    .forEach(e -> write(view, e, writer, 0));
 
             writeRelationships(view, writer);
 
@@ -120,229 +256,181 @@ public class PlantUMLWriter extends AbstractPlantUMLWriter {
         }
     }
 
-    protected void writeContainerForContainer(ComponentView view, Writer writer,
-                                            BiConsumer<ComponentView, Writer> packageContentWriter) throws IOException {
-        writer.write("package \"" + view.getContainer().getName() + "\" <<" + typeOf(view.getContainer(), false) + ">> {");
+    protected abstract void write(View view, DeploymentNode deploymentNode, Writer writer, int indent);
+
+    String calculateIndent(int indent) {
+        StringBuilder buf = new StringBuilder();
+
+        for (int i = 0; i < indent; i++) {
+            buf.append("  ");
+        }
+
+        return buf.toString();
+    }
+
+    void write(View view, Element element, Writer writer, boolean indent) {
+        write(view, element, writer, indent ? 1 : 0);
+    }
+
+    protected abstract void write(View view, Element element, Writer writer, int indent);
+
+    String backgroundOf(View view, Element element) {
+        return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getBackground();
+    }
+
+    String strokeOf(View view, Element element) {
+        String stroke = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getStroke();
+
+        if (element instanceof DeploymentNode) {
+            return stroke != null ? stroke : "#000000";
+        } else {
+            if (stroke != null) {
+                return stroke;
+            } else {
+                java.awt.Color color = java.awt.Color.decode(backgroundOf(view, element));
+                return String.format("#%06X", (0xFFFFFF & color.darker().getRGB()));
+            }
+        }
+    }
+
+    String colorOf(View view, Element element) {
+        return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getColor();
+    }
+
+    Shape shapeOf(View view, Element element) {
+        return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+    }
+
+    String plantUMLShapeOf(View view, Element element) {
+        Shape shape = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+
+        if (element instanceof DeploymentNode) {
+            return "node";
+        }
+
+        switch(shape) {
+            case Person:
+                return "actor";
+            case Component:
+                return "component";
+            case Cylinder:
+                return "database";
+            case Folder:
+                return "folder";
+            case Ellipse:
+            case Circle:
+                return "storage";
+            default:
+                return "rectangle";
+        }
+    }
+
+    String plantumlSequenceType(View view, Element element) {
+        Shape shape = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+
+        switch(shape) {
+            case Box:
+                return "participant";
+            case Person:
+                return "actor";
+            case Cylinder:
+                return "database";
+            case Folder:
+                return "collections";
+            case Ellipse:
+            case Circle:
+                return "entity";
+            default:
+                return "participant";
+        }
+    }
+
+    RelationshipStyle relationshipStyleOf(View view, Relationship relationship) {
+        return view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship);
+    }
+
+    String idOf(Element e) {
+        return e.getId();
+    }
+
+    String typeOf(Element e, boolean includeMetadataSymbols) {
+        String type;
+
+        if (e instanceof SoftwareSystem) {
+            type = "Software System";
+        } else if (e instanceof Container) {
+            Container container = (Container)e;
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
+        } else if (e instanceof Component) {
+            Component component = (Component)e;
+            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
+        } else if (e instanceof DeploymentNode) {
+            DeploymentNode deploymentNode = (DeploymentNode)e;
+            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+        } else if (e instanceof InfrastructureNode) {
+            InfrastructureNode infrastructureNode = (InfrastructureNode)e;
+            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
+        } else if (e instanceof ContainerInstance) {
+            Container container = ((ContainerInstance)e).getContainer();
+            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
+        } else {
+            type = e.getClass().getSimpleName();
+        }
+
+        if (includeMetadataSymbols) {
+            return "[" + type + "]";
+        } else {
+           return type;
+        }
+    }
+
+    boolean hasValue(String s) {
+        return !StringUtils.isNullOrEmpty(s);
+    }
+
+    protected void writeHeader(View view, Writer writer) throws IOException {
+        // Spaces in PlantUML ids can cause issues. Alternatively, id can be surrounded with double quotes
+        writer.write(format("@startuml(id=%s)", view.getKey().replace(' ', '_')));
         writer.write(System.lineSeparator());
 
-        packageContentWriter.accept(view, writer);
-
-        writer.write("}");
-        writer.write(System.lineSeparator());
-    }
-
-    @Override
-    protected void write(DynamicView view, Writer writer) {
-        try {
-            writeHeader(view, writer);
-
-            Set<Element> elements = new LinkedHashSet<>();
-            for (RelationshipView relationshipView : view.getRelationships()) {
-                elements.add(relationshipView.getRelationship().getSource());
-                elements.add(relationshipView.getRelationship().getDestination());
-            }
-
-            if (isUseSequenceDiagrams()) {
-                elements.forEach(element -> {
-                   try {
-
-                       writer.write(format("%s \"%s\" as %s <<%s>> %s%s",
-                               plantumlSequenceType(view, element),
-                               element.getName(),
-                               idOf(element),
-                               typeOf(element, false),
-                               backgroundOf(view, element),
-                               System.lineSeparator()));
-
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-                 });
-            } else {
-                elements.forEach(e -> write(view, e, writer, false));
-            }
-
-            view.getRelationships().forEach(relationshipView -> {
-                try {
-                    Relationship relationship = relationshipView.getRelationship();
-                    Element source = relationship.getSource();
-                    Element destination = relationship.getDestination();
-                    String arrowEnd = ">";
-
-                    if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
-                        source = relationship.getDestination();
-                        destination = relationship.getSource();
-                        arrowEnd = "->";
-                    }
-
-                    writer.write(
-                        format("%s -[%s]%s %s : %s. %s",
-                                idOf(source),
-                                view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship).getColor(),
-                                arrowEnd,
-                                idOf(destination),
-                                relationshipView.getOrder(),
-                                hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationship.getDescription()) ? relationship.getDescription() : ""
-                        )
-                    );
-                    writer.write(System.lineSeparator());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            writeFooter(writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void write(View view, DeploymentNode deploymentNode, Writer writer, int indent) {
-        try {
-            if (view.isElementInView(deploymentNode)) {
-                writer.write(
-                        format("%snode \"%s\" <<%s>> as %s {",
-                                calculateIndent(indent),
-                                deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
-                                typeOf(deploymentNode, false),
-                                idOf(deploymentNode)
-                        )
-                );
-
-                writer.write(System.lineSeparator());
-
-                List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
-                children.sort(Comparator.comparing(DeploymentNode::getName));
-                for (DeploymentNode child : children) {
-                    if (view.isElementInView(child)) {
-                        write(view, child, writer, indent + 1);
-                    }
-                }
-
-                List<InfrastructureNode> infrastructureNodes = new ArrayList<>(deploymentNode.getInfrastructureNodes());
-                infrastructureNodes.sort(Comparator.comparing(InfrastructureNode::getName));
-                for (InfrastructureNode infrastructureNode : infrastructureNodes) {
-                    if (view.isElementInView(infrastructureNode)) {
-                        write(view, infrastructureNode, writer, indent + 1);
-                    }
-                }
-
-                List<SoftwareSystemInstance> softwareSystemInstances = new ArrayList<>(deploymentNode.getSoftwareSystemInstances());
-                softwareSystemInstances.sort(Comparator.comparing(SoftwareSystemInstance::getName));
-                for (SoftwareSystemInstance softwareSystemInstance : softwareSystemInstances) {
-                    if (view.isElementInView(softwareSystemInstance)) {
-                        write(view, softwareSystemInstance, writer, indent + 1);
-                    }
-                }
-
-                List<ContainerInstance> containerInstances = new ArrayList<>(deploymentNode.getContainerInstances());
-                containerInstances.sort(Comparator.comparing(ContainerInstance::getName));
-                for (ContainerInstance containerInstance : containerInstances) {
-                    if (view.isElementInView(containerInstance)) {
-                        write(view, containerInstance, writer, indent + 1);
-                    }
-                }
-
-                writer.write(
-                        format("%s}", calculateIndent(indent))
-                );
-                writer.write(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void write(View view, Element element, Writer writer, int indent) {
-        try {
-
-            String shape = plantUMLShapeOf(view, element);
-
-            if("actor".equals(shape)) {
-                writeSimpleElement(view, element, writer, indent > 0, shape);
-
-                if (includeNotesForActors) {
-                    writeDescriptionAsNote(element, writer, indent > 0, element.getDescription());
-                }
-            } else {
-                final String prefix = calculateIndent(indent);
-                final String separator = System.lineSeparator();
-                final String id = idOf(element);
-                String background = backgroundOf(view, element);
-
-                String name = element.getName();
-                String description = element.getDescription();
-                String type = typeOf(element, false);
-
-                if (element instanceof StaticStructureElementInstance) {
-                    StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
-                    name = elementInstance.getElement().getName();
-                    description = elementInstance.getElement().getDescription();
-                    type = typeOf(elementInstance.getElement(), false);
-                    shape = plantUMLShapeOf(view, elementInstance.getElement());
-                    background = backgroundOf(view, elementInstance.getElement());
-                }
-
-                writer.write(format("%s%s %s <<%s>> %s [%s",
-                        prefix, shape, id, type, background, separator));
-                writer.write(format("%s  %s%s", prefix, name, separator));
-                if (!StringUtils.isNullOrEmpty(description)) {
-                    writer.write(format("%s  --%s", prefix, separator));
-                    writer.write(format("%s  %s%s", prefix, description, separator));
-                }
-                writer.write(format("%s]%s", prefix, separator));
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void writeSimpleElement(View view, Element element, Writer writer, boolean indent, String type) throws IOException {
-        writer.write(format("%s%s \"%s\" <<%s>> as %s %s%s",
-                indent ? "  " : "",
-                type,
-                element.getName(),
-                typeOf(element, false),
-                idOf(element),
-                backgroundOf(view, element),
-                System.lineSeparator()));
-    }
-
-    private void writeDescriptionAsNote(Element element, Writer writer, boolean indent, String description) throws IOException {
-        if (!StringUtils.isNullOrEmpty(description)) {
-            final String prefix = indent ? "  " : "";
-            final String separator = System.lineSeparator();
-            final String id = idOf(element);
-            writer.write(format("%snote right of %s%s", prefix, id, separator));
-            writer.write(format("%s  %s%s", prefix, description, separator));
-            writer.write(format("%send note%s", prefix, separator));
-        }
-    }
-
-    @Override
-    protected void writeRelationship(View view, RelationshipView relationshipView, Writer writer) {
-        try {
-            Relationship relationship = relationshipView.getRelationship();
-
-            String stereotypeAndDescription =
-                (hasValue(relationship.getTechnology()) ? "<<" + relationship.getTechnology() + ">>\\n" : "") +
-                (hasValue(relationship.getDescription()) ? relationship.getDescription() : "");
-
-            writer.write(
-                    format("%s .[%s].> %s %s",
-                            idOf(relationship.getSource()),
-                            view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship).getColor(),
-                            idOf(relationship.getDestination()),
-                            hasValue(stereotypeAndDescription) ? ": " + stereotypeAndDescription : ""
-                    )
-            );
+        for (String include : includes) {
+            writer.write(include);
             writer.write(System.lineSeparator());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        String viewTitle = view.getTitle();
+        if (StringUtils.isNullOrEmpty(viewTitle)) {
+            viewTitle = view.getName();
+        }
+        writer.write("title " + viewTitle);
+        writer.write(System.lineSeparator());
+
+        if (view.getDescription() != null && view.getDescription().trim().length() > 0) {
+            writer.write("caption " + view.getDescription());
+            writer.write(System.lineSeparator());
+        }
+
+        writer.write(System.lineSeparator());
+
+        if (!skinParams.isEmpty()) {
+            writer.write(format("skinparam {%s", System.lineSeparator()));
+            for (final String name : skinParams.keySet()) {
+                writer.write(format("  %s %s%s", name, skinParams.get(name), System.lineSeparator()));
+            }
+            writer.write(format("}%s", System.lineSeparator()));
+        }
+    }
+
+    protected void writeRelationships(View view, Writer writer) {
+        view.getRelationships().stream()
+                .sorted(Comparator.comparing(rv -> (rv.getRelationship().getSource().getName() + rv.getRelationship().getDestination().getName())))
+                .forEach(r -> writeRelationship(view, r, writer));
+    }
+
+    protected abstract void writeRelationship(View view, RelationshipView relationshipView, Writer writer);
+
+    protected void writeFooter(Writer writer) throws IOException {
+        writer.write("@enduml");
     }
 
 }

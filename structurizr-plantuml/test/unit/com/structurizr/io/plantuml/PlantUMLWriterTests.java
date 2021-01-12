@@ -20,7 +20,7 @@ public class PlantUMLWriterTests {
    @Test
     public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
-        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
+        BasicPlantUMLWriter plantUMLWriter = new BasicPlantUMLWriter();
 
         Collection<PlantUMLDiagram> diagrams = plantUMLWriter.toPlantUMLDiagrams(workspace);
         assertEquals(7, diagrams.size());
@@ -522,7 +522,7 @@ public class PlantUMLWriterTests {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
         ThemeUtils.loadStylesFromThemes(workspace);
 
-        Collection<PlantUMLDiagram> diagrams = new PlantUMLWriter().toPlantUMLDiagrams(workspace);
+        Collection<PlantUMLDiagram> diagrams = new BasicPlantUMLWriter().toPlantUMLDiagrams(workspace);
         assertEquals(1, diagrams.size());
 
         PlantUMLDiagram diagram = diagrams.stream().findFirst().get();
@@ -595,7 +595,7 @@ public class PlantUMLWriterTests {
         view1.addAllDeploymentNodes();
 
         StringWriter stringWriter = new StringWriter();
-        new PlantUMLWriter().write(viewAll, stringWriter);
+        new BasicPlantUMLWriter().write(viewAll, stringWriter);
         assertEquals("@startuml(id=all)\n" +
                 "title Deployment - Default\n" +
                 "caption description\n" +
@@ -631,7 +631,7 @@ public class PlantUMLWriterTests {
                 "@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
 
         stringWriter = new StringWriter();
-        new PlantUMLWriter().write(view1, stringWriter);
+        new BasicPlantUMLWriter().write(view1, stringWriter);
         assertEquals("@startuml(id=softwaresystem1)\n" +
                 "title Software System 1 - Deployment - Default\n" +
                 "caption description\n" +

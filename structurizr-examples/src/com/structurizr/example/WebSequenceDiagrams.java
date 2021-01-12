@@ -1,7 +1,6 @@
 package com.structurizr.example;
 
 import com.structurizr.Workspace;
-import com.structurizr.io.plantuml.PlantUMLWriter;
 import com.structurizr.io.websequencediagrams.WebSequenceDiagramsWriter;
 import com.structurizr.model.Model;
 import com.structurizr.model.Person;

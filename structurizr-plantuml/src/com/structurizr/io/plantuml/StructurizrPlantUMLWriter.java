@@ -16,7 +16,7 @@ import static java.lang.String.format;
  *
  * System landscape, system context, container, component, dynamic and deployment diagrams are supported.
  */
-public class StructurizrPlantUMLWriter extends AbstractPlantUMLWriter {
+public class StructurizrPlantUMLWriter extends PlantUMLWriter {
 
     /**
      * Creates a new PlantUMLWriter, with some default skin params.

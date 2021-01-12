@@ -1,8 +1,6 @@
 package com.structurizr.example;
 
 import com.structurizr.Workspace;
-import com.structurizr.io.plantuml.AbstractPlantUMLWriter;
-import com.structurizr.io.plantuml.PlantUMLDiagram;
 import com.structurizr.io.plantuml.PlantUMLWriter;
 import com.structurizr.io.plantuml.StructurizrPlantUMLWriter;
 import com.structurizr.model.Model;
@@ -13,8 +11,6 @@ import com.structurizr.view.Shape;
 import com.structurizr.view.Styles;
 import com.structurizr.view.SystemContextView;
 import com.structurizr.view.ViewSet;
-
-import java.util.Collection;
 
 /**
  * An example of how to use the PlantUML writer. Run this program and copy/paste
@@ -39,7 +35,7 @@ public class PlantUML {
         styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
-        AbstractPlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
+        PlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
         System.out.println(plantUMLWriter.toString(contextView));
     }
 

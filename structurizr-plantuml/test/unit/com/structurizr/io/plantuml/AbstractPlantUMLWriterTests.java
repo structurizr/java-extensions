@@ -2,7 +2,6 @@ package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
 import com.structurizr.view.View;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +11,7 @@ public class AbstractPlantUMLWriterTests {
 
     @Test
     public void test_writeWorkspace_ThrowsAnExceptionWhenPassedANullWorkspace() throws Exception {
-        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
+        BasicPlantUMLWriter plantUMLWriter = new BasicPlantUMLWriter();
         try {
             plantUMLWriter.write((Workspace)null, null);
             fail();
@@ -23,7 +22,7 @@ public class AbstractPlantUMLWriterTests {
 
     @Test
     public void test_writeWorkspace_ThrowsAnExceptionWhenPassedANullWriter() throws Exception {
-        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
+        BasicPlantUMLWriter plantUMLWriter = new BasicPlantUMLWriter();
         Workspace workspace = new Workspace("Name", "Description");
         try {
             plantUMLWriter.write(workspace, null);
@@ -35,7 +34,7 @@ public class AbstractPlantUMLWriterTests {
 
     @Test
     public void test_writeView_ThrowsAnExceptionWhenPassedANullView() throws Exception {
-        PlantUMLWriter plantUMLWriter = new PlantUMLWriter();
+        BasicPlantUMLWriter plantUMLWriter = new BasicPlantUMLWriter();
         try {
             plantUMLWriter.write((View)null, null);
             fail();

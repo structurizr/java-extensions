@@ -8,13 +8,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.structurizr.model.*;
@@ -37,7 +34,7 @@ import com.structurizr.view.View;
  * @author nicolas-delsaux
  *
  */
-public class C4PlantUMLWriter extends PlantUMLWriter {
+public class C4PlantUMLWriter extends BasicPlantUMLWriter {
 	private static final java.util.logging.Logger logger = java.util.logging.Logger
 			.getLogger(C4PlantUMLWriter.class.getName());
 
