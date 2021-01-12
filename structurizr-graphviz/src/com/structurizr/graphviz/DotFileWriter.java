@@ -36,6 +36,8 @@ class DotFileWriter {
     private void writeHeader(Writer writer) throws Exception {
         writer.write("digraph {");
         writer.write("\n");
+        writer.write("  compound=true");
+        writer.write("\n");
         writer.write(String.format(locale, "  graph [splines=polyline,rankdir=%s,ranksep=%s,nodesep=%s,fontsize=5]", rankDirection.getCode(), rankSeparation, nodeSeparation));
         writer.write("\n");
         writer.write("  node [shape=box,fontsize=5]");
@@ -299,26 +301,86 @@ class DotFileWriter {
         writer.write("\n");
 
         for (RelationshipView relationshipView : view.getRelationships()) {
+            System.out.println(relationshipView.getRelationship());
             if (relationshipView.getRelationship().getSource() instanceof DeploymentNode || relationshipView.getRelationship().getDestination() instanceof DeploymentNode) {
-                // todo: relationships to/from deployment nodes (graphviz clusters)
-                continue;
+                Element source = relationshipView.getRelationship().getSource();
+                if (source instanceof DeploymentNode) {
+                    source = findElementInside((DeploymentNode)source, view);
+                }
+
+                Element destination = relationshipView.getRelationship().getDestination();
+                if (destination instanceof DeploymentNode) {
+                    destination = findElementInside((DeploymentNode)destination, view);
+                }
+
+                if (source != null && destination != null) {
+                    String clusterConfig = "";
+
+                    if (relationshipView.getRelationship().getSource() instanceof DeploymentNode) {
+                        clusterConfig += ",ltail=cluster_" + relationshipView.getRelationship().getSource().getId();
+                    }
+
+                    if (relationshipView.getRelationship().getDestination() instanceof DeploymentNode) {
+                        clusterConfig += ",lhead=cluster_" + relationshipView.getRelationship().getDestination().getId();
+                    }
+
+                    writer.write(String.format(locale, "  %s -> %s [id=%s%s]",
+                            source.getId(),
+                            destination.getId(),
+                            relationshipView.getId(),
+                            clusterConfig
+                    ));
+                    writer.write("\n");
+                }
+            } else {
+                Element source = relationshipView.getRelationship().getSource();
+                Element destination = relationshipView.getRelationship().getDestination();
+
+                if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+                    source = relationshipView.getRelationship().getDestination();
+                    destination = relationshipView.getRelationship().getSource();
+                }
+
+                writer.write(String.format(locale, "  %s -> %s [id=%s]",
+                        source.getId(),
+                        destination.getId(),
+                        relationshipView.getId()
+                ));
+                writer.write("\n");
             }
-
-            Element source = relationshipView.getRelationship().getSource();
-            Element destination = relationshipView.getRelationship().getDestination();
-
-            if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
-                source = relationshipView.getRelationship().getDestination();
-                destination = relationshipView.getRelationship().getSource();
-            }
-
-            writer.write(String.format(locale, "  %s -> %s [id=%s]",
-                    source.getId(),
-                    destination.getId(),
-                    relationshipView.getId()
-            ));
-            writer.write("\n");
         }
+    }
+
+    private Element findElementInside(DeploymentNode deploymentNode, View view) {
+        for (SoftwareSystemInstance softwareSystemInstance : deploymentNode.getSoftwareSystemInstances()) {
+            if (view.isElementInView(softwareSystemInstance)) {
+                return softwareSystemInstance;
+            }
+        }
+
+        for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
+            if (view.isElementInView(containerInstance)) {
+                return containerInstance;
+            }
+        }
+
+        for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+            if (view.isElementInView(infrastructureNode)) {
+                return infrastructureNode;
+            }
+        }
+
+        if (deploymentNode.hasChildren()) {
+            for (DeploymentNode child : deploymentNode.getChildren()) {
+                Element element = findElementInside(child, view);
+
+                if (element != null) {
+                    return element;
+                }
+            }
+        }
+
+        return null;
     }
 
     private int getElementWidth(View view, String elementId) {

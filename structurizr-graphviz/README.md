@@ -23,6 +23,10 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
+### 1.4.1 (unreleased)
+
+- Adds support for relationships between deployment nodes.
+
 ### 1.4.0 (18th December 2020)
 
 - Adds support for return/response messages on dynamic views.

@@ -40,6 +40,7 @@ public class DotFileWriterTests {
 
         String content = new String(Files.readAllBytes(file.toPath()));
         assertEquals("digraph {\n" +
+                "  compound=true\n" +
                 "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
@@ -73,6 +74,7 @@ public class DotFileWriterTests {
 
         String content = new String(Files.readAllBytes(file.toPath()));
         assertEquals("digraph {\n" +
+                "  compound=true\n" +
                 "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
@@ -105,6 +107,7 @@ public class DotFileWriterTests {
 
         String content = new String(Files.readAllBytes(file.toPath()));
         assertEquals("digraph {\n" +
+                "  compound=true\n" +
                 "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
@@ -141,6 +144,7 @@ public class DotFileWriterTests {
 
         String content = new String(Files.readAllBytes(file.toPath()));
         assertEquals("digraph {\n" +
+                "  compound=true\n" +
                 "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
@@ -174,6 +178,7 @@ public class DotFileWriterTests {
 
         String content = new String(Files.readAllBytes(file.toPath()));
         assertEquals("digraph {\n" +
+                "  compound=true\n" +
                 "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
