@@ -23,9 +23,10 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
-### 1.4.1 (unreleased)
+### 1.5.0 (unreleased)
 
 - Adds support for relationships between deployment nodes.
+- Adds support for element grouping.
 
 ### 1.4.0 (18th December 2020)
 

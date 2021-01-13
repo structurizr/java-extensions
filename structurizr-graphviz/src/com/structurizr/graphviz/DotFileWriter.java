@@ -1,12 +1,16 @@
 package com.structurizr.graphviz;
 
 import com.structurizr.model.*;
+import com.structurizr.util.StringUtils;
 import com.structurizr.view.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Writes a Structurizr view to a graphviz dot file. Please note that this is not a full export (colours, shapes, etc);
@@ -15,6 +19,7 @@ import java.util.Locale;
 class DotFileWriter {
 
     private static final int CLUSTER_INTERNAL_MARGIN = 25;
+    private static final String INDENT = "  ";
 
     private Locale locale = Locale.US;
     private File path;
@@ -52,82 +57,60 @@ class DotFileWriter {
     }
 
     void write(SystemLandscapeView view) throws Exception {
-        File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing system landscape view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
-        FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
-
-        if (view.isEnterpriseBoundaryVisible()) {
-            fileWriter.write("  subgraph cluster_enterprise {\n");
-            fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
-            for (ElementView elementView : view.getElements()) {
-                if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() == Location.Internal) {
-                    writeElement(view, "    ", elementView.getElement(), fileWriter);
-                }
-                if (elementView.getElement() instanceof SoftwareSystem && ((SoftwareSystem)elementView.getElement()).getLocation() == Location.Internal) {
-                    writeElement(view, "    ", elementView.getElement(), fileWriter);
-                }
-            }
-            fileWriter.write("  }\n\n");
-
-            for (ElementView elementView : view.getElements()) {
-                if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() != Location.Internal) {
-                    writeElement(view, "  ", elementView.getElement(), fileWriter);
-                }
-                if (elementView.getElement() instanceof SoftwareSystem && ((SoftwareSystem)elementView.getElement()).getLocation() != Location.Internal) {
-                    writeElement(view, "  ", elementView.getElement(), fileWriter);
-                }
-            }
-        } else {
-            for (ElementView elementView : view.getElements()) {
-                writeElement(view, "  ", elementView.getElement(), fileWriter);
-            }
-        }
-
-        writeRelationships(view, fileWriter);
-        writeFooter(fileWriter);
-        fileWriter.close();
+        write(view, view.isEnterpriseBoundaryVisible());
     }
 
     void write(SystemContextView view) throws Exception {
+        write(view, view.isEnterpriseBoundaryVisible());
+    }
+
+    private void write(View view, boolean enterpriseBoundaryIsVisible) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing system context view: " + view.getKey());
+        if (view instanceof SystemLandscapeView) {
+            System.out.println("Processing system landscape view: " + view.getKey());
+        } else {
+            System.out.println("Processing system context view: " + view.getKey());
+        }
         System.out.println(" - Writing " + file.getAbsolutePath());
 
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 
-        if (view.isEnterpriseBoundaryVisible()) {
+        if (enterpriseBoundaryIsVisible) {
             fileWriter.write("  subgraph cluster_enterprise {\n");
             fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+            Set<StaticStructureElement> elementsInsideEnterpriseBoundary = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() == Location.Internal) {
-                    writeElement(view, "    ", elementView.getElement(), fileWriter);
+                    elementsInsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
                 }
                 if (elementView.getElement() instanceof SoftwareSystem && ((SoftwareSystem)elementView.getElement()).getLocation() == Location.Internal) {
-                    writeElement(view, "    ", elementView.getElement(), fileWriter);
+                    elementsInsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
                 }
             }
+            writeElements(view, "    ", elementsInsideEnterpriseBoundary, fileWriter);
             fileWriter.write("  }\n\n");
 
+            Set<StaticStructureElement> elementsOutsideEnterpriseBoundary = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() != Location.Internal) {
-                    writeElement(view, "  ", elementView.getElement(), fileWriter);
+                    elementsOutsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
                 }
                 if (elementView.getElement() instanceof SoftwareSystem && ((SoftwareSystem)elementView.getElement()).getLocation() != Location.Internal) {
-                    writeElement(view, "  ", elementView.getElement(), fileWriter);
+                    elementsOutsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
                 }
             }
+
+            writeElements(view, "  ", elementsOutsideEnterpriseBoundary, fileWriter);
         } else {
+            Set<StaticStructureElement> elements = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
-                writeElement(view, "  ", elementView.getElement(), fileWriter);
+                elements.add((StaticStructureElement)elementView.getElement());
             }
+            writeElements(view, "  ", elements, fileWriter);
         }
 
         writeRelationships(view, fileWriter);
-
         writeFooter(fileWriter);
         fileWriter.close();
     }
@@ -144,11 +127,14 @@ class DotFileWriter {
 
         fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", softwareSystem.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+
+        Set<StaticStructureElement> scopedElements = new LinkedHashSet<>();
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == softwareSystem) {
-                writeElement(view, "    ", elementView.getElement(), fileWriter);
+                scopedElements.add((StaticStructureElement)elementView.getElement());
             }
         }
+        writeElements(view, "    ", scopedElements, fileWriter);
         fileWriter.write("  }\n");
 
         for (ElementView elementView : view.getElements()) {
@@ -175,11 +161,14 @@ class DotFileWriter {
 
         fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", container.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+
+        Set<StaticStructureElement> scopedElements = new LinkedHashSet<>();
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == container) {
-                writeElement(view, "    ", elementView.getElement(), fileWriter);
+                scopedElements.add((StaticStructureElement)elementView.getElement());
             }
         }
+        writeElements(view, "    ", scopedElements, fileWriter);
         fileWriter.write("  }\n");
 
         for (ElementView elementView : view.getElements()) {
@@ -282,6 +271,38 @@ class DotFileWriter {
         }
 
         fileWriter.write(indent + "}\n");
+    }
+
+    private void writeElements(View view, String padding, Set<StaticStructureElement> elements, Writer writer) throws Exception {
+        Set<String> groups = new LinkedHashSet<>();
+        for (StaticStructureElement element : elements) {
+            String group = element.getGroup();
+
+            if (!StringUtils.isNullOrEmpty(group)) {
+                groups.add(group);
+            }
+        }
+
+        // first render grouped elements
+        int groupId = 1;
+        for (String group : groups) {
+            writer.write(padding + "subgraph cluster_group_" + groupId + " {\n");
+            writer.write( padding + "  margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+            for (StaticStructureElement element : elements) {
+                if (group.equals(element.getGroup())) {
+                    writeElement(view, padding + INDENT, element, writer);
+                }
+            }
+            writer.write(padding + "}\n");
+            groupId++;
+        }
+
+        // then render ungrouped elements
+        for (StaticStructureElement element : elements) {
+            if (StringUtils.isNullOrEmpty(element.getGroup())) {
+                writeElement(view, padding, element, writer);
+            }
+        }
     }
 
     private void writeElement(View view, String padding, Element element, Writer writer) throws Exception {
