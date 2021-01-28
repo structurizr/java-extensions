@@ -313,16 +313,23 @@ class DotFileWriter {
                 getElementHeight(view, element.getId()) / Constants.STRUCTURIZR_DPI, // convert Structurizr dimensions to inches
                 element.getId(),
                 element.getId(),
-                element.getName()
+                escape(element.getName())
         ));
         writer.write("\n");
+    }
+
+    private String escape(String s) {
+        if (StringUtils.isNullOrEmpty(s)) {
+            return s;
+        } else {
+            return s.replaceAll("\"", "\\\\\"");
+        }
     }
 
     private void writeRelationships(View view, Writer writer) throws Exception {
         writer.write("\n");
 
         for (RelationshipView relationshipView : view.getRelationships()) {
-            System.out.println(relationshipView.getRelationship());
             if (relationshipView.getRelationship().getSource() instanceof DeploymentNode || relationshipView.getRelationship().getDestination() instanceof DeploymentNode) {
                 Element source = relationshipView.getRelationship().getSource();
                 if (source instanceof DeploymentNode) {
