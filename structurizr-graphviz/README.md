@@ -27,6 +27,7 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 - Adds support for relationships between deployment nodes.
 - Adds support for element grouping.
+- Fixes a bug with double-quote characters in element names.
 
 ### 1.4.0 (18th December 2020)
 
