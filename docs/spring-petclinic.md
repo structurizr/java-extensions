@@ -1,10 +1,14 @@
 # The Spring PetClinic example
 
-This is a step-by-step guide to recreating the System Context, Container and Component diagrams from the [Spring PetClinic example](https://structurizr.com/share/1), which are based upon the original version of the application. It assumes that you have working Java, Maven and git installations plus a development environment to write code. The full source code for this example can be found in [SpringPetClinic.java](https://github.com/structurizr/java/blob/master/structurizr-examples/src/com/structurizr/example/SpringPetClinic.java). 
+This is a step-by-step guide to recreating the System Context, Container and Component diagrams from the [Spring PetClinic example](https://structurizr.com/share/1), which are based upon the original version of the application.
+It assumes that you have working Java, Maven and git installations plus a development environment to write code.
+The full source code for this example can be found in
+[SpringPetClinic.java](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/SpringPetClinic.java). 
 
 ## 1. Clone and build the Spring PetClinic code
 
-First of all, we need to download a copy of the [Spring PetClinic source code](https://github.com/spring-projects/spring-petclinic/). Please note that this example was created with a specific version of the Spring PetClinic codebase, so please be sure to perform the ```git checkout``` step too.
+First of all, we need to download a copy of the [Spring PetClinic source code](https://github.com/spring-projects/spring-petclinic/).
+Please note that this example was created with a specific version of the Spring PetClinic codebase, so please be sure to perform the `git checkout` step too.
 
 ```
 git clone https://github.com/spring-projects/spring-petclinic.git
@@ -18,7 +22,8 @@ Next we need to run the build.
 mvn
 ```
 
-The Spring PetClinic is a sample application and includes three persistence implementations (JDBC, JPA and Spring Data) that all do the same thing. As this is unrealistic for most applications, let's make things easier by removing the JPA and Spring Data implementations.
+The Spring PetClinic is a sample application and includes three persistence implementations (JDBC, JPA and Spring Data) that all do the same thing.
+As this is unrealistic for most applications, let's make things easier by removing the JPA and Spring Data implementations.
 
 ```
 rm -r target/spring-petclinic-1.0.0-SNAPSHOT/WEB-INF/classes/org/springframework/samples/petclinic/repository/jpa/
@@ -27,12 +32,14 @@ rm -r target/spring-petclinic-1.0.0-SNAPSHOT/WEB-INF/classes/org/springframework
 
 ## 2. Create a model
 
-With the Spring PetClinic application built, we now need to create a software architecture model using the [extract and supplement](https://structurizr.com/help/extract-and-supplement) approach. We will do this by creating a simple Java program to create the model. The Maven, Gradle, etc dependencies you will need are as follows:
+With the Spring PetClinic application built, we now need to create a software architecture model using the [extract and supplement](https://structurizr.com/help/extract-and-supplement) approach.
+We will do this by creating a simple Java program to create the model.
+The Maven, Gradle, etc dependencies you will need are as follows:
 
-Name                                     | Description
----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------
-com.structurizr:structurizr-client:1.3.4 | The Structurizr API client library.
-com.structurizr:structurizr-spring:1.3.4 | The Spring component finder.
+Name                                       | Description
+------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------
+`com.structurizr:structurizr-client:1.3.4` | The Structurizr API client library.
+`com.structurizr:structurizr-spring:1.3.4` | The Spring component finder.
 
 First we need to create a little boilerplate code to create a workspace and a model.
 
@@ -57,7 +64,8 @@ clinicEmployee.uses(springPetClinic, "Uses");
 
 ### 4. Containers
 
-Stepping down to containers, the Spring PetClinic system is made up of a Java web application that uses a database to store data. If we make some assumptions about the deployment technology stack, we can represent this in code as follows.
+Stepping down to containers, the Spring PetClinic system is made up of a Java web application that uses a database to store data.
+If we make some assumptions about the deployment technology stack, we can represent this in code as follows.
 
 ```java
 Container webApplication = springPetClinic.addContainer("Web Application",
@@ -73,9 +81,13 @@ webApplication.uses(relationalDatabase, "Reads from and writes to", "JDBC");
 
 ## 5. Components
 
-At the next level of abstraction, we need to open up the web application to see the components inside it. Although we couldn't really get the two previous levels of abstraction from the codebase easily, we *can* get the components. All we need to do is [understand what a "component" means in the context of this codebase](https://structurizr.com/help/components-vs-classes). We can then use this information to help us find and extract them in order to populate the software architecture model.
+At the next level of abstraction, we need to open up the web application to see the components inside it.
+Although we couldn't really get the two previous levels of abstraction from the codebase easily, we *can* get the components.
+All we need to do is [understand what a "component" means in the context of this codebase](https://structurizr.com/help/components-vs-classes).
+We can then use this information to help us find and extract them in order to populate the software architecture model.
 
-Spring MVC uses Java annotations (```@Controller```, ```@Service``` and ```@Repository```) to signify classes as being web controllers, services and repositories respectively. Assuming that we consider these to be our architecturally significant code elements, it's then a simple job of extracting these annotated classes (Spring Beans) from the codebase.
+Spring MVC uses Java annotations (`@Controller`, `@Service` and `@Repository`) to signify classes as being web controllers, services and repositories respectively.
+Assuming that we consider these to be our architecturally significant code elements, it's then a simple job of extracting these annotated classes (Spring Beans) from the codebase.
 
 ```java
 ComponentFinder componentFinder = new ComponentFinder(
@@ -88,13 +100,18 @@ ComponentFinder componentFinder = new ComponentFinder(
 componentFinder.findComponents();
 ```
 
-The ```SpringComponentFinderStrategy``` is a pre-built component finder strategy that understands how applications are built with Spring and how to identify Spring components, such as MVC controllers, REST controllers, services, repositories, JPA repositories, etc. The way that you identify supporting types (i.e. the Java classes and interfaces) that implement a component is also pluggable. Here, with the ```ReferencedTypesSupportingTypesStrategy```, we're looking for all types directly referenced by the component type(s). See [Components and supporting types](supporting-types.md) for more details about this.
+The `SpringComponentFinderStrategy` is a pre-built component finder strategy that understands how applications are built with Spring and how to identify Spring components, such as MVC controllers, REST controllers, services, repositories, JPA repositories, etc.
+The way that you identify supporting types (i.e. the Java classes and interfaces) that implement a component is also pluggable.
+Here, with the `ReferencedTypesSupportingTypesStrategy`, we're looking for all types directly referenced by the component type(s).
+See [Components and supporting types](supporting-types.md) for more details about this.
 
 Once the components and their supporting types have been identified, the dependencies between components are also identified and extracted.
 
-In addition, the ```SourceCodeComponentFinderStrategy``` will parse the top-level Javadoc comment from the source file for each component type for inclusion in the model. It will also calculate the size of each component based upon the number of lines of source code across all supporting types.
+In addition, the `SourceCodeComponentFinderStrategy` will parse the top-level Javadoc comment from the source file for each component type for inclusion in the model.
+It will also calculate the size of each component based upon the number of lines of source code across all supporting types.
 
-The final thing we need to do is connect the user to the web controllers, and the repositories to the database. This is easy to do since the software architecture model is represented in code.
+The final thing we need to do is connect the user to the web controllers, and the repositories to the database.
+This is easy to do since the software architecture model is represented in code.
 
 ```java
 webApplication.getComponents().stream()
@@ -108,7 +125,9 @@ webApplication.getComponents().stream()
 
 ## 6. Create some views
 
-With the software architecture model in place, we now need to create some views with which to visualise the model. Again, we can do this using code. First the context diagram, which includes all people and all software systems.
+With the software architecture model in place, we now need to create some views with which to visualise the model.
+Again, we can do this using code.
+First the context diagram, which includes all people and all software systems.
 
 ```java
 ViewSet viewSet = workspace.getViews();
@@ -137,18 +156,19 @@ componentView.add(relationalDatabase);
 
 ## 7. Linking elements to external resources
 
-In order to create a set of maps for the Spring PetClinic system that reflect reality, we can link the components on the component diagram to the source code. This isn't necessary, but doing so means that we can [navigate from the diagrams to the code](https://structurizr.com/help/diagram-navigation).
+In order to create a set of maps for the Spring PetClinic system that reflect reality, we can link the components on the component diagram to the source code.
+This isn't necessary, but doing so means that we can [navigate from the diagrams to the code](https://structurizr.com/help/diagram-navigation).
  
 ```java
 for (Component component : webApplication.getComponents()) {
-	for (CodeElement codeElement : component.getCode()) {
-    	String sourcePath = codeElement.getUrl();
-       	if (sourcePath != null) {
-           	codeElement.setUrl(sourcePath.replace(
-               	sourceRoot.toURI().toString(),
-               	"https://github.com/spring-projects/spring-petclinic/tree/864580702f8ef4d2cdfd7fe4497fb8c9e86018d2/"));
-		}
-	}
+    for (CodeElement codeElement : component.getCode()) {
+        String sourcePath = codeElement.getUrl();
+        if (sourcePath != null) {
+            codeElement.setUrl(sourcePath.replace(
+                sourceRoot.toURI().toString(),
+                "https://github.com/spring-projects/spring-petclinic/tree/864580702f8ef4d2cdfd7fe4497fb8c9e86018d2/"));
+        }
+    }
 }
 ```
 
@@ -160,7 +180,8 @@ relationalDatabase.setUrl("https://github.com/spring-projects/spring-petclinic/t
 
 ## 8. Styling the diagrams
 
-By default, Structurizr will render all of the elements as grey boxes. However, the elements and relationships can be styled.
+By default, Structurizr will render all of the elements as grey boxes.
+However, the elements and relationships can be styled.
 
 ```java
 springPetClinic.addTags("Spring PetClinic");
@@ -184,7 +205,9 @@ styles.addElementStyle("Spring Repository").background("#95D46C").color("#000000
 
 ## 9. Upload the model and views to Structurizr
 
-The code we've just seen simply creates an in-memory representation of the software architecture model, in this case as a collection of Java objects. The open source Structurizr for Java library also includes a way to export this model to an intermediate JSON representation, which can then be imported into some tooling that is able to visualise it. This is what Structurizr does.
+The code we've just seen simply creates an in-memory representation of the software architecture model, in this case as a collection of Java objects.
+The open source Structurizr for Java library also includes a way to export this model to an intermediate JSON representation, which can then be imported into some tooling that is able to visualise it.
+This is what Structurizr does.
 
 ```java
 StructurizrClient structurizrClient = new StructurizrClient("key", "secret");
@@ -205,14 +228,16 @@ If you sign in to Structurizr and open the workspace you just uploaded, you'll s
 
 ![The Spring PetClinic workspace](images/spring-petclinic-1.png)
 
-Structurizr doesn't do any automatic layout of the elements on your diagrams, so you will need to drag the boxes around to create a layout that you like. Here are the links to the live example diagrams:
+Structurizr doesn't do any automatic layout of the elements on your diagrams, so you will need to drag the boxes around to create a layout that you like.
+Here are the links to the live example diagrams:
 
 - [System Context diagram](https://structurizr.com/share/1#context)
 - [Container diagram](https://structurizr.com/share/1#containers)
 - [Component diagram](https://structurizr.com/share/1#components)
 
 ## 11. Explore the model
-Once you have a model of your software system, you can explore it using a number of different visualisations. For example:
+Once you have a model of your software system, you can explore it using a number of different visualisations.
+For example:
 
 - [Static structure, rendered as a tree](https://structurizr.com/share/1/explore/tree)
 - [Static structure, rendered as circles based upon size](https://structurizr.com/share/1/explore/size-circles)
