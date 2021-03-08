@@ -123,7 +123,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
                         String arrowStart = "-";
                         String arrowEnd = ">";
 
-                        if (relationship.isResponse()) {
+                        if (relationship.isResponse() != null && relationship.isResponse() == true) {
                             arrowStart = "<-";
                             arrowEnd = "-";
                         }
