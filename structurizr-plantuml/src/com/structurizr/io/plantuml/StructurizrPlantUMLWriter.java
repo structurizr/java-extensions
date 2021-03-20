@@ -77,17 +77,22 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
                     .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, false));
 
-            writer.write(format("package \"%s\\n%s\" {", view.getContainer().getName(), typeOf(view.getContainer(), true)));
-            writer.write(System.lineSeparator());
+            List<Container> containers = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Component).map(c -> ((Component)c).getContainer()).collect(Collectors.toSet()));
+            containers.sort(Comparator.comparing(Element::getName));
 
-            view.getElements().stream()
-                    .filter(ev -> ev.getElement() instanceof Component && ev.getElement().getParent().equals(view.getContainer()))
-                    .map(ElementView::getElement)
-                    .sorted(Comparator.comparing(Element::getName))
-                    .forEach(e -> write(view, e, writer, true));
+            for (Container container : containers) {
+                writer.write(format("package \"%s\\n%s\" {", container.getName(), typeOf(container, true)));
+                writer.write(System.lineSeparator());
 
-            writer.write("}");
-            writer.write(System.lineSeparator());
+                view.getElements().stream()
+                        .filter(ev -> ev.getElement() instanceof Component && ev.getElement().getParent().equals(container))
+                        .map(ElementView::getElement)
+                        .sorted(Comparator.comparing(Element::getName))
+                        .forEach(e -> write(view, e, writer, true));
+
+                writer.write("}");
+                writer.write(System.lineSeparator());
+            }
 
             writeRelationships(view, writer);
 

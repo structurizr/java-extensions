@@ -78,6 +78,7 @@ There are three PlantUML writer implementations:
 ## 1.6.2 (20th March 2021)
 
 - Adds support for "external" containers on container views.
+- Adds support for "external" components on component views.
 
 ### 1.6.1 (8th March 2021)
 

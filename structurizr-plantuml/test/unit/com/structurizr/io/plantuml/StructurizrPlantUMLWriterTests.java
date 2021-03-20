@@ -1,12 +1,14 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
+import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.DeploymentNode;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.AutomaticLayout;
+import com.structurizr.view.ComponentView;
 import com.structurizr.view.ContainerView;
 import com.structurizr.view.DeploymentView;
 import org.junit.Test;
@@ -909,6 +911,55 @@ public class StructurizrPlantUMLWriterTests {
                 "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "}\n" +
                 "2 .[#707070].> 4 : \"Uses\"\n" +
+                "@enduml", stringWriter.toString());
+    }
+
+    @Test
+    public void test_renderComponentDiagramWithExternalComponents() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1");
+        Component component1 = container1.addComponent("Component 1");
+        SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+        Container container2 = softwareSystem2.addContainer("Container 2");
+        Component component2 = container2.addComponent("Component 2");
+
+        component1.uses(component2, "Uses");
+
+        ComponentView componentView = workspace.getViews().createComponentView(container1, "Components", "");
+        componentView.add(component1);
+        componentView.add(component2);
+
+        StringWriter stringWriter = new StringWriter();
+        new StructurizrPlantUMLWriter().write(componentView, stringWriter);
+        assertEquals("@startuml(id=Components)\n" +
+                "title Software System 1 - Container 1 - Components\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam rectangle<<3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9A9A9A\n" +
+                "}\n" +
+                "skinparam rectangle<<6>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9A9A9A\n" +
+                "}\n" +
+                "package \"Container 1\\n[Container]\" {\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "}\n" +
+                "package \"Container 2\\n[Container]\" {\n" +
+                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
+                "}\n" +
+                "3 .[#707070].> 6 : \"Uses\"\n" +
                 "@enduml", stringWriter.toString());
     }
 
