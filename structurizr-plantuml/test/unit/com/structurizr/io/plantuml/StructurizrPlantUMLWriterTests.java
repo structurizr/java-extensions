@@ -7,6 +7,7 @@ import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.AutomaticLayout;
+import com.structurizr.view.ContainerView;
 import com.structurizr.view.DeploymentView;
 import org.junit.Test;
 
@@ -862,6 +863,53 @@ public class StructurizrPlantUMLWriterTests {
                 "  }\n" +
                 "}\n" +
                 "@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+    }
+
+    @Test
+    public void test_renderContainerDiagramWithExternalContainers() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1");
+        SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+        Container container2 = softwareSystem2.addContainer("Container 2");
+
+        container1.uses(container2, "Uses");
+
+        ContainerView containerView = workspace.getViews().createContainerView(softwareSystem1, "Containers", "");
+        containerView.add(container1);
+        containerView.add(container2);
+
+        StringWriter stringWriter = new StringWriter();
+        new StructurizrPlantUMLWriter().write(containerView, stringWriter);
+        assertEquals("@startuml(id=Containers)\n" +
+                "title Software System 1 - Containers\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam rectangle<<2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9A9A9A\n" +
+                "}\n" +
+                "skinparam rectangle<<4>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9A9A9A\n" +
+                "}\n" +
+                "package \"Software System 1\\n[Software System]\" {\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "}\n" +
+                "package \"Software System 2\\n[Software System]\" {\n" +
+                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "}\n" +
+                "2 .[#707070].> 4 : \"Uses\"\n" +
+                "@enduml", stringWriter.toString());
     }
 
 }

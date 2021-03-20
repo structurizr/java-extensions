@@ -75,6 +75,10 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+## 1.6.2 (20th March 2021)
+
+- Adds support for "external" containers on container views.
+
 ### 1.6.1 (8th March 2021)
 
 Fixes a NullPointerException when writing older dynamic views (#45).

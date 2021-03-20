@@ -7,6 +7,7 @@ import com.structurizr.view.*;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -40,17 +41,22 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
                     .sorted(Comparator.comparing(Element::getName))
                     .forEach(e -> write(view, e, writer, false));
 
-            writer.write(format("package \"%s\\n%s\" {", view.getSoftwareSystem().getName(), typeOf(view.getSoftwareSystem(), true)));
-            writer.write(System.lineSeparator());
+            List<SoftwareSystem> softwareSystems = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Container).map(c -> ((Container)c).getSoftwareSystem()).collect(Collectors.toSet()));
+            softwareSystems.sort(Comparator.comparing(Element::getName));
 
-            view.getElements().stream()
-                    .filter(ev -> ev.getElement() instanceof Container && ev.getElement().getParent().equals(view.getSoftwareSystem()))
-                    .map(ElementView::getElement)
-                    .sorted(Comparator.comparing(Element::getName))
-                    .forEach(e -> write(view, e, writer, true));
+            for (SoftwareSystem softwareSystem : softwareSystems) {
+                writer.write(format("package \"%s\\n%s\" {", softwareSystem.getName(), typeOf(softwareSystem, true)));
+                writer.write(System.lineSeparator());
 
-            writer.write("}");
-            writer.write(System.lineSeparator());
+                view.getElements().stream()
+                        .filter(ev -> ev.getElement() instanceof Container && ev.getElement().getParent().equals(softwareSystem))
+                        .map(ElementView::getElement)
+                        .sorted(Comparator.comparing(Element::getName))
+                        .forEach(e -> write(view, e, writer, true));
+
+                writer.write("}");
+                writer.write(System.lineSeparator());
+            }
 
             writeRelationships(view, writer);
 
