@@ -82,7 +82,7 @@ There are three PlantUML writer implementations:
 
 ### 1.6.1 (8th March 2021)
 
-Fixes a NullPointerException when writing older dynamic views (#45).
+- Fixes a NullPointerException when writing older dynamic views (#45).
 
 ### 1.6.0 (12th January 2021)
 
