@@ -1,0 +1,325 @@
+{
+    "id": 54915,
+    "name": "Amazon Web Services Example",
+    "description": "An example AWS deployment architecture.",
+    "model": {
+        "softwareSystems": [
+            {
+                "id": "1",
+                "tags": "Element,Software System",
+                "name": "Spring PetClinic",
+                "description": "Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.",
+                "location": "Unspecified",
+                "containers": [
+                    {
+                        "id": "3",
+                        "tags": "Element,Container,Database",
+                        "name": "Database",
+                        "description": "Stores information regarding the veterinarians, the clients, and their pets.",
+                        "technology": "Relational database schema"
+                    },
+                    {
+                        "id": "2",
+                        "tags": "Element,Container,Spring Boot Application",
+                        "name": "Web Application",
+                        "description": "Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.",
+                        "relationships": [
+                            {
+                                "id": "4",
+                                "tags": "Relationship,Synchronous",
+                                "sourceId": "2",
+                                "destinationId": "3",
+                                "description": "Reads from and writes to",
+                                "technology": "JDBC/SSL"
+                            }
+                        ],
+                        "technology": "Java and Spring Boot"
+                    }
+                ]
+            }
+        ],
+        "deploymentNodes": [
+            {
+                "id": "5",
+                "tags": "Element,Deployment Node,Amazon Web Services - Cloud",
+                "name": "Amazon Web Services",
+                "environment": "Default",
+                "instances": 1,
+                "children": [
+                    {
+                        "id": "6",
+                        "tags": "Element,Deployment Node,Amazon Web Services - Region",
+                        "name": "US-East-1",
+                        "environment": "Default",
+                        "instances": 1,
+                        "children": [
+                            {
+                                "id": "14",
+                                "tags": "Element,Deployment Node,Amazon Web Services - RDS",
+                                "name": "Amazon RDS",
+                                "environment": "Default",
+                                "instances": 1,
+                                "children": [
+                                    {
+                                        "id": "15",
+                                        "tags": "Element,Deployment Node,Amazon Web Services - RDS_MySQL_instance",
+                                        "name": "MySQL",
+                                        "environment": "Default",
+                                        "instances": 1,
+                                        "containerInstances": [
+                                            {
+                                                "id": "16",
+                                                "tags": "Container Instance",
+                                                "environment": "Default",
+                                                "containerId": "3",
+                                                "instanceId": 1,
+                                                "properties": {}
+                                            }
+                                        ],
+                                        "children": [],
+                                        "infrastructureNodes": []
+                                    }
+                                ],
+                                "containerInstances": [],
+                                "infrastructureNodes": []
+                            },
+                            {
+                                "id": "7",
+                                "tags": "Element,Deployment Node,Amazon Web Services - Auto Scaling",
+                                "name": "Autoscaling group",
+                                "environment": "Default",
+                                "instances": 1,
+                                "children": [
+                                    {
+                                        "id": "8",
+                                        "tags": "Element,Deployment Node,Amazon Web Services - EC2",
+                                        "name": "Amazon EC2",
+                                        "environment": "Default",
+                                        "instances": 1,
+                                        "containerInstances": [
+                                            {
+                                                "id": "9",
+                                                "tags": "Container Instance",
+                                                "relationships": [
+                                                    {
+                                                        "id": "17",
+                                                        "sourceId": "9",
+                                                        "destinationId": "16",
+                                                        "description": "Reads from and writes to",
+                                                        "technology": "JDBC/SSL",
+                                                        "linkedRelationshipId": "4"
+                                                    }
+                                                ],
+                                                "environment": "Default",
+                                                "containerId": "2",
+                                                "instanceId": 1,
+                                                "properties": {}
+                                            }
+                                        ],
+                                        "children": [],
+                                        "infrastructureNodes": []
+                                    }
+                                ],
+                                "containerInstances": [],
+                                "infrastructureNodes": []
+                            }
+                        ],
+                        "infrastructureNodes": [
+                            {
+                                "id": "11",
+                                "tags": "Element,Infrastructure Node,Amazon Web Services - Elastic Load Balancing",
+                                "name": "Elastic Load Balancer",
+                                "relationships": [
+                                    {
+                                        "id": "13",
+                                        "tags": "Relationship,Synchronous",
+                                        "sourceId": "11",
+                                        "destinationId": "9",
+                                        "description": "Forwards requests to",
+                                        "technology": "HTTPS"
+                                    }
+                                ],
+                                "environment": "Default"
+                            },
+                            {
+                                "id": "10",
+                                "tags": "Element,Infrastructure Node,Amazon Web Services - Route 53",
+                                "name": "Route 53",
+                                "relationships": [
+                                    {
+                                        "id": "12",
+                                        "tags": "Relationship,Synchronous",
+                                        "sourceId": "10",
+                                        "destinationId": "11",
+                                        "description": "Forwards requests to",
+                                        "technology": "HTTPS"
+                                    }
+                                ],
+                                "environment": "Default"
+                            }
+                        ],
+                        "containerInstances": []
+                    }
+                ],
+                "containerInstances": [],
+                "infrastructureNodes": []
+            }
+        ],
+        "people": []
+    },
+    "documentation": {
+        "sections": [],
+        "decisions": [],
+        "images": []
+    },
+    "views": {
+        "deploymentViews": [
+            {
+                "softwareSystemId": "1",
+                "description": "An example deployment diagram.",
+                "key": "AmazonWebServicesDeployment",
+                "paperSize": "A4_Landscape",
+                "animations": [
+                    {
+                        "order": 1,
+                        "elements": [
+                            "5",
+                            "6",
+                            "10"
+                        ]
+                    },
+                    {
+                        "order": 2,
+                        "elements": [
+                            "11"
+                        ],
+                        "relationships": [
+                            "12"
+                        ]
+                    },
+                    {
+                        "order": 3,
+                        "elements": [
+                            "7",
+                            "8",
+                            "9"
+                        ],
+                        "relationships": [
+                            "13"
+                        ]
+                    },
+                    {
+                        "order": 4,
+                        "elements": [
+                            "14",
+                            "15",
+                            "16"
+                        ],
+                        "relationships": [
+                            "17"
+                        ]
+                    }
+                ],
+                "elements": [
+                    {
+                        "id": "11",
+                        "x": 1050,
+                        "y": 320
+                    },
+                    {
+                        "id": "14",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "15",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "16",
+                        "x": 2640,
+                        "y": 320
+                    },
+                    {
+                        "id": "5",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "6",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "7",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "8",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "id": "9",
+                        "x": 1845,
+                        "y": 320
+                    },
+                    {
+                        "id": "10",
+                        "x": 255,
+                        "y": 320
+                    }
+                ],
+                "relationships": [
+                    {
+                        "id": "17"
+                    },
+                    {
+                        "id": "13"
+                    },
+                    {
+                        "id": "12"
+                    }
+                ],
+                "environment": "Default"
+            }
+        ],
+        "configuration": {
+            "branding": {},
+            "styles": {
+                "elements": [
+                    {
+                        "tag": "Spring Boot Application",
+                        "background": "#ffffff",
+                        "shape": "RoundedBox"
+                    },
+                    {
+                        "tag": "Database",
+                        "background": "#ffffff",
+                        "shape": "Cylinder"
+                    },
+                    {
+                        "tag": "Infrastructure Node",
+                        "background": "#ffffff",
+                        "shape": "RoundedBox"
+                    }
+                ],
+                "relationships": []
+            },
+            "themes": [
+                "https://raw.githubusercontent.com/structurizr/themes/master/amazon-web-services/theme.json"
+            ],
+            "terminology": {},
+            "lastSavedView": "AmazonWebServicesDeployment",
+            "viewSortOrder": "Default"
+        },
+        "systemLandscapeViews": [],
+        "systemContextViews": [],
+        "containerViews": [],
+        "componentViews": [],
+        "dynamicViews": [],
+        "filteredViews": []
+    }
+}
