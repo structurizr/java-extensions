@@ -52,6 +52,10 @@ If you copy/paste this into the [Mermaid live editor](https://mermaid-js.github.
 
 ## Changelog
 
+### 1.4.1 (28th March 2021)
+
+- Uses custom terminology, if defined in the workspace.
+
 ### 1.4.0 (14th August 2020)
 
 - Adds support for return/response messages on dynamic views.

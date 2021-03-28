@@ -460,7 +460,7 @@ public class MermaidWriter {
                         calculateIndent(indent),
                         idOf(element),
                         nodeOpeningSymbol,
-                        e.getName(), typeOf(e), lines(e.getDescription()),
+                        e.getName(), typeOf(view, e), lines(e.getDescription()),
                         nodeClosingSymbol
                 ));
             } else {
@@ -468,7 +468,7 @@ public class MermaidWriter {
                         calculateIndent(indent),
                         idOf(element),
                         nodeOpeningSymbol,
-                        element.getName(), typeOf(element), lines(element.getDescription()),
+                        element.getName(), typeOf(view, element), lines(element.getDescription()),
                         nodeClosingSymbol
                 ));
             }
@@ -498,7 +498,7 @@ public class MermaidWriter {
                 type,
                 element.getName(),
                 idOf(element),
-                typeOf(element),
+                typeOf(view, element),
                 backgroundOf(view, element),
                 System.lineSeparator()));
     }
@@ -598,33 +598,29 @@ public class MermaidWriter {
         return e.getId();
     }
 
-    protected String typeOf(Element e) {
+    protected String typeOf(View view, Element e) {
         String openingMetadataSymbol = "[";
         String closingMetadataSymbol = "]";
 
-        String type;
+        String terminology = view.getViewSet().getConfiguration().getTerminology().findTerminology(e);
+        String type = "";
 
-        if (e instanceof SoftwareSystem) {
-            type = "Software System";
+        if (e instanceof Person) {
+            type = terminology;
+        } else if (e instanceof SoftwareSystem) {
+            type = terminology;
         } else if (e instanceof Container) {
             Container container = (Container)e;
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
+            type = terminology + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else if (e instanceof Component) {
             Component component = (Component)e;
-            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
+            type = terminology + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
         } else if (e instanceof DeploymentNode) {
             DeploymentNode deploymentNode = (DeploymentNode)e;
-            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+            type = terminology + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
         } else if (e instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)e;
-            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
-        } else if (e instanceof SoftwareSystemInstance) {
-            type = "Software System";
-        } else if (e instanceof ContainerInstance) {
-            Container container = ((ContainerInstance)e).getContainer();
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
-        } else {
-            type = e.getClass().getSimpleName();
+            type = terminology + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
         }
 
         return openingMetadataSymbol + type + closingMetadataSymbol;

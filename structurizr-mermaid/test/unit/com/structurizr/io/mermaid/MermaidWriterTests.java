@@ -4,10 +4,10 @@ import com.structurizr.Workspace;
 import com.structurizr.model.Container;
 import com.structurizr.model.DeploymentNode;
 import com.structurizr.model.SoftwareSystem;
-import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.AutomaticLayout;
 import com.structurizr.view.DeploymentView;
+import com.structurizr.view.ThemeUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -174,18 +174,18 @@ public class MermaidWriterTests {
                 "        57[\"<div style='font-weight: bold'>Mainframe Banking System</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Stores all of the core<br />banking information about<br />customers, accounts,<br />transactions, etc.</div>\"]\n" +
                 "        style 57 fill:#999999,stroke:#6b6b6b,color:#ffffff\n" +
                 "    end\n" +
-                "    style 56 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 56 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 55 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  style 55 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  subgraph 50 [Developer Laptop]\n" +
                 "    subgraph 59 [Docker Container - Database Server]\n" +
                 "      subgraph 60 [Database Server]\n" +
                 "          61[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
                 "          style 61 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 60 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 60 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 59 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 59 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 51 [Docker Container - Web Server]\n" +
                 "      subgraph 52 [Apache Tomcat]\n" +
                 "          54[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
@@ -193,16 +193,16 @@ public class MermaidWriterTests {
                 "          53[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
                 "          style 53 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 52 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 52 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 51 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 51 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 63 [Web Browser]\n" +
                 "        64[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
                 "        style 64 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "    end\n" +
-                "    style 63 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 63 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 50 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  style 50 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  54-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->61\n" +
                 "  54-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[XML/HTTPS]</div>\" .->57\n" +
                 "  64-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>\" .->54\n" +
@@ -218,53 +218,53 @@ public class MermaidWriterTests {
                 "          81[\"<div style='font-weight: bold'>API Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Provides Internet banking<br />functionality via a<br />JSON/HTTPS API.</div>\"]\n" +
                 "          style 81 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 80 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 80 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 79 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 79 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 85 [bigbank-db01]\n" +
                 "      subgraph 86 [Oracle - Primary]\n" +
                 "          87[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
                 "          style 87 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 86 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 86 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 85 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 85 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 89 [bigbank-db02]\n" +
                 "      subgraph 90 [Oracle - Secondary]\n" +
                 "          91[(\"<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>\")]\n" +
                 "          style 91 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 90 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 90 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 89 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 89 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 73 [bigbank-prod001]\n" +
                 "        74[\"<div style='font-weight: bold'>Mainframe Banking System</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Stores all of the core<br />banking information about<br />customers, accounts,<br />transactions, etc.</div>\"]\n" +
                 "        style 74 fill:#999999,stroke:#6b6b6b,color:#ffffff\n" +
                 "    end\n" +
-                "    style 73 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 73 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 75 [bigbank-web***]\n" +
                 "      subgraph 76 [Apache Tomcat]\n" +
                 "          77[\"<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring MVC]</div><div style='font-size: 80%; margin-top:10px'>Delivers the static content<br />and the Internet banking<br />single page application.</div>\"]\n" +
                 "          style 77 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "      end\n" +
-                "      style 76 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "      style 76 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    end\n" +
-                "    style 75 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 75 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 72 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  style 72 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  subgraph 69 [Customer's computer]\n" +
                 "    subgraph 70 [Web Browser]\n" +
                 "        71[\"<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>\"]\n" +
                 "        style 71 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "    end\n" +
-                "    style 70 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 70 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 69 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  style 69 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  subgraph 67 [Customer's mobile device]\n" +
                 "      68[\"<div style='font-weight: bold'>Mobile App</div><div style='font-size: 70%; margin-top: 0px'>[Container: Xamarin]</div><div style='font-size: 80%; margin-top:10px'>Provides a limited subset of<br />the Internet banking<br />functionality to customers<br />via their mobile device.</div>\"]\n" +
                 "      style 68 fill:#438dd5,stroke:#2e6295,color:#ffffff\n" +
                 "  end\n" +
-                "  style 67 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "  style 67 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  81-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->91\n" +
                 "  81-. \"<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC]</div>\" .->87\n" +
                 "  81-. \"<div>Makes API calls to</div><div style='font-size: 70%'>[XML/HTTPS]</div>\" .->74\n" +
@@ -292,7 +292,7 @@ public class MermaidWriterTests {
     @Test
     public void test_AmazonWebServicesExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
-        ThemeUtils.loadStylesFromThemes(workspace);
+        ThemeUtils.loadThemes(workspace);
         workspace.getViews().getDeploymentViews().iterator().next().enableAutomaticLayout(AutomaticLayout.RankDirection.LeftRight, 300, 300);
 
         Collection<MermaidDiagram> diagrams = new MermaidWriter().toMermaidDiagrams(workspace);
@@ -361,14 +361,14 @@ public class MermaidWriterTests {
                 "        7[\"<div style='font-weight: bold'>Container 1</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
                 "        style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "    end\n" +
-                "    style 6 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 6 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "    subgraph 8 [Child 2]\n" +
                 "        9[\"<div style='font-weight: bold'>Container 2</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
                 "        style 9 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "    end\n" +
-                "    style 8 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 8 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 5 fill:#ffffff,stroke:#000000,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+                "  style 5 fill:#ffffff,stroke:#888888,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
 
         stringWriter = new StringWriter();
         new MermaidWriter().write(view1, stringWriter);
@@ -380,9 +380,9 @@ public class MermaidWriterTests {
                 "        7[\"<div style='font-weight: bold'>Container 1</div><div style='font-size: 70%; margin-top: 0px'>[Container: Technology]</div><div style='font-size: 80%; margin-top:10px'>Description</div>\"]\n" +
                 "        style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "    end\n" +
-                "    style 6 fill:#ffffff,stroke:#000000,color:#000000\n" +
+                "    style 6 fill:#ffffff,stroke:#888888,color:#000000\n" +
                 "  end\n" +
-                "  style 5 fill:#ffffff,stroke:#000000,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+                "  style 5 fill:#ffffff,stroke:#888888,color:#000000\n".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
     }
 
 }
