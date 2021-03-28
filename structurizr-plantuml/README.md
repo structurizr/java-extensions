@@ -77,8 +77,8 @@ There are three PlantUML writer implementations:
 
 ## 1.6.4 (unreleased)
 
-- Fixes a bug that would render empty relationship technologies, instead of omitting them.
-- Adds support to the `StructurizrPlantUMLWriter` for hiding the element metadata and/or description.
+- `C4PlantUMLWriter`: Fixes a bug that would render empty relationship technologies, instead of omitting them.
+- `StructurizrPlantUMLWriter`: Adds support for hiding the element metadata and/or description.
 
 ## 1.6.3 (28th March 2021)
 
@@ -87,8 +87,8 @@ There are three PlantUML writer implementations:
 
 ## 1.6.2 (20th March 2021)
 
-- Adds support for "external" containers on container views.
-- Adds support for "external" components on component views.
+- `StructurizrPlantUMLWriter`: Adds support for "external" containers on container views.
+- `StructurizrPlantUMLWriter`: Adds support for "external" components on component views.
 
 ### 1.6.1 (8th March 2021)
 
@@ -100,12 +100,12 @@ There are three PlantUML writer implementations:
 
 ### 1.5.3 (6th January 2021)
 
-- Uses new C4-PlantUML macros at https://github.com/plantuml-stdlib/C4-PlantUML
-- Adds support for line thickness to the StructurizrPlantUMLWriter.
+- `C4PlantUMLWriter`: Uses new C4-PlantUML macros at https://github.com/plantuml-stdlib/C4-PlantUML
+- `StructurizrPlantUMLWriter`: Adds support for line thickness.
 
 ### 1.5.2 (15th September 2020)
 
-- Fixes issue #34 (Function Rel_D does not found while using C4PlantUMLWriter).
+- `C4PlantUMLWriter`: Fixes issue #34 (Function Rel_D does not found while using C4PlantUMLWriter).
 
 ### 1.5.1 (6th September 2020)
 
@@ -119,7 +119,7 @@ There are three PlantUML writer implementations:
 
 ### 1.4.0 (6th July 2020)
 
-- Adds a StructurizrPlantUMLWriter, which emulates the style of the Structurizr web-based renderer.
+- Adds a `StructurizrPlantUMLWriter`, which emulates the style of the Structurizr web-based renderer.
 
 ### 1.3.8 (27th June 2020)
 
