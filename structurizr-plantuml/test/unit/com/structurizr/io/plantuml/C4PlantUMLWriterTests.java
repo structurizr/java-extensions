@@ -1,27 +1,25 @@
 package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
-import com.structurizr.model.*;
+import com.structurizr.model.Container;
+import com.structurizr.model.DeploymentNode;
+import com.structurizr.model.Person;
+import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.*;
-
-import org.hamcrest.core.AllOf;
+import com.structurizr.view.DeploymentView;
+import com.structurizr.view.SystemLandscapeView;
+import com.structurizr.view.ThemeUtils;
 import org.hamcrest.core.Is;
-import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
-import com.structurizr.io.plantuml.*;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class C4PlantUMLWriterTests {
 
@@ -401,6 +399,34 @@ public class C4PlantUMLWriterTests {
 				"    Container(7, \"Container 1\", \"Technology\", \"Description\")\n" +
 				"  }\n" +
 				"}\n" +
+				"@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
+	}
+
+	@Test
+	public void test_renderRelationshipWithBlankTechnology() {
+		Workspace workspace = new Workspace("Name", "Description");
+		Person user = workspace.getModel().addPerson("User");
+		SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System");
+		user.uses(softwareSystem, "Uses", "");
+
+		SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+		view.addAllElements();
+
+		StringWriter stringWriter = new StringWriter();
+		new C4PlantUMLWriter().write(view, stringWriter);
+		assertEquals("@startuml(id=key)\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+				"!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
+				"LAYOUT_WITH_LEGEND()\n" +
+				"\n" +
+				"title System Landscape\n" +
+				"caption Description\n" +
+				"\n" +
+				"Person(1, \"User\", \"\")\n" +
+				"System(2, \"Software System\", \"\")\n" +
+				"Rel_D(1, 2, \"Uses\")\n" +
 				"@enduml".replaceAll("\n", System.lineSeparator()), stringWriter.toString());
 	}
 

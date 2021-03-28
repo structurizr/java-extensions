@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import com.structurizr.model.*;
+import com.structurizr.util.StringUtils;
 import com.structurizr.view.ComponentView;
 import com.structurizr.view.ContainerView;
 import com.structurizr.view.RelationshipView;
@@ -379,7 +380,7 @@ public class C4PlantUMLWriter extends BasicPlantUMLWriter {
 			} else if (relationship.getDescription() == null) {
 				writer.write(format("%s(%s, %s)%s", relationshipMacro, idOf(source), idOf(destination), separator));
 			} else {
-				if (relationship.getTechnology() == null) {
+				if (StringUtils.isNullOrEmpty(relationship.getTechnology())) {
 					writer.write(format("%s(%s, %s, \"%s\")%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), separator));
 				} else {
 					writer.write(format("%s(%s, %s, \"%s\", \"%s\")%s", relationshipMacro, idOf(source), idOf(destination), relationship.getDescription(), relationship.getTechnology(), separator));
