@@ -9,7 +9,7 @@ structurizr-dot can export the views in a Structurizr workspace to DOT diagram d
 - Dynamic
 - Deployment
 
-Create your software architecture model and views as usual, and use the [DOTWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-dot/src/com/structurizr/io/dot/DOTWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/Mermaid.java):
+Create your software architecture model and views as usual, and use the [DOTWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-dot/src/com/structurizr/io/dot/DOTWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/DOT.java):
 
 ```java
 Workspace workspace = new Workspace("Getting Started", "This is a model of my software system.");
