@@ -289,18 +289,7 @@ public abstract class PlantUMLWriter {
     }
 
     String strokeOf(View view, Element element) {
-        String stroke = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getStroke();
-
-        if (element instanceof DeploymentNode) {
-            return stroke != null ? stroke : "#000000";
-        } else {
-            if (stroke != null) {
-                return stroke;
-            } else {
-                java.awt.Color color = java.awt.Color.decode(backgroundOf(view, element));
-                return String.format("#%06X", (0xFFFFFF & color.darker().getRGB()));
-            }
-        }
+        return view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getStroke();
     }
 
     String colorOf(View view, Element element) {
@@ -363,34 +352,32 @@ public abstract class PlantUMLWriter {
         return e.getId();
     }
 
-    String typeOf(Element e, boolean includeMetadataSymbols) {
-        String type;
+    String typeOf(View view, Element e, boolean includeMetadataSymbols) {
+        String terminology = view.getViewSet().getConfiguration().getTerminology().findTerminology(e);
+        String type = "";
 
-        if (e instanceof SoftwareSystem) {
-            type = "Software System";
+        if (e instanceof Person) {
+            type = terminology;
+        } else if (e instanceof SoftwareSystem) {
+            type = terminology;
         } else if (e instanceof Container) {
             Container container = (Container)e;
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
+            type = terminology + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else if (e instanceof Component) {
             Component component = (Component)e;
-            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
+            type = terminology + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
         } else if (e instanceof DeploymentNode) {
             DeploymentNode deploymentNode = (DeploymentNode)e;
-            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+            type = terminology + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
         } else if (e instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)e;
-            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
-        } else if (e instanceof ContainerInstance) {
-            Container container = ((ContainerInstance)e).getContainer();
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
-        } else {
-            type = e.getClass().getSimpleName();
+            type = terminology + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
         }
 
         if (includeMetadataSymbols) {
             return "[" + type + "]";
         } else {
-           return type;
+            return type;
         }
     }
 

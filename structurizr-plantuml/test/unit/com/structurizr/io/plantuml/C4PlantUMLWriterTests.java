@@ -2,7 +2,6 @@ package com.structurizr.io.plantuml;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.*;
-import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
 import com.structurizr.view.*;
 
@@ -303,7 +302,7 @@ public class C4PlantUMLWriterTests {
 	@Test
 	public void test_AmazonWebServicesExample() throws Exception {
 		Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
-		ThemeUtils.loadStylesFromThemes(workspace);
+		ThemeUtils.loadThemes(workspace);
 
 		Collection<PlantUMLDiagram> diagrams = new C4PlantUMLWriter().toPlantUMLDiagrams(workspace);
 		assertEquals(1, diagrams.size());

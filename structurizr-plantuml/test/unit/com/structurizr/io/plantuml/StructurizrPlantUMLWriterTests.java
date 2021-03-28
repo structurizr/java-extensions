@@ -5,12 +5,8 @@ import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.DeploymentNode;
 import com.structurizr.model.SoftwareSystem;
-import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.AutomaticLayout;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.DeploymentView;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -45,37 +41,37 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<1>> {\n" +
                 "  BackgroundColor #08427b\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #052E56\n" +
+                "  BorderColor #052e56\n" +
                 "}\n" +
                 "skinparam rectangle<<12>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<2>> {\n" +
                 "  BackgroundColor #1168bd\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #0B4884\n" +
+                "  BorderColor #0b4884\n" +
                 "}\n" +
                 "skinparam rectangle<<4>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<15>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<6>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<9>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "rectangle \"==Personal Banking Customer\\n<size:10>[Person]</size>\\n\\nA customer of the bank, with personal bank accounts.\" <<1>> as 1\n" +
                 "package \"Big Bank plc\" {\n" +
@@ -86,15 +82,15 @@ public class StructurizrPlantUMLWriterTests {
                 "  rectangle \"==Internet Banking System\\n<size:10>[Software System]</size>\\n\\nAllows customers to view information about their bank accounts, and make payments.\" <<2>> as 2\n" +
                 "  rectangle \"==Mainframe Banking System\\n<size:10>[Software System]</size>\\n\\nStores all of the core banking information about customers, accounts, transactions, etc.\" <<4>> as 4\n" +
                 "}\n" +
-                "9 .[#707070].> 4 : \"Uses\"\n" +
-                "15 .[#707070].> 4 : \"Uses\"\n" +
-                "12 .[#707070].> 4 : \"Uses\"\n" +
-                "6 .[#707070].> 1 : \"Sends e-mails to\"\n" +
-                "2 .[#707070].> 6 : \"Sends e-mail using\"\n" +
-                "2 .[#707070].> 4 : \"Gets account information from, and makes payments using\"\n" +
-                "1 .[#707070].> 9 : \"Withdraws cash using\"\n" +
-                "1 .[#707070].> 12 : \"Asks questions to\\n<size:8>[Telephone]</size>\"\n" +
-                "1 .[#707070].> 2 : \"Views account balances, and makes payments using\"\n" +
+                "9 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "15 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "12 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "6 .[#707070,thickness=2].> 1 : \"Sends e-mails to\"\n" +
+                "2 .[#707070,thickness=2].> 6 : \"Sends e-mail using\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"Gets account information from, and makes payments using\"\n" +
+                "1 .[#707070,thickness=2].> 9 : \"Withdraws cash using\"\n" +
+                "1 .[#707070,thickness=2].> 12 : \"Asks questions to\\n<size:8>[Telephone]</size>\"\n" +
+                "1 .[#707070,thickness=2].> 2 : \"Views account balances, and makes payments using\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("SystemContext")).findFirst().get();
@@ -113,31 +109,31 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<1>> {\n" +
                 "  BackgroundColor #08427b\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #052E56\n" +
+                "  BorderColor #052e56\n" +
                 "}\n" +
                 "skinparam rectangle<<2>> {\n" +
                 "  BackgroundColor #1168bd\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #0B4884\n" +
+                "  BorderColor #0b4884\n" +
                 "}\n" +
                 "skinparam rectangle<<4>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<6>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "rectangle \"==Personal Banking Customer\\n<size:10>[Person]</size>\\n\\nA customer of the bank, with personal bank accounts.\" <<1>> as 1\n" +
                 "  rectangle \"==E-mail System\\n<size:10>[Software System]</size>\\n\\nThe internal Microsoft Exchange e-mail system.\" <<6>> as 6\n" +
                 "  rectangle \"==Internet Banking System\\n<size:10>[Software System]</size>\\n\\nAllows customers to view information about their bank accounts, and make payments.\" <<2>> as 2\n" +
                 "  rectangle \"==Mainframe Banking System\\n<size:10>[Software System]</size>\\n\\nStores all of the core banking information about customers, accounts, transactions, etc.\" <<4>> as 4\n" +
-                "6 .[#707070].> 1 : \"Sends e-mails to\"\n" +
-                "2 .[#707070].> 6 : \"Sends e-mail using\"\n" +
-                "2 .[#707070].> 4 : \"Gets account information from, and makes payments using\"\n" +
-                "1 .[#707070].> 2 : \"Views account balances, and makes payments using\"\n" +
+                "6 .[#707070,thickness=2].> 1 : \"Sends e-mails to\"\n" +
+                "2 .[#707070,thickness=2].> 6 : \"Sends e-mail using\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"Gets account information from, and makes payments using\"\n" +
+                "1 .[#707070,thickness=2].> 2 : \"Views account balances, and makes payments using\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("Containers")).findFirst().get();
@@ -156,42 +152,42 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<1>> {\n" +
                 "  BackgroundColor #08427b\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #052E56\n" +
+                "  BorderColor #052e56\n" +
                 "}\n" +
                 "skinparam rectangle<<4>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<17>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<6>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<18>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<19>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<20>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam database<<21>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "rectangle \"==E-mail System\\n<size:10>[Software System]</size>\\n\\nThe internal Microsoft Exchange e-mail system.\" <<6>> as 6\n" +
                 "rectangle \"==Mainframe Banking System\\n<size:10>[Software System]</size>\\n\\nStores all of the core banking information about customers, accounts, transactions, etc.\" <<4>> as 4\n" +
@@ -203,16 +199,16 @@ public class StructurizrPlantUMLWriterTests {
                 "  rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<17>> as 17\n" +
                 "  rectangle \"==Web Application\\n<size:10>[Container: Java and Spring MVC]</size>\\n\\nDelivers the static content and the Internet banking single page application.\" <<19>> as 19\n" +
                 "}\n" +
-                "20 .[#707070].> 21 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "20 .[#707070].> 6 : \"Sends e-mail using\\n<size:8>[SMTP]</size>\"\n" +
-                "20 .[#707070].> 4 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
-                "6 .[#707070].> 1 : \"Sends e-mails to\"\n" +
-                "18 .[#707070].> 20 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "1 .[#707070].> 18 : \"Views account balances, and makes payments using\"\n" +
-                "1 .[#707070].> 17 : \"Views account balances, and makes payments using\"\n" +
-                "1 .[#707070].> 19 : \"Visits bigbank.com/ib using\\n<size:8>[HTTPS]</size>\"\n" +
-                "17 .[#707070].> 20 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "19 .[#707070].> 17 : \"Delivers to the customer's web browser\"\n" +
+                "20 .[#707070,thickness=2].> 21 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "20 .[#707070,thickness=2].> 6 : \"Sends e-mail using\\n<size:8>[SMTP]</size>\"\n" +
+                "20 .[#707070,thickness=2].> 4 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "6 .[#707070,thickness=2].> 1 : \"Sends e-mails to\"\n" +
+                "18 .[#707070,thickness=2].> 20 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "1 .[#707070,thickness=2].> 18 : \"Views account balances, and makes payments using\"\n" +
+                "1 .[#707070,thickness=2].> 17 : \"Views account balances, and makes payments using\"\n" +
+                "1 .[#707070,thickness=2].> 19 : \"Visits bigbank.com/ib using\\n<size:8>[HTTPS]</size>\"\n" +
+                "17 .[#707070,thickness=2].> 20 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "19 .[#707070,thickness=2].> 17 : \"Delivers to the customer's web browser\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("Components")).findFirst().get();
@@ -231,57 +227,57 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<33>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam rectangle<<34>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam rectangle<<4>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<17>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<6>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam rectangle<<18>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<29>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam rectangle<<30>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam rectangle<<31>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam database<<21>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<32>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<21>> as 21\n" +
                 "rectangle \"==E-mail System\\n<size:10>[Software System]</size>\\n\\nThe internal Microsoft Exchange e-mail system.\" <<6>> as 6\n" +
@@ -296,19 +292,19 @@ public class StructurizrPlantUMLWriterTests {
                 "  rectangle \"==Security Component\\n<size:10>[Component: Spring Bean]</size>\\n\\nProvides functionality related to signing in, changing passwords, etc.\" <<32>> as 32\n" +
                 "  rectangle \"==Sign In Controller\\n<size:10>[Component: Spring MVC Rest Controller]</size>\\n\\nAllows users to sign in to the Internet Banking System.\" <<29>> as 29\n" +
                 "}\n" +
-                "30 .[#707070].> 33 : \"Uses\"\n" +
-                "34 .[#707070].> 6 : \"Sends e-mail using\"\n" +
-                "33 .[#707070].> 4 : \"Uses\\n<size:8>[XML/HTTPS]</size>\"\n" +
-                "18 .[#707070].> 30 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "18 .[#707070].> 31 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "18 .[#707070].> 29 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "31 .[#707070].> 34 : \"Uses\"\n" +
-                "31 .[#707070].> 32 : \"Uses\"\n" +
-                "32 .[#707070].> 21 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "29 .[#707070].> 32 : \"Uses\"\n" +
-                "17 .[#707070].> 30 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "17 .[#707070].> 31 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "17 .[#707070].> 29 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "30 .[#707070,thickness=2].> 33 : \"Uses\"\n" +
+                "34 .[#707070,thickness=2].> 6 : \"Sends e-mail using\"\n" +
+                "33 .[#707070,thickness=2].> 4 : \"Uses\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "18 .[#707070,thickness=2].> 30 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "18 .[#707070,thickness=2].> 31 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "18 .[#707070,thickness=2].> 29 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "31 .[#707070,thickness=2].> 34 : \"Uses\"\n" +
+                "31 .[#707070,thickness=2].> 32 : \"Uses\"\n" +
+                "32 .[#707070,thickness=2].> 21 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "29 .[#707070,thickness=2].> 32 : \"Uses\"\n" +
+                "17 .[#707070,thickness=2].> 30 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "17 .[#707070,thickness=2].> 31 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "17 .[#707070,thickness=2].> 29 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("SignIn")).findFirst().get();
@@ -327,33 +323,33 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<17>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<29>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam rectangle<<32>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam database<<21>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<17>> as 17\n" +
                 "rectangle \"==Sign In Controller\\n<size:10>[Component: Spring MVC Rest Controller]</size>\\n\\nAllows users to sign in to the Internet Banking System.\" <<29>> as 29\n" +
                 "rectangle \"==Security Component\\n<size:10>[Component: Spring Bean]</size>\\n\\nProvides functionality related to signing in, changing passwords, etc.\" <<32>> as 32\n" +
                 "database \"==Database\\n<size:10>[Container: Oracle Database Schema]</size>\\n\\nStores user registration information, hashed authentication credentials, access logs, etc.\" <<21>> as 21\n" +
-                "17 .[#707070].> 29 : \"1. Submits credentials to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "29 .[#707070].> 32 : \"2. Validates credentials using\"\n" +
-                "32 .[#707070].> 21 : \"3. select * from users where username = ?\\n<size:8>[JDBC]</size>\"\n" +
-                "32 <.[#707070]. 21 : \"4. Returns user data to\\n<size:8>[JDBC]</size>\"\n" +
-                "29 <.[#707070]. 32 : \"5. Returns true if the hashed password matches\"\n" +
-                "17 <.[#707070]. 29 : \"6. Sends back an authentication token to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "17 .[#707070,thickness=2].> 29 : \"1. Submits credentials to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "29 .[#707070,thickness=2].> 32 : \"2. Validates credentials using\"\n" +
+                "32 .[#707070,thickness=2].> 21 : \"3. select * from users where username = ?\\n<size:8>[JDBC]</size>\"\n" +
+                "32 <.[#707070,thickness=2]. 21 : \"4. Returns user data to\\n<size:8>[JDBC]</size>\"\n" +
+                "29 <.[#707070,thickness=2]. 32 : \"5. Returns true if the hashed password matches\"\n" +
+                "17 <.[#707070,thickness=2]. 29 : \"6. Sends back an authentication token to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
@@ -372,67 +368,67 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam node<<55>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<56>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<57>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam node<<59>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<60>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam database<<61>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<50>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<51>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<63>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<52>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<64>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<53>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam rectangle<<54>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "node \"Big Bank plc\\n[Deployment Node: Big Bank plc data center]\" <<55>> as 55 {\n" +
                 "  node \"bigbank-dev001\\n[Deployment Node]\" <<56>> as 56 {\n" +
@@ -455,10 +451,10 @@ public class StructurizrPlantUMLWriterTests {
                 "    rectangle \"==Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\\n\\nProvides all of the Internet banking functionality to customers via their web browser.\" <<64>> as 64\n" +
                 "  }\n" +
                 "}\n" +
-                "54 .[#707070].> 61 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "54 .[#707070].> 57 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
-                "64 .[#707070].> 54 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "53 .[#707070].> 64 : \"Delivers to the customer's web browser\"\n" +
+                "54 .[#707070,thickness=2].> 61 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "54 .[#707070,thickness=2].> 57 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "64 .[#707070,thickness=2].> 54 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "53 .[#707070,thickness=2].> 64 : \"Delivers to the customer's web browser\"\n" +
                 "@enduml", diagram.getDefinition());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
@@ -477,102 +473,102 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<77>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<89>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<67>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<79>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<68>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<69>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<90>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam database<<91>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<80>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<81>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<70>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<71>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<72>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<73>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<74>> {\n" +
                 "  BackgroundColor #999999\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #6B6B6B\n" +
+                "  BorderColor #6b6b6b\n" +
                 "}\n" +
                 "skinparam node<<85>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<86>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<75>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam database<<87>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam node<<76>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "node \"Big Bank plc\\n[Deployment Node: Big Bank plc data center]\" <<72>> as 72 {\n" +
                 "  node \"bigbank-api*** (x8)\\n[Deployment Node: Ubuntu 16.04 LTS]\" <<79>> as 79 {\n" +
@@ -607,13 +603,13 @@ public class StructurizrPlantUMLWriterTests {
                 "node \"Customer's mobile device\\n[Deployment Node: Apple iOS or Android]\" <<67>> as 67 {\n" +
                 "  rectangle \"==Mobile App\\n<size:10>[Container: Xamarin]</size>\\n\\nProvides a limited subset of the Internet banking functionality to customers via their mobile device.\" <<68>> as 68\n" +
                 "}\n" +
-                "81 .[#707070].> 91 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "81 .[#707070].> 87 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
-                "81 .[#707070].> 74 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
-                "68 .[#707070].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "86 .[#707070].> 90 : \"Replicates data to\"\n" +
-                "71 .[#707070].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
-                "77 .[#707070].> 71 : \"Delivers to the customer's web browser\"\n" +
+                "81 .[#707070,thickness=2].> 91 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "81 .[#707070,thickness=2].> 87 : \"Reads from and writes to\\n<size:8>[JDBC]</size>\"\n" +
+                "81 .[#707070,thickness=2].> 74 : \"Makes API calls to\\n<size:8>[XML/HTTPS]</size>\"\n" +
+                "68 .[#707070,thickness=2].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "86 .[#707070,thickness=2].> 90 : \"Replicates data to\"\n" +
+                "71 .[#707070,thickness=2].> 81 : \"Makes API calls to\\n<size:8>[JSON/HTTPS]</size>\"\n" +
+                "77 .[#707070,thickness=2].> 71 : \"Delivers to the customer's web browser\"\n" +
                 "@enduml", diagram.getDefinition());
 
         structurizrPlantUMLWriter.setUseSequenceDiagrams(true);
@@ -635,22 +631,22 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam sequenceParticipant<<17>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "skinparam sequenceParticipant<<29>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam sequenceParticipant<<32>> {\n" +
                 "  BackgroundColor #85bbf0\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #5D82A8\n" +
+                "  BorderColor #5d82a8\n" +
                 "}\n" +
                 "skinparam sequenceParticipant<<21>> {\n" +
                 "  BackgroundColor #438dd5\n" +
                 "  FontColor #ffffff\n" +
-                "  BorderColor #2E6295\n" +
+                "  BorderColor #2e6295\n" +
                 "}\n" +
                 "participant \"Single-Page Application\\n<size:10>[Container: JavaScript and Angular]</size>\" as 17 <<17>> #438dd5\n" +
                 "participant \"Sign In Controller\\n<size:10>[Component: Spring MVC Rest Controller]</size>\" as 29 <<29>> #85bbf0\n" +
@@ -668,7 +664,7 @@ public class StructurizrPlantUMLWriterTests {
     @Test
     public void test_AmazonWebServicesExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
-        ThemeUtils.loadStylesFromThemes(workspace);
+        ThemeUtils.loadThemes(workspace);
         workspace.getViews().getDeploymentViews().iterator().next().enableAutomaticLayout(AutomaticLayout.RankDirection.LeftRight, 300, 300);
 
         Collection<PlantUMLDiagram> diagrams = new StructurizrPlantUMLWriter().toPlantUMLDiagrams(workspace);
@@ -707,7 +703,7 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam database<<16>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #B2B2B2\n" +
+                "  BorderColor #b2b2b2\n" +
                 "}\n" +
                 "skinparam node<<5>> {\n" +
                 "  BackgroundColor #ffffff\n" +
@@ -732,7 +728,7 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<9>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #B2B2B2\n" +
+                "  BorderColor #b2b2b2\n" +
                 "  roundCorner 20\n" +
                 "}\n" +
                 "skinparam rectangle<<10>> {\n" +
@@ -757,9 +753,9 @@ public class StructurizrPlantUMLWriterTests {
                 "    rectangle \"==Route 53\\n<size:10>[Infrastructure Node]</size>\" <<10>> as 10\n" +
                 "  }\n" +
                 "}\n" +
-                "11 .[#707070].> 9 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
-                "10 .[#707070].> 11 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
-                "9 .[#707070].> 16 : \"Reads from and writes to\\n<size:8>[JDBC/SSL]</size>\"\n" +
+                "11 .[#707070,thickness=2].> 9 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
+                "10 .[#707070,thickness=2].> 11 : \"Forwards requests to\\n<size:8>[HTTPS]</size>\"\n" +
+                "9 .[#707070,thickness=2].> 16 : \"Reads from and writes to\\n<size:8>[JDBC/SSL]</size>\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -798,27 +794,27 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam node<<5>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<6>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<7>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "skinparam node<<8>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<9>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "node \"Deployment Node\\n[Deployment Node]\" <<5>> as 5 {\n" +
                 "  node \"Child 1\\n[Deployment Node]\" <<6>> as 6 {\n" +
@@ -847,17 +843,17 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam node<<5>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam node<<6>> {\n" +
                 "  BackgroundColor #ffffff\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #000000\n" +
+                "  BorderColor #888888\n" +
                 "}\n" +
                 "skinparam rectangle<<7>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "node \"Deployment Node\\n[Deployment Node]\" <<5>> as 5 {\n" +
                 "  node \"Child 1\\n[Deployment Node]\" <<6>> as 6 {\n" +
@@ -897,12 +893,12 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "skinparam rectangle<<4>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "package \"Software System 1\\n[Software System]\" {\n" +
                 "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
@@ -910,7 +906,7 @@ public class StructurizrPlantUMLWriterTests {
                 "package \"Software System 2\\n[Software System]\" {\n" +
                 "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "}\n" +
-                "2 .[#707070].> 4 : \"Uses\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
                 "@enduml", stringWriter.toString());
     }
 
@@ -946,12 +942,12 @@ public class StructurizrPlantUMLWriterTests {
                 "skinparam rectangle<<3>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "skinparam rectangle<<6>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
-                "  BorderColor #9A9A9A\n" +
+                "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "package \"Container 1\\n[Container]\" {\n" +
                 "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
@@ -959,7 +955,7 @@ public class StructurizrPlantUMLWriterTests {
                 "package \"Container 2\\n[Container]\" {\n" +
                 "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "}\n" +
-                "3 .[#707070].> 6 : \"Uses\"\n" +
+                "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
                 "@enduml", stringWriter.toString());
     }
 

@@ -45,7 +45,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
             softwareSystems.sort(Comparator.comparing(Element::getName));
 
             for (SoftwareSystem softwareSystem : softwareSystems) {
-                writer.write(format("package \"%s\\n%s\" {", softwareSystem.getName(), typeOf(softwareSystem, true)));
+                writer.write(format("package \"%s\\n%s\" {", softwareSystem.getName(), typeOf(view, softwareSystem, true)));
                 writer.write(System.lineSeparator());
 
                 view.getElements().stream()
@@ -81,7 +81,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
             containers.sort(Comparator.comparing(Element::getName));
 
             for (Container container : containers) {
-                writer.write(format("package \"%s\\n%s\" {", container.getName(), typeOf(container, true)));
+                writer.write(format("package \"%s\\n%s\" {", container.getName(), typeOf(view, container, true)));
                 writer.write(System.lineSeparator());
 
                 view.getElements().stream()
@@ -119,7 +119,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
                         writer.write(format("%s \"%s\\n<size:10>%s</size>\" as %s <<%s>> %s%s",
                                 plantumlSequenceType(view, element),
                                 element.getName(),
-                                typeOf(element, true),
+                                typeOf(view, element, true),
                                 idOf(element),
                                 idOf(element),
                                 backgroundOf(view, element),
@@ -178,7 +178,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
                         format("%snode \"%s\\n%s\" <<%s>> as %s {",
                                 calculateIndent(indent),
                                 deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
-                                typeOf(deploymentNode, true),
+                                typeOf(view, deploymentNode, true),
                                 idOf(deploymentNode),
                                 idOf(deploymentNode)
                         )
@@ -236,13 +236,13 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
             }
             String name = element.getName();
             String description = element.getDescription();
-            String type = typeOf(element, true);
+            String type = typeOf(view, element, true);
 
             if (element instanceof StaticStructureElementInstance) {
                 StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
                 name = elementInstance.getElement().getName();
                 description = elementInstance.getElement().getDescription();
-                type = typeOf(elementInstance.getElement(), true);
+                type = typeOf(view, elementInstance.getElement(), true);
                 shape = plantUMLShapeOf(view, elementInstance.getElement());
             }
 

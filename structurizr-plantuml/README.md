@@ -75,6 +75,11 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+## 1.6.3 (28th March 2021)
+
+- Uses custom terminology, if defined in the workspace.
+- Provides a way for the diagram title/description to be omitted. 
+
 ## 1.6.2 (20th March 2021)
 
 - Adds support for "external" containers on container views.

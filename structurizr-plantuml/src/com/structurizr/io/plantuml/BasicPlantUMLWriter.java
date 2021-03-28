@@ -84,7 +84,7 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
 
     protected void writeContainerForSoftwareSystem(ContainerView view, Writer writer,
                                                  BiConsumer<ContainerView, Writer> packageContentWriter) throws IOException {
-        writer.write("package \"" + view.getSoftwareSystem().getName() + "\" <<" + typeOf(view.getSoftwareSystem(), false) + ">> {");
+        writer.write("package \"" + view.getSoftwareSystem().getName() + "\" <<" + typeOf(view, view.getSoftwareSystem(), false) + ">> {");
         writer.write(System.lineSeparator());
 
         packageContentWriter.accept(view, writer);
@@ -122,7 +122,7 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
 
     protected void writeContainerForContainer(ComponentView view, Writer writer,
                                             BiConsumer<ComponentView, Writer> packageContentWriter) throws IOException {
-        writer.write("package \"" + view.getContainer().getName() + "\" <<" + typeOf(view.getContainer(), false) + ">> {");
+        writer.write("package \"" + view.getContainer().getName() + "\" <<" + typeOf(view, view.getContainer(), false) + ">> {");
         writer.write(System.lineSeparator());
 
         packageContentWriter.accept(view, writer);
@@ -150,7 +150,7 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
                                plantumlSequenceType(view, element),
                                element.getName(),
                                idOf(element),
-                               typeOf(element, false),
+                               typeOf(view, element, false),
                                backgroundOf(view, element),
                                System.lineSeparator()));
 
@@ -205,7 +205,7 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
                         format("%snode \"%s\" <<%s>> as %s {",
                                 calculateIndent(indent),
                                 deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
-                                typeOf(deploymentNode, false),
+                                typeOf(view, deploymentNode, false),
                                 idOf(deploymentNode)
                         )
                 );
@@ -274,13 +274,13 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
 
                 String name = element.getName();
                 String description = element.getDescription();
-                String type = typeOf(element, false);
+                String type = typeOf(view, element, false);
 
                 if (element instanceof StaticStructureElementInstance) {
                     StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
                     name = elementInstance.getElement().getName();
                     description = elementInstance.getElement().getDescription();
-                    type = typeOf(elementInstance.getElement(), false);
+                    type = typeOf(view, elementInstance.getElement(), false);
                     shape = plantUMLShapeOf(view, elementInstance.getElement());
                     background = backgroundOf(view, elementInstance.getElement());
                 }
@@ -305,7 +305,7 @@ public class BasicPlantUMLWriter extends PlantUMLWriter {
                 indent ? "  " : "",
                 type,
                 element.getName(),
-                typeOf(element, false),
+                typeOf(view, element, false),
                 idOf(element),
                 backgroundOf(view, element),
                 System.lineSeparator()));
