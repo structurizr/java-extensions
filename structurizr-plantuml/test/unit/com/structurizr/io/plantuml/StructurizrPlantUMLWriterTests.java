@@ -963,4 +963,68 @@ public class StructurizrPlantUMLWriterTests {
                 "@enduml", stringWriter.toString());
     }
 
+    @Test
+    public void test_renderDiagramWithoutDiagramMetadata() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.add(softwareSystem);
+
+        StringWriter stringWriter = new StringWriter();
+        StructurizrPlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
+        plantUMLWriter.setIncludeDiagramMetadata(false);
+        plantUMLWriter.write(view, stringWriter);
+        assertEquals("@startuml(id=key)\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam rectangle<<1>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "rectangle \"==Software System\\n<size:10>[Software System]</size>\" <<1>> as 1\n" +
+                "@enduml", stringWriter.toString());
+    }
+
+    @Test
+    public void test_renderDiagramWithDiagramMetadata() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.add(softwareSystem);
+
+        StringWriter stringWriter = new StringWriter();
+        StructurizrPlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
+        plantUMLWriter.setIncludeDiagramMetadata(true);
+        plantUMLWriter.write(view, stringWriter);
+        assertEquals("@startuml(id=key)\n" +
+                "title System Landscape\n" +
+                "caption Description\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "skinparam rectangle<<1>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "rectangle \"==Software System\\n<size:10>[Software System]</size>\" <<1>> as 1\n" +
+                "@enduml", stringWriter.toString());
+    }
+
 }

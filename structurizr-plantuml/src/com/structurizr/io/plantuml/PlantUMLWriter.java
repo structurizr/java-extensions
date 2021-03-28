@@ -20,6 +20,8 @@ public abstract class PlantUMLWriter {
 
     private boolean useSequenceDiagrams = false;
 
+    private boolean includeDiagramMetadata = true;
+
     PlantUMLWriter() {
     }
 
@@ -81,6 +83,14 @@ public abstract class PlantUMLWriter {
 
     public void setUseSequenceDiagrams(boolean useSequenceDiagrams) {
         this.useSequenceDiagrams = useSequenceDiagrams;
+    }
+
+    public boolean isIncludeDiagramMetadata() {
+        return includeDiagramMetadata;
+    }
+
+    public void setIncludeDiagramMetadata(boolean includeDiagramMetadata) {
+        this.includeDiagramMetadata = includeDiagramMetadata;
     }
 
     /**
@@ -398,16 +408,18 @@ public abstract class PlantUMLWriter {
             writer.write(System.lineSeparator());
         }
 
-        String viewTitle = view.getTitle();
-        if (StringUtils.isNullOrEmpty(viewTitle)) {
-            viewTitle = view.getName();
-        }
-        writer.write("title " + viewTitle);
-        writer.write(System.lineSeparator());
-
-        if (view.getDescription() != null && view.getDescription().trim().length() > 0) {
-            writer.write("caption " + view.getDescription());
+        if (includeDiagramMetadata) {
+            String viewTitle = view.getTitle();
+            if (StringUtils.isNullOrEmpty(viewTitle)) {
+                viewTitle = view.getName();
+            }
+            writer.write("title " + viewTitle);
             writer.write(System.lineSeparator());
+
+            if (view.getDescription() != null && view.getDescription().trim().length() > 0) {
+                writer.write("caption " + view.getDescription());
+                writer.write(System.lineSeparator());
+            }
         }
 
         writer.write(System.lineSeparator());
