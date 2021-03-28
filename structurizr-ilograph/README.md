@@ -64,6 +64,10 @@ Here's what the [Big Bank plc workspace](https://structurizr.com/share/36141/) l
 
 ## Changelog
 
+### 1.0.2 (28th March 2021)
+
+- Uses custom terminology, if defined in the workspace.
+
 ### 1.0.1 (8th March 2021)
 
 Fixes a NullPointerException when writing older dynamic views.

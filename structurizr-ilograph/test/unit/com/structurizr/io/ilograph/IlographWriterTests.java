@@ -1,8 +1,8 @@
 package com.structurizr.io.ilograph;
 
 import com.structurizr.Workspace;
-import com.structurizr.util.ThemeUtils;
 import com.structurizr.util.WorkspaceUtils;
+import com.structurizr.view.ThemeUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -626,7 +626,7 @@ public class IlographWriterTests {
     @Test
     public void test_AmazonWebServicesExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-54915-workspace.json"));
-        ThemeUtils.loadStylesFromThemes(workspace);
+        ThemeUtils.loadThemes(workspace);
         IlographWriter ilographWriter = new IlographWriter();
 
         String definition = ilographWriter.toString(workspace);

@@ -3,9 +3,7 @@ package com.structurizr.io.ilograph;
 import com.structurizr.Workspace;
 import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
-import com.structurizr.view.DynamicView;
-import com.structurizr.view.ElementStyle;
-import com.structurizr.view.RelationshipView;
+import com.structurizr.view.*;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -169,23 +167,26 @@ public class IlographWriter {
         writer.append(LINE_SEPARATOR);
 
         String name;
+        String type;
         String description;
         ElementStyle elementStyle;
 
         if (element instanceof StaticStructureElementInstance) {
             StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
             name = elementInstance.getElement().getName();
+            type = typeOf(workspace, elementInstance.getElement());
             description = elementInstance.getElement().getDescription();
             elementStyle = workspace.getViews().getConfiguration().getStyles().findElementStyle(elementInstance.getElement());
         } else {
             name = element.getName();
+            type = typeOf(workspace, element);
             description = element.getDescription();
             elementStyle = workspace.getViews().getConfiguration().getStyles().findElementStyle(element);
         }
 
         writer.append(String.format("%s  name: \"%s\"", indent, name));
         writer.append(LINE_SEPARATOR);
-        writer.append(String.format("%s  subtitle: \"%s\"", indent, typeOf(element)));
+        writer.append(String.format("%s  subtitle: \"%s\"", indent, type));
         writer.append(LINE_SEPARATOR);
 
         if (!StringUtils.isNullOrEmpty(description)) {
@@ -350,33 +351,29 @@ public class IlographWriter {
         return elementTypes.contains(source.getClass()) && elementTypes.contains(destination.getClass());
     }
 
-    protected String typeOf(Element e) {
+    protected String typeOf(Workspace workspace, Element e) {
         String openingMetadataSymbol = "[";
         String closingMetadataSymbol = "]";
 
-        String type;
+        String terminology = workspace.getViews().getConfiguration().getTerminology().findTerminology(e);
+        String type = "";
 
-        if (e instanceof SoftwareSystem) {
-            type = "Software System";
+        if (e instanceof Person) {
+            type = terminology;
+        } else if (e instanceof SoftwareSystem) {
+            type = terminology;
         } else if (e instanceof Container) {
             Container container = (Container)e;
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
+            type = terminology + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
         } else if (e instanceof Component) {
             Component component = (Component)e;
-            type = "Component" + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
+            type = terminology + (hasValue(component.getTechnology()) ? ": " + component.getTechnology() : "");
         } else if (e instanceof DeploymentNode) {
             DeploymentNode deploymentNode = (DeploymentNode)e;
-            type = "Deployment Node" + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
+            type = terminology + (hasValue(deploymentNode.getTechnology()) ? ": " + deploymentNode.getTechnology() : "");
         } else if (e instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)e;
-            type = "Infrastructure Node" + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
-        } else if (e instanceof SoftwareSystemInstance) {
-            type = "Software System";
-        } else if (e instanceof ContainerInstance) {
-            Container container = ((ContainerInstance)e).getContainer();
-            type = "Container" + (hasValue(container.getTechnology()) ? ": " + container.getTechnology() : "");
-        } else {
-            type = e.getClass().getSimpleName();
+            type = terminology + (hasValue(infrastructureNode.getTechnology()) ? ": " + infrastructureNode.getTechnology() : "");
         }
 
         return openingMetadataSymbol + type + closingMetadataSymbol;
