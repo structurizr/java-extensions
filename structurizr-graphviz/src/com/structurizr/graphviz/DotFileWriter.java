@@ -7,7 +7,6 @@ import com.structurizr.view.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -56,6 +55,25 @@ class DotFileWriter {
         writer.write("}");
     }
 
+    void write(CustomView view) throws Exception {
+        File file = new File(path, view.getKey() + ".dot");
+        System.out.println("Processing custom view: " + view.getKey());
+        System.out.println(" - Writing " + file.getAbsolutePath());
+
+        FileWriter fileWriter = new FileWriter(file);
+        writeHeader(fileWriter);
+
+        Set<GroupableElement> elements = new LinkedHashSet<>();
+        for (ElementView elementView : view.getElements()) {
+            elements.add((GroupableElement)elementView.getElement());
+        }
+        writeElements(view, "  ", elements, fileWriter);
+
+        writeRelationships(view, fileWriter);
+        writeFooter(fileWriter);
+        fileWriter.close();
+    }
+
     void write(SystemLandscapeView view) throws Exception {
         write(view, view.isEnterpriseBoundaryVisible());
     }
@@ -79,7 +97,7 @@ class DotFileWriter {
         if (enterpriseBoundaryIsVisible) {
             fileWriter.write("  subgraph cluster_enterprise {\n");
             fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
-            Set<StaticStructureElement> elementsInsideEnterpriseBoundary = new LinkedHashSet<>();
+            Set<GroupableElement> elementsInsideEnterpriseBoundary = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() == Location.Internal) {
                     elementsInsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
@@ -91,7 +109,7 @@ class DotFileWriter {
             writeElements(view, "    ", elementsInsideEnterpriseBoundary, fileWriter);
             fileWriter.write("  }\n\n");
 
-            Set<StaticStructureElement> elementsOutsideEnterpriseBoundary = new LinkedHashSet<>();
+            Set<GroupableElement> elementsOutsideEnterpriseBoundary = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement() instanceof Person && ((Person)elementView.getElement()).getLocation() != Location.Internal) {
                     elementsOutsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
@@ -99,13 +117,16 @@ class DotFileWriter {
                 if (elementView.getElement() instanceof SoftwareSystem && ((SoftwareSystem)elementView.getElement()).getLocation() != Location.Internal) {
                     elementsOutsideEnterpriseBoundary.add((StaticStructureElement)elementView.getElement());
                 }
+                if (elementView.getElement() instanceof CustomElement) {
+                    elementsOutsideEnterpriseBoundary.add((CustomElement)elementView.getElement());
+                }
             }
 
             writeElements(view, "  ", elementsOutsideEnterpriseBoundary, fileWriter);
         } else {
-            Set<StaticStructureElement> elements = new LinkedHashSet<>();
+            Set<GroupableElement> elements = new LinkedHashSet<>();
             for (ElementView elementView : view.getElements()) {
-                elements.add((StaticStructureElement)elementView.getElement());
+                elements.add((GroupableElement)elementView.getElement());
             }
             writeElements(view, "  ", elements, fileWriter);
         }
@@ -128,7 +149,7 @@ class DotFileWriter {
         fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", softwareSystem.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
 
-        Set<StaticStructureElement> scopedElements = new LinkedHashSet<>();
+        Set<GroupableElement> scopedElements = new LinkedHashSet<>();
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == softwareSystem) {
                 scopedElements.add((StaticStructureElement)elementView.getElement());
@@ -162,7 +183,7 @@ class DotFileWriter {
         fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", container.getId()));
         fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
 
-        Set<StaticStructureElement> scopedElements = new LinkedHashSet<>();
+        Set<GroupableElement> scopedElements = new LinkedHashSet<>();
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement().getParent() == container) {
                 scopedElements.add((StaticStructureElement)elementView.getElement());
@@ -273,9 +294,9 @@ class DotFileWriter {
         fileWriter.write(indent + "}\n");
     }
 
-    private void writeElements(View view, String padding, Set<StaticStructureElement> elements, Writer writer) throws Exception {
+    private void writeElements(View view, String padding, Set<GroupableElement> elements, Writer writer) throws Exception {
         Set<String> groups = new LinkedHashSet<>();
-        for (StaticStructureElement element : elements) {
+        for (GroupableElement element : elements) {
             String group = element.getGroup();
 
             if (!StringUtils.isNullOrEmpty(group)) {
@@ -288,7 +309,7 @@ class DotFileWriter {
         for (String group : groups) {
             writer.write(padding + "subgraph cluster_group_" + groupId + " {\n");
             writer.write( padding + "  margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
-            for (StaticStructureElement element : elements) {
+            for (GroupableElement element : elements) {
                 if (group.equals(element.getGroup())) {
                     writeElement(view, padding + INDENT, element, writer);
                 }
@@ -298,7 +319,7 @@ class DotFileWriter {
         }
 
         // then render ungrouped elements
-        for (StaticStructureElement element : elements) {
+        for (GroupableElement element : elements) {
             if (StringUtils.isNullOrEmpty(element.getGroup())) {
                 writeElement(view, padding, element, writer);
             }

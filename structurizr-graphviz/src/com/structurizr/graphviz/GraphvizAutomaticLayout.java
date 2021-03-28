@@ -82,6 +82,12 @@ public class GraphvizAutomaticLayout {
         assert exitCode == 0;
     }
 
+    public void apply(CustomView view) throws Exception {
+        createDotFileWriter().write(view);
+        runGraphviz(view);
+        createSVGReader().parseAndApplyLayout(view);
+    }
+
     public void apply(SystemLandscapeView view) throws Exception {
         createDotFileWriter().write(view);
         runGraphviz(view);

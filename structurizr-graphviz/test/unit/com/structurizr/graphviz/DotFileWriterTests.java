@@ -2,10 +2,7 @@ package com.structurizr.graphviz;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.*;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.SystemContextView;
-import com.structurizr.view.SystemLandscapeView;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -20,8 +17,40 @@ public class DotFileWriterTests {
     private static final File PATH = new File("./build/");
 
     @Test
-    public void test_writeSystemLandscapeViewWithNoEnterpiseBoundary() throws Exception {
+    public void test_writeCustomView() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box1 = workspace.getModel().addCustomElement("Box 1");
+        CustomElement box2 = workspace.getModel().addCustomElement("Box 2");
+        box1.uses(box2, "Uses");
+
+        CustomView view = workspace.getViews().createCustomView("CustomView", "Title", "Description");
+        view.add(box1);
+        view.add(box2);
+
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        dotFileWriter.write(view);
+
+        File file = new File(PATH, "CustomView.dot");
+        assertTrue(file.exists());
+
+        String content = new String(Files.readAllBytes(file.toPath()));
+        assertEquals("digraph {\n" +
+                "  compound=true\n" +
+                "  graph [splines=polyline,rankdir=TB,ranksep=1.0,nodesep=1.0,fontsize=5]\n" +
+                "  node [shape=box,fontsize=5]\n" +
+                "  edge []\n" +
+                "\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box 1\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Box 2\"]\n" +
+                "\n" +
+                "  1 -> 2 [id=3]\n" +
+                "}", content);
+    }
+
+    @Test
+    public void test_writeSystemLandscapeViewWithNoEnterpriseBoundary() throws Exception {
+        Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setLocation(Location.External);
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -30,6 +59,7 @@ public class DotFileWriterTests {
 
         SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("SystemLandscape", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -45,16 +75,18 @@ public class DotFileWriterTests {
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
                 "\n" +
-                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
-                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
+                "  3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeSystemLandscapeViewWithGroupedElements() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setGroup("External");
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -63,6 +95,7 @@ public class DotFileWriterTests {
 
         SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("SystemLandscape", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -80,22 +113,24 @@ public class DotFileWriterTests {
                 "\n" +
                 "  subgraph cluster_group_1 {\n" +
                 "    margin=25\n" +
-                "    1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
+                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
                 "  }\n" +
                 "  subgraph cluster_group_2 {\n" +
                 "    margin=25\n" +
-                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "    3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "  }\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
-    public void test_writeSystemLandscapeViewWithNoEnterpiseBoundaryInGermanLocale() throws Exception {
+    public void test_writeSystemLandscapeViewWithNoEnterpriseBoundaryInGermanLocale() throws Exception {
         // ranksep=1.0 was being output as ranksep=1,0
         Locale.setDefault(new Locale("de", "DE"));
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setLocation(Location.External);
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -104,6 +139,7 @@ public class DotFileWriterTests {
 
         SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("SystemLandscape", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -119,16 +155,18 @@ public class DotFileWriterTests {
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
                 "\n" +
-                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
-                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
+                "  3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeSystemLandscapeViewWithAnEnterpriseBoundary() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setLocation(Location.External);
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -137,6 +175,7 @@ public class DotFileWriterTests {
 
         SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("SystemLandscape", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(true);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -154,18 +193,20 @@ public class DotFileWriterTests {
                 "\n" +
                 "  subgraph cluster_enterprise {\n" +
                 "    margin=25\n" +
-                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "    3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "  }\n" +
                 "\n" +
-                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeSystemContextViewWithNoEnterpiseBoundary() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setLocation(Location.External);
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -174,6 +215,7 @@ public class DotFileWriterTests {
 
         SystemContextView view = workspace.getViews().createSystemContextView(softwareSystem, "SystemContext", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -189,10 +231,11 @@ public class DotFileWriterTests {
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
                 "\n" +
-                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
-                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
+                "  3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
@@ -200,6 +243,7 @@ public class DotFileWriterTests {
     @Test
     public void test_writeSystemContextViewWithAnEnterpriseBoundary() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setLocation(Location.External);
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -208,6 +252,7 @@ public class DotFileWriterTests {
 
         SystemContextView view = workspace.getViews().createSystemContextView(softwareSystem, "SystemContext", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(true);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -225,18 +270,20 @@ public class DotFileWriterTests {
                 "\n" +
                 "  subgraph cluster_enterprise {\n" +
                 "    margin=25\n" +
-                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "    3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "  }\n" +
                 "\n" +
-                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
+                "  2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeSystemContextViewWithGroupedElements() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         Person user = workspace.getModel().addPerson("User", "");
         user.setGroup("External");
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
@@ -245,6 +292,7 @@ public class DotFileWriterTests {
 
         SystemContextView view = workspace.getViews().createSystemContextView(softwareSystem, "SystemContext", "");
         view.addAllElements();
+        view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
@@ -262,20 +310,22 @@ public class DotFileWriterTests {
                 "\n" +
                 "  subgraph cluster_group_1 {\n" +
                 "    margin=25\n" +
-                "    1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: User\"]\n" +
+                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: User\"]\n" +
                 "  }\n" +
                 "  subgraph cluster_group_2 {\n" +
                 "    margin=25\n" +
-                "    2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Software System\"]\n" +
+                "    3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Software System\"]\n" +
                 "  }\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
                 "\n" +
-                "  1 -> 2 [id=3]\n" +
+                "  2 -> 3 [id=4]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeContainerViewWithGroupedElements() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
         Container container1 = softwareSystem.addContainer("Container 1");
         container1.setGroup("Group 1");
@@ -288,6 +338,7 @@ public class DotFileWriterTests {
 
         ContainerView view = workspace.getViews().createContainerView(softwareSystem, "Containers", "");
         view.addAllElements();
+        view.add(box);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
         dotFileWriter.write(view);
@@ -302,27 +353,29 @@ public class DotFileWriterTests {
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
                 "\n" +
-                "  subgraph cluster_1 {\n" +
+                "  subgraph cluster_2 {\n" +
                 "    margin=25\n" +
                 "    subgraph cluster_group_1 {\n" +
                 "      margin=25\n" +
-                "      2 [width=1.500000,height=1.000000,fixedsize=true,id=2,label=\"2: Container 1\"]\n" +
+                "      3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Container 1\"]\n" +
                 "    }\n" +
                 "    subgraph cluster_group_2 {\n" +
                 "      margin=25\n" +
-                "      3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Container 2\"]\n" +
+                "      4 [width=1.500000,height=1.000000,fixedsize=true,id=4,label=\"4: Container 2\"]\n" +
                 "    }\n" +
-                "    4 [width=1.500000,height=1.000000,fixedsize=true,id=4,label=\"4: Container 3\"]\n" +
+                "    5 [width=1.500000,height=1.000000,fixedsize=true,id=5,label=\"5: Container 3\"]\n" +
                 "  }\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
                 "\n" +
-                "  2 -> 3 [id=5]\n" +
                 "  3 -> 4 [id=6]\n" +
+                "  4 -> 5 [id=7]\n" +
                 "}", content);
     }
 
     @Test
     public void test_writeComponentViewWithGroupedElements() throws Exception {
         Workspace workspace = new Workspace("Name", "");
+        CustomElement box = workspace.getModel().addCustomElement("Box");
         SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System", "");
         Container container = softwareSystem.addContainer("Container");
         Component component1 = container.addComponent("Component 1", "");
@@ -336,6 +389,7 @@ public class DotFileWriterTests {
 
         ComponentView view = workspace.getViews().createComponentView(container, "Components", "");
         view.addAllElements();
+        view.add(box);
 
         DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
         dotFileWriter.write(view);
@@ -350,21 +404,22 @@ public class DotFileWriterTests {
                 "  node [shape=box,fontsize=5]\n" +
                 "  edge []\n" +
                 "\n" +
-                "  subgraph cluster_2 {\n" +
+                "  subgraph cluster_3 {\n" +
                 "    margin=25\n" +
                 "    subgraph cluster_group_1 {\n" +
                 "      margin=25\n" +
-                "      4 [width=1.500000,height=1.000000,fixedsize=true,id=4,label=\"4: Component 2\"]\n" +
+                "      5 [width=1.500000,height=1.000000,fixedsize=true,id=5,label=\"5: Component 2\"]\n" +
                 "    }\n" +
                 "    subgraph cluster_group_2 {\n" +
                 "      margin=25\n" +
-                "      5 [width=1.500000,height=1.000000,fixedsize=true,id=5,label=\"5: Component 3\"]\n" +
+                "      6 [width=1.500000,height=1.000000,fixedsize=true,id=6,label=\"6: Component 3\"]\n" +
                 "    }\n" +
-                "    3 [width=1.500000,height=1.000000,fixedsize=true,id=3,label=\"3: Component 1\"]\n" +
+                "    4 [width=1.500000,height=1.000000,fixedsize=true,id=4,label=\"4: Component 1\"]\n" +
                 "  }\n" +
+                "  1 [width=1.500000,height=1.000000,fixedsize=true,id=1,label=\"1: Box\"]\n" +
                 "\n" +
-                "  3 -> 4 [id=6]\n" +
                 "  4 -> 5 [id=7]\n" +
+                "  5 -> 6 [id=8]\n" +
                 "}", content);
     }
 
