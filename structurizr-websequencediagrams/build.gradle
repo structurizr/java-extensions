@@ -1,8 +1,8 @@
-version = '1.4.0'
+version = '1.4.1'
 
 dependencies {
 
-    compile 'com.structurizr:structurizr-core:1.5.0'
+    compile 'com.structurizr:structurizr-core:1.9.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.4.0'

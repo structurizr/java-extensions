@@ -77,18 +77,19 @@ public final class WebSequenceDiagramsWriter {
 
             for (Element element : elements) {
                 if (element instanceof Person) {
-                    writer.write(String.format("actor <<Person>>>\\n%s as %s", element.getName(), element.getName()));
-                    writer.write(System.lineSeparator());
-                } else if (element instanceof SoftwareSystem) {
-                    writer.write(String.format("participant <<Software System>>>\\n%s as %s", element.getName(), element.getName()));
-                    writer.write(System.lineSeparator());
-                } else if (element instanceof Container) {
-                    writer.write(String.format("participant <<Container>>>\\n%s as %s", element.getName(), element.getName()));
-                    writer.write(System.lineSeparator());
-                } else if (element instanceof Component) {
-                    writer.write(String.format("participant <<Component>>>\\n%s as %s", element.getName(), element.getName()));
-                    writer.write(System.lineSeparator());
+                    writer.write(String.format("actor <<%s>>>\\n%s as %s",
+                            view.getViewSet().getConfiguration().getTerminology().findTerminology(element),
+                            element.getName(),
+                            element.getName())
+                    );
+                } else {
+                    writer.write(String.format("participant <<%s>>>\\n%s as %s",
+                            view.getViewSet().getConfiguration().getTerminology().findTerminology(element),
+                            element.getName(),
+                            element.getName())
+                    );
                 }
+                writer.write(System.lineSeparator());
             }
 
             writer.write(System.lineSeparator());
