@@ -1,7 +1,7 @@
 package com.structurizr.example;
 
 import com.structurizr.Workspace;
-import com.structurizr.io.dot.DOTWriter;
+import com.structurizr.io.dot.StructurizrDOTWriter;
 import com.structurizr.model.Model;
 import com.structurizr.model.Person;
 import com.structurizr.model.SoftwareSystem;
@@ -30,7 +30,7 @@ public class DOT {
         styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
-        DOTWriter dotWriter = new DOTWriter();
+        StructurizrDOTWriter dotWriter = new StructurizrDOTWriter();
         System.out.println(dotWriter.toString(contextView));
     }
 
