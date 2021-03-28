@@ -22,7 +22,7 @@ public class DOTWriterTests {
     @Test
     public void test_BigBankPlcExample() throws Exception {
         Workspace workspace = WorkspaceUtils.loadWorkspaceFromJson(new File("./test/structurizr-36141-workspace.json"));
-        StructurizrDOTWriter dotWriter = new StructurizrDOTWriter();
+        DOTWriter dotWriter = new DOTWriter();
 
         Collection<DOTDiagram> diagrams = dotWriter.toDOTDiagrams(workspace);
         assertEquals(7, diagrams.size());
@@ -404,7 +404,7 @@ public class DOTWriterTests {
         ThemeUtils.loadThemes(workspace);
         workspace.getViews().getDeploymentViews().iterator().next().enableAutomaticLayout(AutomaticLayout.RankDirection.LeftRight, 300, 300);
 
-        Collection<DOTDiagram> diagrams = new StructurizrDOTWriter().toDOTDiagrams(workspace);
+        Collection<DOTDiagram> diagrams = new DOTWriter().toDOTDiagrams(workspace);
         assertEquals(1, diagrams.size());
 
         DOTDiagram diagram = diagrams.stream().findFirst().get();
@@ -488,7 +488,7 @@ public class DOTWriterTests {
         containerView.add(container2);
 
         StringWriter stringWriter = new StringWriter();
-        new StructurizrDOTWriter().write(containerView, stringWriter);
+        new DOTWriter().write(containerView, stringWriter);
         assertEquals("digraph {\n" +
                 "  compound=true\n" +
                 "  graph [fontname=\"Arial\", rankdir=TB, ranksep=1.0, nodesep=1.0]\n" +
@@ -535,7 +535,7 @@ public class DOTWriterTests {
         componentView.add(component2);
 
         StringWriter stringWriter = new StringWriter();
-        new StructurizrDOTWriter().write(componentView, stringWriter);
+        new DOTWriter().write(componentView, stringWriter);
         assertEquals("digraph {\n" +
                 "  compound=true\n" +
                 "  graph [fontname=\"Arial\", rankdir=TB, ranksep=1.0, nodesep=1.0]\n" +

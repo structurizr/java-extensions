@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 /**
  * Writes Structurizr views to Graphviz DOT definitions.
  */
-public class StructurizrDOTWriter {
+public class DOTWriter {
 
     private static final int CLUSTER_INTERNAL_MARGIN = 25;
     private static final String INDENT = "  ";
 
-    public StructurizrDOTWriter() {
+    public DOTWriter() {
     }
 
     private void writeHeader(View view, Writer writer) throws Exception {
