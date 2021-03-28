@@ -24,6 +24,7 @@ public class StructurizrAnnotations {
     public static void main(String[] args) throws Exception {
         Workspace workspace = new Workspace("Structurizr for Java Annotations", "This is a model of my software system.");
         Model model = workspace.getModel();
+        model.setImpliedRelationshipsStrategy(new CreateImpliedRelationshipsUnlessAnyRelationshipExistsStrategy());
 
         Person user = model.addPerson("User", "A user of my software system.");
         SoftwareSystem softwareSystem = model.addSoftwareSystem("Software System", "My software system.");
@@ -38,7 +39,6 @@ public class StructurizrAnnotations {
                 new StructurizrAnnotationsComponentFinderStrategy()
         );
         componentFinder.findComponents();
-        model.addImplicitRelationships();
 
         ViewSet views = workspace.getViews();
         SystemContextView contextView = views.createSystemContextView(softwareSystem, "SystemContext", "An example of a System Context diagram.");
