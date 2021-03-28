@@ -24,6 +24,7 @@ public class AdrTools {
     public static void main(String[] args) throws Exception {
         Workspace workspace = new Workspace("adr-tools", "A description of the adr-tools command line utility.");
         Model model = workspace.getModel();
+        model.setImpliedRelationshipsStrategy(new CreateImpliedRelationshipsUnlessAnyRelationshipExistsStrategy());
 
         Person user = model.addPerson("User", "Somebody on a software development team.");
         SoftwareSystem adrTools = model.addSoftwareSystem("adr-tools", "A command-line tool for working with Architecture Decision Records (ADRs).");
@@ -35,7 +36,6 @@ public class AdrTools {
         fileSystem.addTags(FILE_SYSTEM_TAG);
         user.uses(adrShellScripts, "Manages ADRs using");
         adrShellScripts.uses(fileSystem, "Reads from and writes to");
-        model.addImplicitRelationships();
 
         ViewSet views = workspace.getViews();
         SystemContextView contextView = views.createSystemContextView(adrTools, "SystemContext", "The system context diagram for adr-tools.");
