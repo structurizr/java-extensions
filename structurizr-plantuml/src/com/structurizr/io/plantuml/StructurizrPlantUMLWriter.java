@@ -230,6 +230,7 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
 
     protected void write(View view, Element element, Writer writer, int indent) {
         try {
+            ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
             String shape = plantUMLShapeOf(view, element);
             if ("actor".equals(shape)) {
                 shape = "rectangle";
@@ -240,22 +241,35 @@ public class StructurizrPlantUMLWriter extends PlantUMLWriter {
 
             if (element instanceof StaticStructureElementInstance) {
                 StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
+                elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(elementInstance.getElement());
                 name = elementInstance.getElement().getName();
                 description = elementInstance.getElement().getDescription();
                 type = typeOf(view, elementInstance.getElement(), true);
                 shape = plantUMLShapeOf(view, elementInstance.getElement());
             }
 
+            if (StringUtils.isNullOrEmpty(description) || false == elementStyle.getDescription()) {
+                description = "";
+            } else {
+               description = "\\n\\n" + description;
+            }
+
+            if (false == elementStyle.getMetadata()) {
+                type = "";
+            } else {
+                type = String.format("\\n<size:10>%s</size>", type);
+            }
+
             final String prefix = calculateIndent(indent);
             final String separator = System.lineSeparator();
             final String id = idOf(element);
 
-            writer.write(format("%s%s \"==%s\\n<size:10>%s</size>%s\" <<%s>> as %s%s",
+            writer.write(format("%s%s \"==%s%s%s\" <<%s>> as %s%s",
                     prefix,
                     shape,
                     name,
                     type,
-                    (StringUtils.isNullOrEmpty(description) ? "" : "\\n\\n" + description),
+                    description,
                     id,
                     id,
                     separator)

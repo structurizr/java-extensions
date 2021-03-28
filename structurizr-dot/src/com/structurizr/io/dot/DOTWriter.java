@@ -542,7 +542,7 @@ public class DOTWriter {
             name = String.format("<font point-size=\"%s\">%s</font>", nameFontSize, breakText(elementStyle.getWidth(), nameFontSize, escape(name)));
         }
 
-        if (StringUtils.isNullOrEmpty(description)) {
+        if (StringUtils.isNullOrEmpty(description) || false == elementStyle.getDescription()) {
             description = "";
         } else {
             description = String.format("<br /><br /><font point-size=\"%s\">%s</font>", descriptionFontSize, breakText(elementStyle.getWidth(), descriptionFontSize, escape(description)));

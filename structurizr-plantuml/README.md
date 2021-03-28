@@ -75,6 +75,11 @@ There are three PlantUML writer implementations:
 
 ## Changelog
 
+## 1.6.4 (unreleased)
+
+- Fixes a bug that would render empty relationship technologies, instead of omitting them.
+- Adds support to the `StructurizrPlantUMLWriter` for hiding the element metadata and/or description.
+
 ## 1.6.3 (28th March 2021)
 
 - Uses custom terminology, if defined in the workspace.
