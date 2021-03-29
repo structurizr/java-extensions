@@ -320,9 +320,9 @@ public class MermaidWriterTests {
                 "        style 8 fill:#ffffff,stroke:#d86613,color:#d86613\n" +
                 "      end\n" +
                 "      style 7 fill:#ffffff,stroke:#cc2264,color:#cc2264\n" +
-                "        11(\"<div style='font-weight: bold'>Elastic Load Balancer</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div><div style='font-size: 80%; margin-top:10px'></div>\")\n" +
+                "        11(\"<div style='font-weight: bold'>Elastic Load Balancer</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div>\")\n" +
                 "        style 11 fill:#ffffff,stroke:#693cc5,color:#693cc5\n" +
-                "        10(\"<div style='font-weight: bold'>Route 53</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div><div style='font-size: 80%; margin-top:10px'></div>\")\n" +
+                "        10(\"<div style='font-weight: bold'>Route 53</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div>\")\n" +
                 "        style 10 fill:#ffffff,stroke:#693cc5,color:#693cc5\n" +
                 "    end\n" +
                 "    style 6 fill:#ffffff,stroke:#147eba,color:#147eba\n" +

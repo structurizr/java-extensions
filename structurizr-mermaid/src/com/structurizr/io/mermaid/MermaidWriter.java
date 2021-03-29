@@ -21,7 +21,7 @@ import static java.lang.String.format;
  */
 public class MermaidWriter {
 
-    private static final String ELEMENT_DEFINITION = "  %s%s%s\"<div style='font-weight: bold'>%s</div><div style='font-size: 70%%; margin-top: 0px'>%s</div><div style='font-size: 80%%; margin-top:10px'>%s</div>\"%s";
+    private static final String ELEMENT_DEFINITION = "  %s%s%s\"<div style='font-weight: bold'>%s</div>%s%s\"%s";
     private static final String RELATIONSHIP_DEFINITION = "  %s-%s \"<div>%s</div><div style='font-size: 70%%'>%s</div>\" %s->%s";
     private boolean useSequenceDiagrams = false;
 
@@ -436,42 +436,56 @@ public class MermaidWriter {
 
     protected void write(View view, Element element, Writer writer, int indent) {
         try {
+            ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
             final String separator = System.lineSeparator();
 
             String nodeOpeningSymbol = "[";
             String nodeClosingSymbol = "]";
 
             Shape shape = shapeOf(view, element);
+            String name = element.getName();
+            String description = element.getDescription();
+            String type = typeOf(view, element);
+
             if (element instanceof StaticStructureElementInstance) {
-                shape = shapeOf(view, ((StaticStructureElementInstance)element).getElement());
+                StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
+                elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(elementInstance.getElement());
+                shape = shapeOf(view, elementInstance.getElement());
+                name = elementInstance.getElement().getName();
+                description = elementInstance.getElement().getDescription();
+                type = typeOf(view, elementInstance.getElement());
             }
 
             if (shape == Shape.RoundedBox) {
                 nodeOpeningSymbol = "(";
                 nodeClosingSymbol = ")";
             } else if (shape == Shape.Cylinder) {
-                    nodeOpeningSymbol = "[(";
-                    nodeClosingSymbol = ")]";
+                nodeOpeningSymbol = "[(";
+                nodeClosingSymbol = ")]";
             }
 
-            if (element instanceof StaticStructureElementInstance) {
-                Element e = ((StaticStructureElementInstance)element).getElement();
-                writer.write(format(ELEMENT_DEFINITION,
-                        calculateIndent(indent),
-                        idOf(element),
-                        nodeOpeningSymbol,
-                        e.getName(), typeOf(view, e), lines(e.getDescription()),
-                        nodeClosingSymbol
-                ));
+            if (StringUtils.isNullOrEmpty(description) || false == elementStyle.getDescription()) {
+                description = "";
             } else {
-                writer.write(format(ELEMENT_DEFINITION,
-                        calculateIndent(indent),
-                        idOf(element),
-                        nodeOpeningSymbol,
-                        element.getName(), typeOf(view, element), lines(element.getDescription()),
-                        nodeClosingSymbol
-                ));
+                description = String.format("<div style='font-size: 80%%; margin-top:10px'>%s</div>", lines(description));
             }
+
+            if (false == elementStyle.getMetadata()) {
+                type = "";
+            } else {
+                type = String.format("<div style='font-size: 70%%; margin-top: 0px'>%s</div>", type);
+            }
+
+            writer.write(format(ELEMENT_DEFINITION,
+                    calculateIndent(indent),
+                    idOf(element),
+                    nodeOpeningSymbol,
+                    name,
+                    type,
+                    description,
+                    nodeClosingSymbol
+            ));
+
             writer.write(format("%s", separator));
 
             if (!StringUtils.isNullOrEmpty(element.getUrl())) {
