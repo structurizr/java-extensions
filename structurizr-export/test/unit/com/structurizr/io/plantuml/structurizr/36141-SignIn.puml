@@ -1,0 +1,53 @@
+@startuml
+title API Application - Dynamic
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+  PackageBorderColor<<group>> #cccccc
+  PackageFontColor<<group>> #cccccc
+}
+hide stereotype
+
+skinparam database<<21>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam rectangle<<32>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+}
+skinparam rectangle<<29>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+}
+skinparam rectangle<<17>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+
+rectangle "==Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>\n\nProvides all of the Internet banking functionality to customers via their web browser." <<17>> as 17
+database "==Database\n<size:10>[Container: Oracle Database Schema]</size>\n\nStores user registration information, hashed authentication credentials, access logs, etc." <<21>> as 21
+
+package "API Application\n[Container: Java and Spring MVC]" <<20>> {
+  skinparam PackageBorderColor<<20>> #444444
+  skinparam PackageFontColor<<20>> #444444
+
+  rectangle "==Sign In Controller\n<size:10>[Component: Spring MVC Rest Controller]</size>\n\nAllows users to sign in to the Internet Banking System." <<29>> as 29
+  rectangle "==Security Component\n<size:10>[Component: Spring Bean]</size>\n\nProvides functionality related to signing in, changing passwords, etc." <<32>> as 32
+}
+
+17 .[#707070,thickness=2].> 29 : "1. Submits credentials to\n<size:8>[JSON/HTTPS]</size>"
+29 .[#707070,thickness=2].> 32 : "2. Validates credentials using"
+32 .[#707070,thickness=2].> 21 : "3. select * from users where username = ?\n<size:8>[JDBC]</size>"
+32 <.[#707070,thickness=2]. 21 : "4. Returns user data to\n<size:8>[JDBC]</size>"
+29 <.[#707070,thickness=2]. 32 : "5. Returns true if the hashed password matches"
+17 <.[#707070,thickness=2]. 29 : "6. Sends back an authentication token to\n<size:8>[JSON/HTTPS]</size>"
+@enduml

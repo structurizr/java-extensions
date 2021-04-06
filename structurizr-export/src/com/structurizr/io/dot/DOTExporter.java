@@ -1,0 +1,403 @@
+package com.structurizr.io.dot;
+
+import com.structurizr.io.AbstractDiagramExporter;
+import com.structurizr.io.IndentingWriter;
+import com.structurizr.model.*;
+import com.structurizr.util.StringUtils;
+import com.structurizr.view.*;
+
+/**
+ * Exports Structurizr views to Graphviz DOT definitions.
+ */
+public class DOTExporter extends AbstractDiagramExporter {
+
+    private static final String DEFAULT_FONT = "Arial";
+
+    private int clusterInternalMargin = 25;
+
+    public DOTExporter() {
+    }
+
+    public void setClusterInternalMargin(int clusterInternalMargin) {
+        this.clusterInternalMargin = clusterInternalMargin;
+    }
+
+    @Override
+    protected void writeHeader(View view, IndentingWriter writer) {
+        String title = view.getTitle();
+        if (StringUtils.isNullOrEmpty(title)) {
+            title = view.getName();
+        }
+
+        String description = view.getDescription();
+        if (StringUtils.isNullOrEmpty(description)) {
+            description = "";
+        } else {
+            description = String.format("<br /><font point-size=\"24\">%s</font>", description);
+        }
+
+        String fontName = DEFAULT_FONT;
+        Font font = view.getViewSet().getConfiguration().getBranding().getFont();
+        if (font != null) {
+            fontName = font.getName();
+        }
+
+        RankDirection rankDirection = RankDirection.TopBottom;
+
+        if (view.getAutomaticLayout() != null) {
+            switch (view.getAutomaticLayout().getRankDirection()) {
+                case TopBottom:
+                    rankDirection = RankDirection.TopBottom;
+                    break;
+                case BottomTop:
+                    rankDirection = RankDirection.BottomTop;
+                    break;
+                case LeftRight:
+                    rankDirection = RankDirection.LeftRight;
+                    break;
+                case RightLeft:
+                    rankDirection = RankDirection.RightLeft;
+                    break;
+            }
+        }
+
+        writer.writeLine("digraph {");
+        writer.indent();
+        writer.writeLine("compound=true");
+        writer.writeLine(String.format("graph [fontname=\"%s\", rankdir=%s, ranksep=1.0, nodesep=1.0]", fontName, rankDirection.getCode()));
+        writer.writeLine(String.format("node [fontname=\"%s\", shape=box, margin=\"0.4,0.3\"]", fontName));
+        writer.writeLine(String.format("edge [fontname=\"%s\"]", fontName));
+        writer.writeLine(String.format("label=<<br /><font point-size=\"34\">%s</font>%s>", title, description));
+        writer.writeLine();
+    }
+
+    @Override
+    protected void writeFooter(View view, IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+    }
+
+    @Override
+    protected void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer) {
+        writer.writeLine("subgraph cluster_enterprise {");
+
+        writer.indent();
+        writer.writeLine("margin=" + clusterInternalMargin);
+        writer.writeLine(String.format("label=<<font point-size=\"24\"><br />%s</font><br /><font point-size=\"19\">[Enterprise]</font>>", enterpriseName));
+        writer.writeLine("labelloc=b");
+        writer.writeLine("color=\"#444444\"");
+        writer.writeLine("fontcolor=\"#444444\"");
+        writer.writeLine("fillcolor=\"#ffffff\"");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void endEnterpriseBoundary(IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void startGroupBoundary(String group, IndentingWriter writer) {
+        writer.writeLine("subgraph \"cluster_group_" + group + "\" {");
+
+        writer.indent();
+        writer.writeLine("margin=" + clusterInternalMargin);
+        writer.writeLine(String.format("label=<<font point-size=\"24\"><br />%s</font><br /><font point-size=\"19\">[Group]</font>>", group));
+        writer.writeLine("labelloc=b");
+        writer.writeLine("color=\"#cccccc\"");
+        writer.writeLine("fontcolor=\"#cccccc\"");
+        writer.writeLine("fillcolor=\"#ffffff\"");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void endGroupBoundary(IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void startSoftwareSystemBoundary(View view, SoftwareSystem softwareSystem, IndentingWriter writer) {
+        String color;
+        if (softwareSystem.equals(view.getSoftwareSystem())) {
+            color = "#444444";
+        } else {
+            color = "#cccccc";
+        }
+
+        writer.writeLine(String.format("subgraph cluster_%s {", softwareSystem.getId()));
+        writer.indent();
+        writer.writeLine("margin=" + clusterInternalMargin);
+        writer.writeLine(String.format("label=<<font point-size=\"24\"><br />%s</font><br /><font point-size=\"19\">%s</font>>", softwareSystem.getName(), typeOf(view, softwareSystem, true)));
+        writer.writeLine("labelloc=b");
+        writer.writeLine(String.format("color=\"%s\"", color));
+        writer.writeLine(String.format("fontcolor=\"%s\"", color));
+        writer.writeLine(String.format("fillcolor=\"%s\"", color));
+        writer.writeLine();
+    }
+
+    @Override
+    protected void endSoftwareSystemBoundary(IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void startContainerBoundary(View view, Container container, IndentingWriter writer) {
+        String color = "#444444";
+        if (view instanceof ComponentView) {
+            if (container.equals(((ComponentView)view).getContainer())) {
+                color = "#444444";
+            } else {
+                color = "#cccccc";
+            }
+        } else if (view instanceof DynamicView) {
+            if (container.equals(((DynamicView)view).getElement())) {
+                color = "#444444";
+            } else {
+                color = "#cccccc";
+            }
+        }
+
+        writer.writeLine(String.format("subgraph cluster_%s {", container.getId()));
+        writer.indent();
+        writer.writeLine("margin=" + clusterInternalMargin);
+        writer.writeLine(String.format("label=<<font point-size=\"24\"><br />%s</font><br /><font point-size=\"19\">%s</font>>", container.getName(), typeOf(view, container, true)));
+        writer.writeLine("labelloc=b");
+        writer.writeLine(String.format("color=\"%s\"", color));
+        writer.writeLine(String.format("fontcolor=\"%s\"", color));
+        writer.writeLine(String.format("fillcolor=\"%s\"", color));
+        writer.writeLine();
+    }
+
+    @Override
+    protected void endContainerBoundary(IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void startDeploymentNodeBoundary(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer) {
+        ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(deploymentNode);
+
+        writer.writeLine(String.format("subgraph cluster_%s {", deploymentNode.getId()));
+        writer.indent();
+        writer.writeLine("margin=" + clusterInternalMargin);
+        writer.writeLine(String.format("label=<<font point-size=\"24\">%s</font><br /><font point-size=\"19\">%s</font>>", deploymentNode.getName(), typeOf(view, deploymentNode, true)));
+        writer.writeLine("labelloc=b");
+        writer.writeLine(String.format("color=\"%s\"", elementStyle.getStroke()));
+        writer.writeLine(String.format("fontcolor=\"%s\"", elementStyle.getColor()));
+        writer.writeLine("fillcolor=\"#ffffff\"");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void endDeploymentNodeBoundary(IndentingWriter writer) {
+        writer.outdent();
+        writer.writeLine("}");
+        writer.writeLine();
+    }
+
+    @Override
+    protected void writeElement(View view, Element element, IndentingWriter writer) {
+        ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
+
+        int nameFontSize = elementStyle.getFontSize() + 10;
+        int metadataFontSize = elementStyle.getFontSize() - 5;
+        int descriptionFontSize = elementStyle.getFontSize();
+
+
+        String shape = shapeOf(view, element);
+        String name = element.getName();
+        String description = element.getDescription();
+        String type = typeOf(view, element, true);
+
+        if (element instanceof StaticStructureElementInstance) {
+            StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
+            name = elementInstance.getElement().getName();
+            description = elementInstance.getElement().getDescription();
+            type = typeOf(view, elementInstance.getElement(), true);
+            shape = shapeOf(view, elementInstance.getElement());
+            elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(elementInstance.getElement());
+        }
+
+        if (StringUtils.isNullOrEmpty(name)) {
+            name = "";
+        } else {
+            name = String.format("<font point-size=\"%s\">%s</font>", nameFontSize, breakText(elementStyle.getWidth(), nameFontSize, escape(name)));
+        }
+
+        if (StringUtils.isNullOrEmpty(description) || false == elementStyle.getDescription()) {
+            description = "";
+        } else {
+            description = String.format("<br /><br /><font point-size=\"%s\">%s</font>", descriptionFontSize, breakText(elementStyle.getWidth(), descriptionFontSize, escape(description)));
+        }
+
+        if (false == elementStyle.getMetadata()) {
+            type = "";
+        } else {
+            type = String.format("<br /><font point-size=\"%s\">%s</font>", metadataFontSize, type);
+        }
+
+        writer.writeLine(String.format("%s [id=%s,shape=%s, label=<%s%s%s>, style=filled, color=\"%s\", fillcolor=\"%s\", fontcolor=\"%s\"]",
+                element.getId(),
+                element.getId(),
+                shape,
+                name,
+                type,
+                description,
+                elementStyle.getStroke(),
+                elementStyle.getBackground(),
+                elementStyle.getColor()
+        ));
+    }
+
+    @Override
+    protected void writeRelationship(View view, RelationshipView relationshipView, IndentingWriter writer) {
+        Element source;
+        Element destination;
+
+        RelationshipStyle relationshipStyle = view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationshipView.getRelationship());
+        relationshipStyle.setWidth(400);
+        int descriptionFontSize = relationshipStyle.getFontSize();
+        int metadataFontSize = relationshipStyle.getFontSize() - 5;
+
+        String description = relationshipView.getDescription();
+        if (StringUtils.isNullOrEmpty(description)) {
+            description = relationshipView.getRelationship().getDescription();
+        }
+
+        if (!StringUtils.isNullOrEmpty(relationshipView.getOrder())) {
+            description = relationshipView.getOrder() + ". " + description;
+        }
+
+        if (StringUtils.isNullOrEmpty(description)) {
+            description = "";
+        } else {
+            description = breakText(relationshipStyle.getWidth(), descriptionFontSize, description);
+            description = String.format("<font point-size=\"%s\">%s</font>", descriptionFontSize, description);
+        }
+
+        String technology = relationshipView.getRelationship().getTechnology();
+        if (StringUtils.isNullOrEmpty(technology)) {
+            technology = "";
+        } else {
+            technology = String.format("<br /><font point-size=\"%s\">[%s]</font>", metadataFontSize, technology);
+        }
+
+        String clusterConfig = "";
+
+        if (relationshipView.getRelationship().getSource() instanceof DeploymentNode || relationshipView.getRelationship().getDestination() instanceof DeploymentNode) {
+            source = relationshipView.getRelationship().getSource();
+            if (source instanceof DeploymentNode) {
+                source = findElementInside((DeploymentNode)source, view);
+            }
+
+            destination = relationshipView.getRelationship().getDestination();
+            if (destination instanceof DeploymentNode) {
+                destination = findElementInside((DeploymentNode)destination, view);
+            }
+
+            if (source != null && destination != null) {
+
+                if (relationshipView.getRelationship().getSource() instanceof DeploymentNode) {
+                    clusterConfig += ",ltail=cluster_" + relationshipView.getRelationship().getSource().getId();
+                }
+
+                if (relationshipView.getRelationship().getDestination() instanceof DeploymentNode) {
+                    clusterConfig += ",lhead=cluster_" + relationshipView.getRelationship().getDestination().getId();
+                }
+            }
+        } else {
+            source = relationshipView.getRelationship().getSource();
+            destination = relationshipView.getRelationship().getDestination();
+
+            if (relationshipView.isResponse() != null && relationshipView.isResponse()) {
+                source = relationshipView.getRelationship().getDestination();
+                destination = relationshipView.getRelationship().getSource();
+            }
+        }
+
+        writer.writeLine(String.format("%s -> %s [id=%s, label=<%s%s>, style=\"%s\", color=\"%s\", fontcolor=\"%s\"%s]",
+                source.getId(),
+                destination.getId(),
+                relationshipView.getId(),
+                description,
+                technology,
+                relationshipStyle.getDashed() ? "dashed" : "solid",
+                relationshipStyle.getColor(),
+                relationshipStyle.getColor(),
+                clusterConfig
+        ));
+    }
+
+    private String escape(String s) {
+        if (StringUtils.isNullOrEmpty(s)) {
+            return s;
+        } else {
+            return s.replaceAll("\"", "\\\\\"");
+        }
+    }
+
+    private String shapeOf(View view, Element element) {
+        if (element instanceof DeploymentNode) {
+            return "node";
+        }
+
+        Shape shape = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+        switch(shape) {
+            case Circle:
+                return "circle";
+            case Component:
+                return "component";
+            case Cylinder:
+                return "cylinder";
+            case Ellipse:
+                return "ellipse";
+            case Folder:
+                return "folder";
+            case Hexagon:
+                return "hexagon";
+            default:
+                return "rect";
+        }
+    }
+
+    private Element findElementInside(DeploymentNode deploymentNode, View view) {
+        for (SoftwareSystemInstance softwareSystemInstance : deploymentNode.getSoftwareSystemInstances()) {
+            if (view.isElementInView(softwareSystemInstance)) {
+                return softwareSystemInstance;
+            }
+        }
+
+        for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
+            if (view.isElementInView(containerInstance)) {
+                return containerInstance;
+            }
+        }
+
+        for (InfrastructureNode infrastructureNode : deploymentNode.getInfrastructureNodes()) {
+            if (view.isElementInView(infrastructureNode)) {
+                return infrastructureNode;
+            }
+        }
+
+        if (deploymentNode.hasChildren()) {
+            for (DeploymentNode child : deploymentNode.getChildren()) {
+                Element element = findElementInside(child, view);
+
+                if (element != null) {
+                    return element;
+                }
+            }
+        }
+
+        return null;
+    }
+
+}

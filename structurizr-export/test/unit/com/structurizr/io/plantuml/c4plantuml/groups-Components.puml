@@ -1,0 +1,21 @@
+@startuml
+title D - F - Components
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_WITH_LEGEND()
+
+System(3, "C", "")
+
+Container_Boundary("6_boundary", "F") {
+  Boundary(group_3, "Group 4") {
+    Component(8, "H", "")
+  }
+
+  Component(7, "G", "")
+}
+
+Rel_D(3, 7, "")
+Rel_D(3, 8, "")
+@enduml

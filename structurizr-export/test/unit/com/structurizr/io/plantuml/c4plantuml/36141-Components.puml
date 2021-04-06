@@ -1,0 +1,38 @@
+@startuml
+title Internet Banking System - API Application - Components
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_WITH_LEGEND()
+
+System(4, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+Container(17, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
+System(6, "E-mail System", "The internal Microsoft Exchange e-mail system.")
+Container(18, "Mobile App", "Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
+ContainerDb(21, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+
+Container_Boundary("20_boundary", "API Application") {
+  Component(29, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in to the Internet Banking System.")
+  Component(30, "Accounts Summary Controller", "Spring MVC Rest Controller", "Provides customers with a summary of their bank accounts.")
+  Component(31, "Reset Password Controller", "Spring MVC Rest Controller", "Allows users to reset their passwords with a single use URL.")
+  Component(32, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.")
+  Component(33, "Mainframe Banking System Facade", "Spring Bean", "A facade onto the mainframe banking system.")
+  Component(34, "E-mail Component", "Spring Bean", "Sends e-mails to users.")
+}
+
+Rel_D(17, 29, "Makes API calls to", "JSON/HTTPS")
+Rel_D(17, 31, "Makes API calls to", "JSON/HTTPS")
+Rel_D(17, 30, "Makes API calls to", "JSON/HTTPS")
+Rel_D(18, 29, "Makes API calls to", "JSON/HTTPS")
+Rel_D(18, 31, "Makes API calls to", "JSON/HTTPS")
+Rel_D(18, 30, "Makes API calls to", "JSON/HTTPS")
+Rel_D(29, 32, "Uses")
+Rel_D(30, 33, "Uses")
+Rel_D(31, 32, "Uses")
+Rel_D(31, 34, "Uses")
+Rel_D(32, 21, "Reads from and writes to", "JDBC")
+Rel_D(33, 4, "Uses", "XML/HTTPS")
+Rel_D(34, 6, "Sends e-mail using")
+@enduml

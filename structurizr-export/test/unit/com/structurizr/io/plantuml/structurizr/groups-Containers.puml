@@ -1,0 +1,47 @@
+@startuml
+title D - Containers
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+  PackageBorderColor<<group>> #cccccc
+  PackageFontColor<<group>> #cccccc
+}
+hide stereotype
+top to bottom direction
+
+skinparam rectangle<<3>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<5>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<6>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+
+rectangle "==C\n<size:10>[Software System]</size>" <<3>> as 3
+
+package "D\n[Software System]" <<4>> {
+  skinparam PackageBorderColor<<4>> #444444
+  skinparam PackageFontColor<<4>> #444444
+
+  package "Group 3\n[Group]" <<group>> {
+    rectangle "==F\n<size:10>[Container]</size>" <<6>> as 6
+  }
+
+  rectangle "==E\n<size:10>[Container]</size>" <<5>> as 5
+}
+
+3 .[#707070,thickness=2].> 5 : ""
+3 .[#707070,thickness=2].> 6 : ""
+@enduml

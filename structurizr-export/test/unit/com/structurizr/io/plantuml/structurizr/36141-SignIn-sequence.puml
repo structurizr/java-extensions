@@ -1,0 +1,49 @@
+@startuml
+title API Application - Dynamic
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+  PackageBorderColor<<group>> #cccccc
+  PackageFontColor<<group>> #cccccc
+}
+hide stereotype
+skinparam sequenceParticipant<<21>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam sequenceParticipant<<32>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+}
+skinparam sequenceParticipant<<29>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+}
+skinparam sequenceParticipant<<17>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+
+participant "Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>" as 17 <<17>> #438dd5
+
+participant "Sign In Controller\n<size:10>[Component: Spring MVC Rest Controller]</size>" as 29 <<29>> #85bbf0
+
+participant "Security Component\n<size:10>[Component: Spring Bean]</size>" as 32 <<32>> #85bbf0
+
+database "Database\n<size:10>[Container: Oracle Database Schema]</size>" as 21 <<21>> #438dd5
+
+17 -[#707070]> 29 : 1. Submits credentials to
+29 -[#707070]> 32 : 2. Validates credentials using
+32 -[#707070]> 21 : 3. select * from users where username = ?
+32 <-[#707070]- 21 : 4. Returns user data to
+29 <-[#707070]- 32 : 5. Returns true if the hashed password matches
+17 <-[#707070]- 29 : 6. Sends back an authentication token to
+@enduml

@@ -1,0 +1,114 @@
+@startuml
+title Internet Banking System - Deployment - Development
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+  PackageBorderColor<<group>> #cccccc
+  PackageFontColor<<group>> #cccccc
+}
+hide stereotype
+
+skinparam rectangle<<54>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam node<<52>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam node<<55>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam database<<61>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam node<<60>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam node<<50>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam node<<59>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam node<<51>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam rectangle<<57>> {
+  BackgroundColor #999999
+  FontColor #ffffff
+  BorderColor #6b6b6b
+}
+skinparam rectangle<<64>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam rectangle<<53>> {
+  BackgroundColor #438dd5
+  FontColor #ffffff
+  BorderColor #2e6295
+}
+skinparam node<<63>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+skinparam node<<56>> {
+  BackgroundColor #ffffff
+  FontColor #000000
+  BorderColor #888888
+}
+
+node "Big Bank plc\n[Deployment Node: Big Bank plc data center]" <<55>> as 55 {
+  node "bigbank-dev001\n[Deployment Node]" <<56>> as 56 {
+    rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<57>> as 57
+  }
+
+}
+
+node "Developer Laptop\n[Deployment Node: Microsoft Windows 10 or Apple macOS]" <<50>> as 50 {
+  node "Docker Container - Database Server\n[Deployment Node: Docker]" <<59>> as 59 {
+    node "Database Server\n[Deployment Node: Oracle 12c]" <<60>> as 60 {
+      database "==Database\n<size:10>[Container: Oracle Database Schema]</size>\n\nStores user registration information, hashed authentication credentials, access logs, etc." <<61>> as 61
+    }
+
+  }
+
+  node "Docker Container - Web Server\n[Deployment Node: Docker]" <<51>> as 51 {
+    node "Apache Tomcat\n[Deployment Node: Apache Tomcat 8.x]" <<52>> as 52 {
+      rectangle "==API Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nProvides Internet banking functionality via a JSON/HTTPS API." <<54>> as 54
+      rectangle "==Web Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nDelivers the static content and the Internet banking single page application." <<53>> as 53
+    }
+
+  }
+
+  node "Web Browser\n[Deployment Node: Chrome, Firefox, Safari, or Edge]" <<63>> as 63 {
+    rectangle "==Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>\n\nProvides all of the Internet banking functionality to customers via their web browser." <<64>> as 64
+  }
+
+}
+
+54 .[#707070,thickness=2].> 57 : "Makes API calls to\n<size:8>[XML/HTTPS]</size>"
+54 .[#707070,thickness=2].> 61 : "Reads from and writes to\n<size:8>[JDBC]</size>"
+64 .[#707070,thickness=2].> 54 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
+53 .[#707070,thickness=2].> 64 : "Delivers to the customer's web browser"
+@enduml

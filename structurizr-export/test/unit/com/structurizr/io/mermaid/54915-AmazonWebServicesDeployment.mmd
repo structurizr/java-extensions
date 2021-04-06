@@ -1,0 +1,44 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph 5 [Amazon Web Services]
+    style 5 fill:#ffffff,stroke:#232f3e,color:#232f3e
+
+    subgraph 6 [US-East-1]
+      style 6 fill:#ffffff,stroke:#147eba,color:#147eba
+
+      subgraph 14 [Amazon RDS]
+        style 14 fill:#ffffff,stroke:#3b48cc,color:#3b48cc
+
+        subgraph 15 [MySQL]
+          style 15 fill:#ffffff,stroke:#3b48cc,color:#3b48cc
+
+          16[("<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Relational database schema]</div><div style='font-size: 80%; margin-top:10px'>Stores information regarding<br />the veterinarians, the<br />clients, and their pets.</div>")]
+          style 16 fill:#ffffff,stroke:#b2b2b2,color:#000000
+        end
+
+      end
+
+      subgraph 7 [Autoscaling group]
+        style 7 fill:#ffffff,stroke:#cc2264,color:#cc2264
+
+        subgraph 8 [Amazon EC2]
+          style 8 fill:#ffffff,stroke:#d86613,color:#d86613
+
+          9("<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: Java and Spring Boot]</div><div style='font-size: 80%; margin-top:10px'>Allows employees to view and<br />manage information regarding<br />the veterinarians, the<br />clients, and their pets.</div>")
+          style 9 fill:#ffffff,stroke:#b2b2b2,color:#000000
+        end
+
+      end
+
+      11("<div style='font-weight: bold'>Elastic Load Balancer</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div>")
+      style 11 fill:#ffffff,stroke:#693cc5,color:#693cc5
+      10("<div style='font-weight: bold'>Route 53</div><div style='font-size: 70%; margin-top: 0px'>[Infrastructure Node]</div>")
+      style 10 fill:#ffffff,stroke:#693cc5,color:#693cc5
+    end
+
+  end
+
+  10-. "<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>" .->11
+  11-. "<div>Forwards requests to</div><div style='font-size: 70%'>[HTTPS]</div>" .->9
+  9-. "<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC/SSL]</div>" .->16

@@ -1,0 +1,47 @@
+@startuml
+title D - F - Components
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+  PackageBorderColor<<group>> #cccccc
+  PackageFontColor<<group>> #cccccc
+}
+hide stereotype
+top to bottom direction
+
+skinparam rectangle<<3>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<7>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<8>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+
+rectangle "==C\n<size:10>[Software System]</size>" <<3>> as 3
+
+package "F\n[Container]" <<6>> {
+  skinparam PackageBorderColor<<6>> #444444
+  skinparam PackageFontColor<<6>> #444444
+
+  package "Group 4\n[Group]" <<group>> {
+    rectangle "==H\n<size:10>[Component]</size>" <<8>> as 8
+  }
+
+  rectangle "==G\n<size:10>[Component]</size>" <<7>> as 7
+}
+
+3 .[#707070,thickness=2].> 7 : ""
+3 .[#707070,thickness=2].> 8 : ""
+@enduml

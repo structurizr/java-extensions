@@ -1,0 +1,25 @@
+@startuml
+title System Landscape for Enterprise
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+LAYOUT_WITH_LEGEND()
+
+Enterprise_Boundary(enterprise, "Enterprise") {
+  Boundary(group_0, "Group 2") {
+    System(4, "D", "")
+  }
+
+  System(3, "C", "")
+}
+
+Boundary(group_1, "Group 1") {
+  System_Ext(2, "B", "")
+}
+
+System_Ext(1, "A", "")
+
+Rel_D(2, 3, "")
+Rel_D(3, 4, "")
+Rel_D(1, 2, "")
+@enduml

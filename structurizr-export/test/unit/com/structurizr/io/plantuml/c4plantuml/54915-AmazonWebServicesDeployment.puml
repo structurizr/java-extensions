@@ -1,0 +1,35 @@
+@startuml
+title Spring PetClinic - Deployment - Default
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+LAYOUT_WITH_LEGEND()
+
+Deployment_Node(5, "Amazon Web Services") {
+  Deployment_Node(6, "US-East-1") {
+    Deployment_Node(14, "Amazon RDS") {
+      Deployment_Node(15, "MySQL") {
+        ContainerDb(16, "Database", "Relational database schema", "Stores information regarding the veterinarians, the clients, and their pets.")
+      }
+
+    }
+
+    Deployment_Node(7, "Autoscaling group") {
+      Deployment_Node(8, "Amazon EC2") {
+        Container(9, "Web Application", "Java and Spring Boot", "Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.")
+      }
+
+    }
+
+    Deployment_Node(11, "Elastic Load Balancer")
+    Deployment_Node(10, "Route 53")
+  }
+
+}
+
+Rel_D(10, 11, "Forwards requests to", "HTTPS")
+Rel_D(11, 9, "Forwards requests to", "HTTPS")
+Rel_D(9, 16, "Reads from and writes to", "JDBC/SSL")
+@enduml

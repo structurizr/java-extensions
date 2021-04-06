@@ -1,0 +1,63 @@
+@startuml
+title Internet Banking System - Deployment - Live
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+LAYOUT_WITH_LEGEND()
+
+Deployment_Node(67, "Customer's mobile device", "Apple iOS or Android") {
+  Container(68, "Mobile App", "Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
+}
+
+Deployment_Node(69, "Customer's computer", "Microsoft Windows or Apple macOS") {
+  Deployment_Node(70, "Web Browser", "Chrome, Firefox, Safari, or Edge") {
+    Container(71, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
+  }
+
+}
+
+Deployment_Node(72, "Big Bank plc", "Big Bank plc data center") {
+  Deployment_Node(79, "bigbank-api*** (x8)", "Ubuntu 16.04 LTS") {
+    Deployment_Node(80, "Apache Tomcat", "Apache Tomcat 8.x") {
+      Container(81, "API Application", "Java and Spring MVC", "Provides Internet banking functionality via a JSON/HTTPS API.")
+    }
+
+  }
+
+  Deployment_Node(85, "bigbank-db01", "Ubuntu 16.04 LTS") {
+    Deployment_Node(86, "Oracle - Primary", "Oracle 12c") {
+      ContainerDb(87, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    }
+
+  }
+
+  Deployment_Node(89, "bigbank-db02", "Ubuntu 16.04 LTS") {
+    Deployment_Node(90, "Oracle - Secondary", "Oracle 12c") {
+      ContainerDb(91, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    }
+
+  }
+
+  Deployment_Node(73, "bigbank-prod001") {
+    System(74, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+  }
+
+  Deployment_Node(75, "bigbank-web*** (x4)", "Ubuntu 16.04 LTS") {
+    Deployment_Node(76, "Apache Tomcat", "Apache Tomcat 8.x") {
+      Container(77, "Web Application", "Java and Spring MVC", "Delivers the static content and the Internet banking single page application.")
+    }
+
+  }
+
+}
+
+Rel_D(77, 71, "Delivers to the customer's web browser")
+Rel_D(68, 81, "Makes API calls to", "JSON/HTTPS")
+Rel_D(71, 81, "Makes API calls to", "JSON/HTTPS")
+Rel_D(81, 74, "Makes API calls to", "XML/HTTPS")
+Rel_D(81, 87, "Reads from and writes to", "JDBC")
+Rel_D(81, 91, "Reads from and writes to", "JDBC")
+Rel_D(86, 90, "Replicates data to")
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+title Internet Banking System - Deployment - Development
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+LAYOUT_WITH_LEGEND()
+
+Deployment_Node(55, "Big Bank plc", "Big Bank plc data center") {
+  Deployment_Node(56, "bigbank-dev001") {
+    System(57, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+  }
+
+}
+
+Deployment_Node(50, "Developer Laptop", "Microsoft Windows 10 or Apple macOS") {
+  Deployment_Node(59, "Docker Container - Database Server", "Docker") {
+    Deployment_Node(60, "Database Server", "Oracle 12c") {
+      ContainerDb(61, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    }
+
+  }
+
+  Deployment_Node(51, "Docker Container - Web Server", "Docker") {
+    Deployment_Node(52, "Apache Tomcat", "Apache Tomcat 8.x") {
+      Container(54, "API Application", "Java and Spring MVC", "Provides Internet banking functionality via a JSON/HTTPS API.")
+      Container(53, "Web Application", "Java and Spring MVC", "Delivers the static content and the Internet banking single page application.")
+    }
+
+  }
+
+  Deployment_Node(63, "Web Browser", "Chrome, Firefox, Safari, or Edge") {
+    Container(64, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
+  }
+
+}
+
+Rel_D(54, 57, "Makes API calls to", "XML/HTTPS")
+Rel_D(54, 61, "Reads from and writes to", "JDBC")
+Rel_D(64, 54, "Makes API calls to", "JSON/HTTPS")
+Rel_D(53, 64, "Delivers to the customer's web browser")
+@enduml
