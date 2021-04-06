@@ -64,7 +64,7 @@ public class WebSequenceDiagramsExporter extends AbstractDiagramExporter {
         writeRelationships(view, writer);
         writeFooter(view, writer);
 
-        return new Diagram(view.getKey(), view.getName(), writer.toString());
+        return new Diagram(view, writer.toString());
     }
 
     @Override

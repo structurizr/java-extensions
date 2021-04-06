@@ -231,7 +231,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
             writeRelationships(view, writer);
             writeFooter(view, writer);
 
-            return new Diagram(view.getKey(), view.getName(), writer.toString());
+            return new Diagram(view, writer.toString());
         } else {
             return super.export(view);
         }

@@ -1,14 +1,14 @@
 package com.structurizr.io;
 
+import com.structurizr.view.View;
+
 public class Diagram {
 
-    private String key;
-    private String name;
+    private View view;
     private String definition;
 
-    public Diagram(String key, String name, String definition) {
-        this.key = key;
-        this.name = name;
+    public Diagram(View view, String definition) {
+        this.view = view;
 
         if (definition.length() > 0) {
             this.definition = definition.substring(0, definition.length() - 1);
@@ -18,11 +18,11 @@ public class Diagram {
     }
 
     public String getKey() {
-        return key;
+        return view.getKey();
     }
 
-    public String getName() {
-        return name;
+    public View getView() {
+        return view;
     }
 
     public String getDefinition() {
