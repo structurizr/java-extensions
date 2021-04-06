@@ -17,12 +17,12 @@ skinparam rectangle<<9>> {
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<15>> {
+skinparam person<<15>> {
   BackgroundColor #999999
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<12>> {
+skinparam person<<12>> {
   BackgroundColor #999999
   FontColor #ffffff
   BorderColor #6b6b6b
@@ -42,7 +42,7 @@ skinparam rectangle<<4>> {
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<1>> {
+skinparam person<<1>> {
   BackgroundColor #08427b
   FontColor #ffffff
   BorderColor #052e56
@@ -52,15 +52,15 @@ package "Big Bank plc" <<enterprise>> {
   skinparam PackageBorderColor<<enterprise>> #444444
   skinparam PackageFontColor<<enterprise>> #444444
 
-  rectangle "==Customer Service Staff\n<size:10>[Person]</size>\n\nCustomer service staff within the bank." <<12>> as 12
-  rectangle "==Back Office Staff\n<size:10>[Person]</size>\n\nAdministration and support staff within the bank." <<15>> as 15
+  person "==Customer Service Staff\n<size:10>[Person]</size>\n\nCustomer service staff within the bank." <<12>> as 12
+  person "==Back Office Staff\n<size:10>[Person]</size>\n\nAdministration and support staff within the bank." <<15>> as 15
   rectangle "==Internet Banking System\n<size:10>[Software System]</size>\n\nAllows customers to view information about their bank accounts, and make payments." <<2>> as 2
   rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<4>> as 4
   rectangle "==E-mail System\n<size:10>[Software System]</size>\n\nThe internal Microsoft Exchange e-mail system." <<6>> as 6
   rectangle "==ATM\n<size:10>[Software System]</size>\n\nAllows customers to withdraw cash." <<9>> as 9
 }
 
-rectangle "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
+person "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
 
 9 .[#707070,thickness=2].> 4 : "Uses"
 1 .[#707070,thickness=2].> 9 : "Withdraws cash using"

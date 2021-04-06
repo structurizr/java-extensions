@@ -103,7 +103,7 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
 
         switch(shape) {
             case Person:
-                return "rectangle";
+                return "person";
             case Component:
                 return "component";
             case Cylinder:

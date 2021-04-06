@@ -27,13 +27,13 @@ skinparam rectangle<<4>> {
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<1>> {
+skinparam person<<1>> {
   BackgroundColor #08427b
   FontColor #ffffff
   BorderColor #052e56
 }
 
-rectangle "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
+person "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
 rectangle "==Internet Banking System\n<size:10>[Software System]</size>\n\nAllows customers to view information about their bank accounts, and make payments." <<2>> as 2
 rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<4>> as 4
 rectangle "==E-mail System\n<size:10>[Software System]</size>\n\nThe internal Microsoft Exchange e-mail system." <<6>> as 6
