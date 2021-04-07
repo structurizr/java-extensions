@@ -108,6 +108,7 @@ public class MermaidDiagramExporterTests extends AbstractExporterTests {
         containerView.add(container1);
         containerView.add(container2);
 
+        containerView.setExternalSoftwareSystemBoundariesVisible(true);
         Diagram diagram = new MermaidDiagramExporter().export(containerView);
         assertEquals("graph TB\n" +
                 "  linkStyle default fill:#ffffff\n" +
@@ -125,6 +126,23 @@ public class MermaidDiagramExporterTests extends AbstractExporterTests {
                 "    4[\"<div style='font-weight: bold'>Container 2</div><div style='font-size: 70%; margin-top: 0px'>[Container]</div>\"]\n" +
                 "    style 4 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "  end\n" +
+                "\n" +
+                "  2-. \"<div>Uses</div><div style='font-size: 70%'></div>\" .->4", diagram.getDefinition());
+
+        containerView.setExternalSoftwareSystemBoundariesVisible(false);
+        diagram = new MermaidDiagramExporter().export(containerView);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph 1 [Software System 1]\n" +
+                "    style 1 fill:#ffffff,stroke:#444444,color:#444444\n" +
+                "\n" +
+                "    2[\"<div style='font-weight: bold'>Container 1</div><div style='font-size: 70%; margin-top: 0px'>[Container]</div>\"]\n" +
+                "    style 2 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  4[\"<div style='font-weight: bold'>Container 2</div><div style='font-size: 70%; margin-top: 0px'>[Container]</div>\"]\n" +
+                "  style 4 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "\n" +
                 "  2-. \"<div>Uses</div><div style='font-size: 70%'></div>\" .->4", diagram.getDefinition());
     }
@@ -145,6 +163,7 @@ public class MermaidDiagramExporterTests extends AbstractExporterTests {
         componentView.add(component1);
         componentView.add(component2);
 
+        componentView.setExternalSoftwareSystemBoundariesVisible(true);
         Diagram diagram = new MermaidDiagramExporter().export(componentView);
         assertEquals("graph TB\n" +
                 "  linkStyle default fill:#ffffff\n" +
@@ -162,6 +181,23 @@ public class MermaidDiagramExporterTests extends AbstractExporterTests {
                 "    6[\"<div style='font-weight: bold'>Component 2</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>\"]\n" +
                 "    style 6 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "  end\n" +
+                "\n" +
+                "  3-. \"<div>Uses</div><div style='font-size: 70%'></div>\" .->6", diagram.getDefinition());
+
+        componentView.setExternalSoftwareSystemBoundariesVisible(false);
+        diagram = new MermaidDiagramExporter().export(componentView);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph 2 [Container 1]\n" +
+                "    style 2 fill:#ffffff,stroke:#444444,color:#444444\n" +
+                "\n" +
+                "    3[\"<div style='font-weight: bold'>Component 1</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>\"]\n" +
+                "    style 3 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  6[\"<div style='font-weight: bold'>Component 2</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>\"]\n" +
+                "  style 6 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "\n" +
                 "  3-. \"<div>Uses</div><div style='font-size: 70%'></div>\" .->6", diagram.getDefinition());
     }

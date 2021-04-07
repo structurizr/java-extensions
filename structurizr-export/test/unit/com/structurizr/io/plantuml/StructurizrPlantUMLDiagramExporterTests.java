@@ -115,6 +115,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         containerView.add(container1);
         containerView.add(container2);
 
+        containerView.setExternalSoftwareSystemBoundariesVisible(true);
         Diagram diagram = new StructurizrPlantUMLExporter().export(containerView);
         assertEquals("@startuml\n" +
                 "title Software System 1 - Containers\n" +
@@ -157,6 +158,45 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "2 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
                 "@enduml", diagram.getDefinition());
+
+        containerView.setExternalSoftwareSystemBoundariesVisible(false);
+        diagram = new StructurizrPlantUMLExporter().export(containerView);
+        assertEquals("@startuml\n" +
+                "title Software System 1 - Containers\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<4>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
+                "  skinparam PackageBorderColor<<1>> #444444\n" +
+                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "\n" +
+                "2 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "@enduml", diagram.getDefinition());
     }
 
     @Test
@@ -175,6 +215,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         componentView.add(component1);
         componentView.add(component2);
 
+        componentView.setExternalSoftwareSystemBoundariesVisible(true);
         Diagram diagram = new StructurizrPlantUMLExporter().export(componentView);
         assertEquals("@startuml\n" +
                 "title Software System 1 - Container 1 - Components\n" +
@@ -214,6 +255,45 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "}\n" +
+                "\n" +
+                "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
+                "@enduml", diagram.getDefinition());
+
+        componentView.setExternalSoftwareSystemBoundariesVisible(false);
+        diagram = new StructurizrPlantUMLExporter().export(componentView);
+        assertEquals("@startuml\n" +
+                "title Software System 1 - Container 1 - Components\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<6>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Container 1\\n[Container]\" <<2>> {\n" +
+                "  skinparam PackageBorderColor<<2>> #444444\n" +
+                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "\n" +
                 "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
                 "@enduml", diagram.getDefinition());

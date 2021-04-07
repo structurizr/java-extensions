@@ -154,7 +154,11 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
         softwareSystems.sort(Comparator.comparing(Element::getId));
 
         for (SoftwareSystem softwareSystem : softwareSystems) {
-            startSoftwareSystemBoundary(view, softwareSystem, writer);
+            boolean showSoftwareSystemBoundary = softwareSystem.equals(view.getSoftwareSystem()) || view.getExternalSoftwareSystemBoundariesVisible();
+
+            if (showSoftwareSystemBoundary) {
+                startSoftwareSystemBoundary(view, softwareSystem, writer);
+            }
 
             List<GroupableElement> scopedElements = new ArrayList<>();
             for (ElementView elementView : view.getElements()) {
@@ -164,7 +168,12 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
             }
 
             writeElements(view, scopedElements, writer);
-            endSoftwareSystemBoundary(writer);
+
+            if (showSoftwareSystemBoundary) {
+                endSoftwareSystemBoundary(writer);
+            } else {
+                writer.writeLine();
+            }
         }
 
         writeRelationships(view, writer);
@@ -194,7 +203,12 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
         containers.sort(Comparator.comparing(Element::getId));
 
         for (Container container : containers) {
-            startContainerBoundary(view, container, writer);
+            boolean showContainerBoundary = container.equals(view.getContainer()) || view.getExternalContainerBoundariesVisible();
+
+            if (showContainerBoundary) {
+                startContainerBoundary(view, container, writer);
+            }
+
             List<GroupableElement> scopedElements = new ArrayList<>();
             for (ElementView elementView : view.getElements()) {
                 if (elementView.getElement().getParent() == container) {
@@ -202,7 +216,12 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
                 }
             }
             writeElements(view, scopedElements, writer);
-            endContainerBoundary(writer);
+
+            if (showContainerBoundary) {
+                endContainerBoundary(writer);
+            } else {
+                writer.writeLine();
+            }
         }
 
         writeRelationships(view, writer);
