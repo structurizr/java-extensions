@@ -68,7 +68,7 @@ public class C4PlantUMLWriter extends BasicPlantUMLWriter {
 	public static final String C4_ELEMENT_TYPE = "c4:element:type";
 
 	public static enum Type {
-		Default, Db
+		Default, Db, Queue
 	}
 
 	public static enum Directions {
