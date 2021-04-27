@@ -11,6 +11,6 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## Changelog
 
-### 1.0.0 (unreleased)
+### 1.0.0 (27th April 2021)
 
 - Initial version, refactored from existing (and separate) PlantUML, Mermaid, DOT, WebSequenceDiagrams, and Ilograph exporters.
