@@ -154,6 +154,8 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
             String shape = "";
             if (elementStyle.getShape() == Shape.Cylinder) {
                 shape = "Db";
+            } else if (elementStyle.getShape() == Shape.Pipe) {
+                shape = "Queue";
             }
 
             if (StringUtils.isNullOrEmpty(container.getTechnology())) {
