@@ -363,6 +363,8 @@ public class DOTExporter extends AbstractDiagramExporter {
                 return "folder";
             case Hexagon:
                 return "hexagon";
+            case Diamond:
+                return "diamond";
             default:
                 return "rect";
         }
