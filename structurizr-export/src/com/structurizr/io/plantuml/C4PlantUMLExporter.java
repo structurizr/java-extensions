@@ -1,5 +1,6 @@
 package com.structurizr.io.plantuml;
 
+import com.structurizr.io.Diagram;
 import com.structurizr.io.IndentingWriter;
 import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
@@ -116,6 +117,15 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
+    }
+
+    @Override
+    public Diagram export(DynamicView view) {
+        if (isUseSequenceDiagrams()) {
+            throw new UnsupportedOperationException("Sequence diagrams are not supported by C4-PlantUML");
+        } else {
+            return super.export(view);
+        }
     }
 
     @Override

@@ -56,12 +56,13 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/c4plantuml/36141-LiveDeployment.puml"));
         assertEquals(expected, diagram.getDefinition());
 
-        // and the sequence diagram version
-        exporter.setUseSequenceDiagrams(true);
-        diagrams = exporter.export(workspace);
-        diagram = diagrams.stream().filter(d -> d.getKey().equals("SignIn")).findFirst().get();
-        expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/c4plantuml/36141-SignIn-sequence.puml"));
-        assertEquals(expected, diagram.getDefinition());
+        try {
+            // and the sequence diagram version ... which isn't supported
+            exporter.setUseSequenceDiagrams(true);
+            exporter.export(workspace);
+        } catch (UnsupportedOperationException uoe) {
+            assertEquals("Sequence diagrams are not supported by C4-PlantUML", uoe.getMessage());
+        }
     }
 
     @Test

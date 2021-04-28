@@ -11,6 +11,10 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## Changelog
 
+##  (unreleased)
+
+- Trying to render a sequence diagram with C4-PlantUML now throws an unsupported exception, as C4-PlantUML doesn't natively support sequence diagrams.
+
 ### 1.0.0 (27th April 2021)
 
 - Initial version, refactored from existing (and separate) PlantUML, Mermaid, DOT, WebSequenceDiagrams, and Ilograph exporters.
