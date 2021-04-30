@@ -7,13 +7,13 @@ title API Application - Dynamic
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 LAYOUT_WITH_LEGEND()
 
-Container(17, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
-ContainerDb(21, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
-
 Container_Boundary("20_boundary", "API Application") {
   Component(29, "Sign In Controller", "Spring MVC Rest Controller", "Allows users to sign in to the Internet Banking System.")
   Component(32, "Security Component", "Spring Bean", "Provides functionality related to signing in, changing passwords, etc.")
 }
+
+Container(17, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
+ContainerDb(21, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
 
 Rel_D(17, 29, "1. Submits credentials to", "JSON/HTTPS")
 Rel_D(29, 32, "2. Validates credentials using")

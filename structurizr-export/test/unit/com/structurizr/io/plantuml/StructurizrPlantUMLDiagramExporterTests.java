@@ -7,10 +7,7 @@ import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.AutomaticLayout;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.ThemeUtils;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -296,6 +293,202 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "\n" +
                 "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDynamicDiagramWithExternalContainers() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1");
+        SoftwareSystem softwareSystem2 = workspace.getModel().addSoftwareSystem("Software System 2");
+        Container container2 = softwareSystem2.addContainer("Container 2");
+
+        container1.uses(container2, "Uses");
+
+        DynamicView dynamicView = workspace.getViews().createDynamicView(softwareSystem1, "Dynamic", "");
+        dynamicView.add(container1, container2);
+
+        dynamicView.setExternalBoundariesVisible(true);
+        Diagram diagram = new StructurizrPlantUMLExporter().export(dynamicView);
+        assertEquals("@startuml\n" +
+                "title Software System 1 - Dynamic\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<4>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
+                "  skinparam PackageBorderColor<<1>> #444444\n" +
+                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "}\n" +
+                "\n" +
+                "package \"Software System 2\\n[Software System]\" <<3>> {\n" +
+                "  skinparam PackageBorderColor<<3>> #cccccc\n" +
+                "  skinparam PackageFontColor<<3>> #cccccc\n" +
+                "\n" +
+                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "}\n" +
+                "\n" +
+                "2 .[#707070,thickness=2].> 4 : \"1. Uses\"\n" +
+                "@enduml", diagram.getDefinition());
+
+        dynamicView.setExternalBoundariesVisible(false);
+        diagram = new StructurizrPlantUMLExporter().export(dynamicView);
+        assertEquals("@startuml\n" +
+                "title Software System 1 - Dynamic\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<4>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
+                "  skinparam PackageBorderColor<<1>> #444444\n" +
+                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "\n" +
+                "2 .[#707070,thickness=2].> 4 : \"1. Uses\"\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+
+    @Test
+    public void test_renderDynamicDiagramWithExternalComponents() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
+        Container container1 = softwareSystem1.addContainer("Container 1");
+        Component component1 = container1.addComponent("Component 1");
+        Container container2 = softwareSystem1.addContainer("Container 2");
+        Component component2 = container2.addComponent("Component 2");
+
+        component1.uses(component2, "Uses");
+
+        DynamicView dynamicView = workspace.getViews().createDynamicView(container1, "Dynamic", "");
+        dynamicView.add(component1, component2);
+
+        dynamicView.setExternalBoundariesVisible(true);
+        Diagram diagram = new StructurizrPlantUMLExporter().export(dynamicView);
+        assertEquals("@startuml\n" +
+                "title Container 1 - Dynamic\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<5>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Container 1\\n[Container]\" <<2>> {\n" +
+                "  skinparam PackageBorderColor<<2>> #444444\n" +
+                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "}\n" +
+                "\n" +
+                "package \"Container 2\\n[Container]\" <<4>> {\n" +
+                "  skinparam PackageBorderColor<<4>> #cccccc\n" +
+                "  skinparam PackageFontColor<<4>> #cccccc\n" +
+                "\n" +
+                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
+                "}\n" +
+                "\n" +
+                "3 .[#707070,thickness=2].> 5 : \"1. Uses\"\n" +
+                "@enduml", diagram.getDefinition());
+
+        dynamicView.setExternalBoundariesVisible(false);
+        diagram = new StructurizrPlantUMLExporter().export(dynamicView);
+        assertEquals("@startuml\n" +
+                "title Container 1 - Dynamic\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "  PackageBorderColor<<group>> #cccccc\n" +
+                "  PackageFontColor<<group>> #cccccc\n" +
+                "}\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<5>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Container 1\\n[Container]\" <<2>> {\n" +
+                "  skinparam PackageBorderColor<<2>> #444444\n" +
+                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
+                "\n" +
+                "3 .[#707070,thickness=2].> 5 : \"1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 

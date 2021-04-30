@@ -1,11 +1,6 @@
 graph TB
   linkStyle default fill:#ffffff
 
-  17["<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>"]
-  style 17 fill:#438dd5,stroke:#2e6295,color:#ffffff
-  21[("<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>")]
-  style 21 fill:#438dd5,stroke:#2e6295,color:#ffffff
-
   subgraph 20 [API Application]
     style 20 fill:#ffffff,stroke:#444444,color:#444444
 
@@ -14,6 +9,11 @@ graph TB
     32["<div style='font-weight: bold'>Security Component</div><div style='font-size: 70%; margin-top: 0px'>[Component: Spring Bean]</div><div style='font-size: 80%; margin-top:10px'>Provides functionality<br />related to signing in,<br />changing passwords, etc.</div>"]
     style 32 fill:#85bbf0,stroke:#5d82a8,color:#000000
   end
+
+  17["<div style='font-weight: bold'>Single-Page Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript and Angular]</div><div style='font-size: 80%; margin-top:10px'>Provides all of the Internet<br />banking functionality to<br />customers via their web<br />browser.</div>"]
+  style 17 fill:#438dd5,stroke:#2e6295,color:#ffffff
+  21[("<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Oracle Database Schema]</div><div style='font-size: 80%; margin-top:10px'>Stores user registration<br />information, hashed<br />authentication credentials,<br />access logs, etc.</div>")]
+  style 21 fill:#438dd5,stroke:#2e6295,color:#ffffff
 
   17-. "<div>1. Submits credentials to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>" .->29
   29-. "<div>2. Validates credentials<br />using</div><div style='font-size: 70%'></div>" .->32

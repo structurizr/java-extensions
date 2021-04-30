@@ -235,42 +235,81 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
         IndentingWriter writer = new IndentingWriter();
         writeHeader(view, writer);
 
+        boolean elementsWritten = false;
+
         Element element = view.getElement();
 
-        boolean elementsWritten = false;
-        for (ElementView elementView : view.getElements()) {
-            if (elementView.getElement().getParent() != element) {
+        if (element == null) {
+            for (ElementView elementView : view.getElements()) {
                 writeElement(view, elementView.getElement(), writer);
                 elementsWritten = true;
+            }
+        } else {
+            if (element instanceof SoftwareSystem) {
+                List<SoftwareSystem> softwareSystems = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Container).map(c -> ((Container)c).getSoftwareSystem()).collect(Collectors.toSet()));
+                softwareSystems.sort(Comparator.comparing(Element::getId));
+
+                for (SoftwareSystem softwareSystem : softwareSystems) {
+                    boolean showSoftwareSystemBoundary = softwareSystem.equals(view.getElement()) || view.getExternalBoundariesVisible();
+
+                    if (showSoftwareSystemBoundary) {
+                        startSoftwareSystemBoundary(view, softwareSystem, writer);
+                    }
+
+                    for (ElementView elementView : view.getElements()) {
+                        if (elementView.getElement().getParent() == softwareSystem) {
+                            writeElement(view, elementView.getElement(), writer);
+                        }
+                    }
+
+                    if (showSoftwareSystemBoundary) {
+                        endSoftwareSystemBoundary(writer);
+                    } else {
+                        writer.writeLine();
+                    }
+                }
+
+                for (ElementView elementView : view.getElements()) {
+                    if (elementView.getElement().getParent() == null) {
+                        writeElement(view, elementView.getElement(), writer);
+                        elementsWritten = true;
+                    }
+                }
+            } else if (element instanceof Container) {
+                List<Container> containers = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Component).map(c -> ((Component)c).getContainer()).collect(Collectors.toSet()));
+                containers.sort(Comparator.comparing(Element::getId));
+
+                for (Container container : containers) {
+                    boolean showContainerBoundary = container.equals(view.getElement()) || view.getExternalBoundariesVisible();
+
+                    if (showContainerBoundary) {
+                        startContainerBoundary(view, container, writer);
+                    }
+
+                    for (ElementView elementView : view.getElements()) {
+                        if (elementView.getElement().getParent() == container) {
+                            writeElement(view, elementView.getElement(), writer);
+                        }
+                    }
+
+                    if (showContainerBoundary) {
+                        endContainerBoundary(writer);
+                    } else {
+                        writer.writeLine();
+                    }
+                }
+
+                for (ElementView elementView : view.getElements()) {
+                    if (!(elementView.getElement().getParent() instanceof Container)) {
+                        writeElement(view, elementView.getElement(), writer);
+                        elementsWritten = true;
+                    }
+                }
             }
         }
 
         if (elementsWritten) {
             writer.writeLine();
-        }
-
-        if (element == null) {
-            for (ElementView elementView : view.getElements()) {
-                writeElement(view, elementView.getElement(), writer);
-            }
-        } else {
-            if (element instanceof SoftwareSystem) {
-                startSoftwareSystemBoundary(view, (SoftwareSystem)element, writer);
-            } else if (element instanceof Container) {
-                startContainerBoundary(view, (Container)element, writer);
-            }
-
-            for (ElementView elementView : view.getElements()) {
-                if (elementView.getElement().getParent() == element) {
-                    writeElement(view, elementView.getElement(), writer);
-                }
-            }
-
-            if (element instanceof SoftwareSystem) {
-                endSoftwareSystemBoundary(writer);
-            } else if (element instanceof Container) {
-                endContainerBoundary(writer);
-            }
         }
 
         writeRelationships(view, writer);
