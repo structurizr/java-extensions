@@ -11,9 +11,11 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## Changelog
 
-### 1.0.2 (unreleased)
+### 1.1.0 (7th June 2021)
 
 - Adds support for "external" software system/container boundaries on dynamic views.
+- Adds support for more shapes (pipe and hexagon) via the StructurizrPlantUMLExporter.
+- Adds support for exporting animations (StructurizrPlantUML and C4-PlantUML only).
 
 ### 1.0.1 (29th April 2021)
 

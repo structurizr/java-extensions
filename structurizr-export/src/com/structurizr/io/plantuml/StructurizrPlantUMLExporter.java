@@ -27,6 +27,11 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
+    protected boolean isAnimationSupported(View view) {
+        return true;
+    }
+
+    @Override
     protected void writeHeader(View view, IndentingWriter writer) {
         super.writeHeader(view, writer);
 
@@ -53,16 +58,12 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
         for (Element element : elements) {
             String id = idOf(element);
 
-            if (element instanceof StaticStructureElementInstance) {
-                element = ((StaticStructureElementInstance)element).getElement();
-            }
-
             String type = plantUMLShapeOf(view, element);
             if ("actor".equals(type)) {
                 type = "rectangle"; // the actor shape is not supported in this implementation
             }
 
-            ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
+            ElementStyle elementStyle = findElementStyle(view, element);
 
             String background = elementStyle.getBackground();
             String stroke = elementStyle.getStroke();
@@ -203,6 +204,10 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                 )
         );
         writer.indent();
+
+        if (!isVisible(view, deploymentNode)) {
+            writer.writeLine("hide " + deploymentNode.getId());
+        }
     }
 
     @Override
@@ -239,7 +244,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void writeElement(View view, Element element, IndentingWriter writer) {
-        ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
+        ElementStyle elementStyle = findElementStyle(view, element);
 
         if (view instanceof DynamicView && isUseSequenceDiagrams()) {
             writer.writeLine(String.format("%s \"%s\\n<size:10>%s</size>\" as %s <<%s>> %s%s",
@@ -261,7 +266,6 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
             if (element instanceof StaticStructureElementInstance) {
                 StaticStructureElementInstance elementInstance = (StaticStructureElementInstance) element;
-                elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle(elementInstance.getElement());
                 name = elementInstance.getElement().getName();
                 description = elementInstance.getElement().getDescription();
                 type = typeOf(view, elementInstance.getElement(), true);
@@ -290,13 +294,17 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                     id,
                     id)
             );
+
+            if (!isVisible(view, element)) {
+                writer.writeLine("hide " + id);
+            }
         }
     }
 
     @Override
     protected void writeRelationship(View view, RelationshipView relationshipView, IndentingWriter writer) {
         Relationship relationship = relationshipView.getRelationship();
-        RelationshipStyle style = relationshipStyleOf(view, relationship);
+        RelationshipStyle style = findRelationshipStyle(view, relationship);
 
         String description = "";
 
@@ -344,15 +352,20 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                 arrowEnd = style.getDashed() ? ".>" : "->";
             }
 
+            if (!isVisible(view, relationshipView)) {
+                relationshipStyle = "hidden";
+            }
+
             // 1 .[#rrggbb,thickness=n].> 2 : "...\n<size:8>...</size>
-            writer.writeLine(format("%s %s[%s]%s %s : \"%s%s\"",
+            writer.writeLine(format("%s %s[%s]%s %s : \"<color:%s>%s%s\"",
                     idOf(relationship.getSource()),
                     arrowStart,
                     relationshipStyle,
                     arrowEnd,
                     idOf(relationship.getDestination()),
+                    style.getColor(),
                     description,
-                    (StringUtils.isNullOrEmpty(relationship.getTechnology()) ? "" : "\\n<size:8>[" + relationship.getTechnology() + "]</size>")
+                    (StringUtils.isNullOrEmpty(relationship.getTechnology()) ? "" : "\\n<color:" + style.getColor() + "><size:8>[" + relationship.getTechnology() + "]</size>")
             ));
         }
     }

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractDiagramExporter extends AbstractExporter {
 
+    private Object frame = null;
+
     /**
      * Exports all views in the workspace.
      *
@@ -69,10 +71,38 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     }
 
     public Diagram export(SystemLandscapeView view) {
+        Diagram diagram = export(view, null);
+
+        if (isAnimationSupported(view) && !view.getAnimations().isEmpty()) {
+            for (Animation animation : view.getAnimations()) {
+                Diagram frame = export(view, animation.getOrder());
+                diagram.addFrame(frame);
+            }
+        }
+
+        return diagram;
+    }
+
+    private Diagram export(SystemLandscapeView view, Integer animationStep) {
+        this.frame = animationStep;
         return export(view, view.isEnterpriseBoundaryVisible());
     }
 
     public Diagram export(SystemContextView view) {
+        Diagram diagram = export(view, null);
+
+        if (isAnimationSupported(view) && !view.getAnimations().isEmpty()) {
+            for (Animation animation : view.getAnimations()) {
+                Diagram frame = export(view, animation.getOrder());
+                diagram.addFrame(frame);
+            }
+        }
+
+        return diagram;
+    }
+
+    private Diagram export(SystemContextView view, Integer animationStep) {
+        this.frame = animationStep;
         return export(view, view.isEnterpriseBoundaryVisible());
     }
 
@@ -135,6 +165,20 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     }
 
     public Diagram export(ContainerView view) {
+        Diagram diagram = export(view, null);
+
+        if (isAnimationSupported(view) && !view.getAnimations().isEmpty()) {
+            for (Animation animation : view.getAnimations()) {
+                Diagram frame = export(view, animation.getOrder());
+                diagram.addFrame(frame);
+            }
+        }
+
+        return diagram;
+    }
+
+    public Diagram export(ContainerView view, Integer animationStep) {
+        this.frame = animationStep;
         IndentingWriter writer = new IndentingWriter();
         writeHeader(view, writer);
 
@@ -184,6 +228,20 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     }
 
     public Diagram export(ComponentView view) {
+        Diagram diagram = export(view, null);
+
+        if (isAnimationSupported(view) && !view.getAnimations().isEmpty()) {
+            for (Animation animation : view.getAnimations()) {
+                Diagram frame = export(view, animation.getOrder());
+                diagram.addFrame(frame);
+            }
+        }
+
+        return diagram;
+    }
+
+    public Diagram export(ComponentView view, Integer animationStep) {
+        this.frame = animationStep;
         IndentingWriter writer = new IndentingWriter();
         writeHeader(view, writer);
 
@@ -232,6 +290,25 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     }
 
     public Diagram export(DynamicView view) {
+        Diagram diagram = export(view, null);
+
+        if (isAnimationSupported(view)) {
+            LinkedHashSet<String> orders = new LinkedHashSet<>();
+            for (RelationshipView relationshipView : view.getRelationships()) {
+                orders.add(relationshipView.getOrder());
+            }
+
+            for (String order : orders) {
+                Diagram frame = export(view, order);
+                diagram.addFrame(frame);
+            }
+        }
+
+        return diagram;
+    }
+
+    public Diagram export(DynamicView view, String order) {
+        this.frame = order;
         IndentingWriter writer = new IndentingWriter();
         writeHeader(view, writer);
 
@@ -318,23 +395,37 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
         return new Diagram(view, writer.toString());
     }
 
-     public Diagram export(DeploymentView view) {
-         IndentingWriter writer = new IndentingWriter();
-         writeHeader(view, writer);
+    public Diagram export(DeploymentView view) {
+        Diagram diagram = export(view, null);
 
-         for (ElementView elementView : view.getElements()) {
-             if (elementView.getElement() instanceof DeploymentNode && elementView.getElement().getParent() == null) {
-                 write(view, (DeploymentNode)elementView.getElement(), writer);
-             }
-         }
+        if (isAnimationSupported(view) && !view.getAnimations().isEmpty()) {
+            for (Animation animation : view.getAnimations()) {
+                Diagram frame = export(view, animation.getOrder());
+                diagram.addFrame(frame);
+            }
+        }
 
-         writeRelationships(view, writer);
-         writeFooter(view, writer);
+        return diagram;
+    }
 
-         return new Diagram(view, writer.toString());
-     }
+    public Diagram export(DeploymentView view, Integer animationStep) {
+        this.frame = animationStep;
+        IndentingWriter writer = new IndentingWriter();
+        writeHeader(view, writer);
 
-     private void write(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer) {
+        for (ElementView elementView : view.getElements()) {
+            if (elementView.getElement() instanceof DeploymentNode && elementView.getElement().getParent() == null) {
+                write(view, (DeploymentNode)elementView.getElement(), writer);
+            }
+        }
+
+        writeRelationships(view, writer);
+        writeFooter(view, writer);
+
+        return new Diagram(view, writer.toString());
+    }
+
+    private void write(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer) {
         startDeploymentNodeBoundary(view, deploymentNode, writer);
 
         List<DeploymentNode> children = new ArrayList<>(deploymentNode.getChildren());
@@ -443,5 +534,56 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
 
     protected abstract void writeElement(View view, Element element, IndentingWriter writer);
     protected abstract void writeRelationship(View view, RelationshipView relationshipView, IndentingWriter writer);
+
+    protected boolean isAnimationSupported(View view) {
+        return false;
+    }
+
+    protected boolean isVisible(View view, Element element) {
+        if (frame != null) {
+            Set<String> elementIds = new HashSet<>();
+
+            if (view instanceof StaticView) {
+                int step = (int)frame;
+                if (step > 0) {
+                    StaticView staticView = (StaticView) view;
+                    staticView.getAnimations().stream().filter(a -> a.getOrder() <= step).forEach(a -> {
+                        elementIds.addAll(a.getElements());
+                    });
+
+                    return elementIds.contains(element.getId());
+                }
+            } else if (view instanceof DeploymentView) {
+                int step = (int)frame;
+                if (step > 0) {
+                    DeploymentView deploymentView = (DeploymentView) view;
+                    deploymentView.getAnimations().stream().filter(a -> a.getOrder() <= step).forEach(a -> {
+                        elementIds.addAll(a.getElements());
+                    });
+
+                    return elementIds.contains(element.getId());
+                }
+            } else if (view instanceof DynamicView) {
+                String order = (String)frame;
+                view.getRelationships().stream().filter(rv -> order.equals(rv.getOrder())).forEach(rv -> {
+                    elementIds.add(rv.getRelationship().getSourceId());
+                    elementIds.add(rv.getRelationship().getDestinationId());
+                });
+
+                return elementIds.contains(element.getId());
+            }
+        }
+
+        return true;
+    }
+
+    protected boolean isVisible(View view, RelationshipView relationshipView) {
+        if (view instanceof DynamicView && frame != null) {
+            return frame.equals(relationshipView.getOrder());
+        }
+
+        return true;
+    }
+
 
 }

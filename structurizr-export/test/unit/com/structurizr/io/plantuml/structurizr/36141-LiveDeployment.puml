@@ -159,11 +159,11 @@ node "Big Bank plc\n[Deployment Node: Big Bank plc data center]" <<72>> as 72 {
 
 }
 
-77 .[#707070,thickness=2].> 71 : "Delivers to the customer's web browser"
-68 .[#707070,thickness=2].> 81 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
-71 .[#707070,thickness=2].> 81 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
-81 .[#707070,thickness=2].> 74 : "Makes API calls to\n<size:8>[XML/HTTPS]</size>"
-81 .[#707070,thickness=2].> 87 : "Reads from and writes to\n<size:8>[JDBC]</size>"
-81 .[#707070,thickness=2].> 91 : "Reads from and writes to\n<size:8>[JDBC]</size>"
-86 .[#707070,thickness=2].> 90 : "Replicates data to"
+77 .[#707070,thickness=2].> 71 : "<color:#707070>Delivers to the customer's web browser"
+68 .[#707070,thickness=2].> 81 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+71 .[#707070,thickness=2].> 81 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+81 .[#707070,thickness=2].> 74 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[XML/HTTPS]</size>"
+81 .[#707070,thickness=2].> 87 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
+81 .[#707070,thickness=2].> 91 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
+86 .[#707070,thickness=2].> 90 : "<color:#707070>Replicates data to"
 @enduml

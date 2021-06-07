@@ -68,14 +68,14 @@ package "Internet Banking System\n[Software System]" <<2>> {
   database "==Database\n<size:10>[Container: Oracle Database Schema]</size>\n\nStores user registration information, hashed authentication credentials, access logs, etc." <<21>> as 21
 }
 
-1 .[#707070,thickness=2].> 19 : "Visits bigbank.com/ib using\n<size:8>[HTTPS]</size>"
-1 .[#707070,thickness=2].> 17 : "Views account balances, and makes payments using"
-1 .[#707070,thickness=2].> 18 : "Views account balances, and makes payments using"
-19 .[#707070,thickness=2].> 17 : "Delivers to the customer's web browser"
-20 .[#707070,thickness=2].> 21 : "Reads from and writes to\n<size:8>[JDBC]</size>"
-20 .[#707070,thickness=2].> 4 : "Makes API calls to\n<size:8>[XML/HTTPS]</size>"
-20 .[#707070,thickness=2].> 6 : "Sends e-mail using\n<size:8>[SMTP]</size>"
-17 .[#707070,thickness=2].> 20 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
-18 .[#707070,thickness=2].> 20 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
-6 .[#707070,thickness=2].> 1 : "Sends e-mails to"
+1 .[#707070,thickness=2].> 19 : "<color:#707070>Visits bigbank.com/ib using\n<color:#707070><size:8>[HTTPS]</size>"
+1 .[#707070,thickness=2].> 17 : "<color:#707070>Views account balances, and makes payments using"
+1 .[#707070,thickness=2].> 18 : "<color:#707070>Views account balances, and makes payments using"
+19 .[#707070,thickness=2].> 17 : "<color:#707070>Delivers to the customer's web browser"
+20 .[#707070,thickness=2].> 21 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
+20 .[#707070,thickness=2].> 4 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[XML/HTTPS]</size>"
+20 .[#707070,thickness=2].> 6 : "<color:#707070>Sends e-mail using\n<color:#707070><size:8>[SMTP]</size>"
+17 .[#707070,thickness=2].> 20 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+18 .[#707070,thickness=2].> 20 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+6 .[#707070,thickness=2].> 1 : "<color:#707070>Sends e-mails to"
 @enduml

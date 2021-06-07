@@ -95,7 +95,7 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
     }
 
     String plantUMLShapeOf(View view, Element element) {
-        Shape shape = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+        Shape shape = findElementStyle(view, element).getShape();
 
         if (element instanceof DeploymentNode) {
             return "node";
@@ -103,6 +103,7 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
 
         switch(shape) {
             case Person:
+            case Robot:
                 return "person";
             case Component:
                 return "component";
@@ -113,13 +114,17 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
             case Ellipse:
             case Circle:
                 return "storage";
+            case Hexagon:
+                return "hexagon";
+            case Pipe:
+                return "queue";
             default:
                 return "rectangle";
         }
     }
 
     String plantumlSequenceType(View view, Element element) {
-        Shape shape = view.getViewSet().getConfiguration().getStyles().findElementStyle(element).getShape();
+        Shape shape = findElementStyle(view, element).getShape();
 
         switch(shape) {
             case Box:
@@ -136,10 +141,6 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
             default:
                 return "participant";
         }
-    }
-
-    RelationshipStyle relationshipStyleOf(View view, Relationship relationship) {
-        return view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship);
     }
 
     String idOf(Element e) {

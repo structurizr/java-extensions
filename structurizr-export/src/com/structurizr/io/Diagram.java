@@ -2,10 +2,15 @@ package com.structurizr.io;
 
 import com.structurizr.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Diagram {
 
     private View view;
     private String definition;
+
+    private List<Diagram> frames = new ArrayList<>();
 
     public Diagram(View view, String definition) {
         this.view = view;
@@ -27,6 +32,14 @@ public class Diagram {
 
     public String getDefinition() {
         return definition;
+    }
+
+    public void addFrame(Diagram frame) {
+        frames.add(frame);
+    }
+
+    public List<Diagram> getFrames() {
+        return new ArrayList<>(frames);
     }
 
 }

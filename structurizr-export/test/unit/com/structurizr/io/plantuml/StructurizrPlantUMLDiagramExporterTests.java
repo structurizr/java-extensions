@@ -28,30 +28,37 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         Diagram diagram = diagrams.stream().filter(d -> d.getKey().equals("SystemLandscape")).findFirst().get();
         String expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-SystemLandscape.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(3, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(d -> d.getKey().equals("SystemContext")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-SystemContext.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(4, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(d -> d.getKey().equals("Containers")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-Containers.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(6, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(d -> d.getKey().equals("Components")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-Components.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(4, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(d -> d.getKey().equals("SignIn")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-SignIn.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(6, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("DevelopmentDeployment")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-DevelopmentDeployment.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(4, diagram.getFrames().size());
 
         diagram = diagrams.stream().filter(md -> md.getKey().equals("LiveDeployment")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-LiveDeployment.puml"));
         assertEquals(expected, diagram.getDefinition());
+        assertEquals(6, diagram.getFrames().size());
 
         // and the sequence diagram version
         exporter.setUseSequenceDiagrams(true);
@@ -153,7 +160,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "}\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         containerView.setExternalSoftwareSystemBoundariesVisible(false);
@@ -192,7 +199,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"Uses\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -253,7 +260,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "}\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
+                "3 .[#707070,thickness=2].> 6 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         componentView.setExternalSoftwareSystemBoundariesVisible(false);
@@ -292,7 +299,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 6 : \"Uses\"\n" +
+                "3 .[#707070,thickness=2].> 6 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -350,7 +357,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "}\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"1. Uses\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         dynamicView.setExternalBoundariesVisible(false);
@@ -389,7 +396,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"1. Uses\"\n" +
+                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -449,7 +456,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
                 "}\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 5 : \"1. Uses\"\n" +
+                "3 .[#707070,thickness=2].> 5 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         dynamicView.setExternalBoundariesVisible(false);
@@ -488,7 +495,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 5 : \"1. Uses\"\n" +
+                "3 .[#707070,thickness=2].> 5 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 

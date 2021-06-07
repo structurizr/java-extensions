@@ -3,9 +3,10 @@ package com.structurizr.io;
 import com.structurizr.Workspace;
 import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
-import com.structurizr.view.Configuration;
-import com.structurizr.view.MetadataSymbols;
-import com.structurizr.view.View;
+import com.structurizr.view.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractExporter {
 
@@ -103,6 +104,18 @@ public abstract class AbstractExporter {
 
     protected boolean hasValue(String s) {
         return !StringUtils.isNullOrEmpty(s);
+    }
+
+    protected ElementStyle findElementStyle(View view, Element element) {
+        if (element instanceof StaticStructureElementInstance) {
+            return findElementStyle(view, ((StaticStructureElementInstance)element).getElement());
+        } else {
+            return view.getViewSet().getConfiguration().getStyles().findElementStyle(element);
+        }
+    }
+
+    protected RelationshipStyle findRelationshipStyle(View view, Relationship relationship) {
+        return view.getViewSet().getConfiguration().getStyles().findRelationshipStyle(relationship);
     }
 
 }

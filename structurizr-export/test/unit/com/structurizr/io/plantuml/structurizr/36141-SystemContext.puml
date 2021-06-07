@@ -38,8 +38,8 @@ rectangle "==Internet Banking System\n<size:10>[Software System]</size>\n\nAllow
 rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<4>> as 4
 rectangle "==E-mail System\n<size:10>[Software System]</size>\n\nThe internal Microsoft Exchange e-mail system." <<6>> as 6
 
-1 .[#707070,thickness=2].> 2 : "Views account balances, and makes payments using"
-2 .[#707070,thickness=2].> 4 : "Gets account information from, and makes payments using"
-2 .[#707070,thickness=2].> 6 : "Sends e-mail using"
-6 .[#707070,thickness=2].> 1 : "Sends e-mails to"
+1 .[#707070,thickness=2].> 2 : "<color:#707070>Views account balances, and makes payments using"
+2 .[#707070,thickness=2].> 4 : "<color:#707070>Gets account information from, and makes payments using"
+2 .[#707070,thickness=2].> 6 : "<color:#707070>Sends e-mail using"
+6 .[#707070,thickness=2].> 1 : "<color:#707070>Sends e-mails to"
 @enduml

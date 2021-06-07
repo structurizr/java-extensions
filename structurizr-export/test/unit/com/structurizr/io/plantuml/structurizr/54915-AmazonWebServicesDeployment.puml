@@ -89,7 +89,7 @@ node "Amazon Web Services\n[Deployment Node]" <<5>> as 5 {
 
 }
 
-10 .[#707070,thickness=2].> 11 : "Forwards requests to\n<size:8>[HTTPS]</size>"
-11 .[#707070,thickness=2].> 9 : "Forwards requests to\n<size:8>[HTTPS]</size>"
-9 .[#707070,thickness=2].> 16 : "Reads from and writes to\n<size:8>[JDBC/SSL]</size>"
+10 .[#707070,thickness=2].> 11 : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
+11 .[#707070,thickness=2].> 9 : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
+9 .[#707070,thickness=2].> 16 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC/SSL]</size>"
 @enduml

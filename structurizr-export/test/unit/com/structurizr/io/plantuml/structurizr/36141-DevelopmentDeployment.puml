@@ -107,8 +107,8 @@ node "Developer Laptop\n[Deployment Node: Microsoft Windows 10 or Apple macOS]" 
 
 }
 
-54 .[#707070,thickness=2].> 57 : "Makes API calls to\n<size:8>[XML/HTTPS]</size>"
-54 .[#707070,thickness=2].> 61 : "Reads from and writes to\n<size:8>[JDBC]</size>"
-64 .[#707070,thickness=2].> 54 : "Makes API calls to\n<size:8>[JSON/HTTPS]</size>"
-53 .[#707070,thickness=2].> 64 : "Delivers to the customer's web browser"
+54 .[#707070,thickness=2].> 57 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[XML/HTTPS]</size>"
+54 .[#707070,thickness=2].> 61 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
+64 .[#707070,thickness=2].> 54 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+53 .[#707070,thickness=2].> 64 : "<color:#707070>Delivers to the customer's web browser"
 @enduml

@@ -62,13 +62,13 @@ package "Big Bank plc" <<enterprise>> {
 
 person "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
 
-9 .[#707070,thickness=2].> 4 : "Uses"
-1 .[#707070,thickness=2].> 9 : "Withdraws cash using"
-12 .[#707070,thickness=2].> 4 : "Uses"
-1 .[#707070,thickness=2].> 12 : "Asks questions to\n<size:8>[Telephone]</size>"
-15 .[#707070,thickness=2].> 4 : "Uses"
-1 .[#707070,thickness=2].> 2 : "Views account balances, and makes payments using"
-2 .[#707070,thickness=2].> 4 : "Gets account information from, and makes payments using"
-2 .[#707070,thickness=2].> 6 : "Sends e-mail using"
-6 .[#707070,thickness=2].> 1 : "Sends e-mails to"
+9 .[#707070,thickness=2].> 4 : "<color:#707070>Uses"
+1 .[#707070,thickness=2].> 9 : "<color:#707070>Withdraws cash using"
+12 .[#707070,thickness=2].> 4 : "<color:#707070>Uses"
+1 .[#707070,thickness=2].> 12 : "<color:#707070>Asks questions to\n<color:#707070><size:8>[Telephone]</size>"
+15 .[#707070,thickness=2].> 4 : "<color:#707070>Uses"
+1 .[#707070,thickness=2].> 2 : "<color:#707070>Views account balances, and makes payments using"
+2 .[#707070,thickness=2].> 4 : "<color:#707070>Gets account information from, and makes payments using"
+2 .[#707070,thickness=2].> 6 : "<color:#707070>Sends e-mail using"
+6 .[#707070,thickness=2].> 1 : "<color:#707070>Sends e-mails to"
 @enduml

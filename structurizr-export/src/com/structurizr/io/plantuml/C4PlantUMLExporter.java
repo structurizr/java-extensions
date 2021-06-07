@@ -16,6 +16,11 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
+    protected boolean isAnimationSupported(View view) {
+        return !(view instanceof DynamicView);
+    }
+
+    @Override
     protected void writeHeader(View view, IndentingWriter writer) {
         super.writeHeader(view, writer);
 
@@ -110,6 +115,10 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
             );
         }
         writer.indent();
+
+        if (!isVisible(view, deploymentNode)) {
+            writer.writeLine("hide " + deploymentNode.getId());
+        }
     }
 
     @Override
@@ -130,6 +139,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void writeElement(View view, Element element, IndentingWriter writer) {
+        Element elementToWrite = element;
         String id = element.getId();
 
         if (element instanceof StaticStructureElementInstance) {
@@ -189,6 +199,10 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
                     writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")", infrastructureNode.getId(), name, infrastructureNode.getTechnology()));
                 }
             }
+        }
+
+        if (!isVisible(view, elementToWrite)) {
+            writer.writeLine("hide " + id);
         }
     }
 

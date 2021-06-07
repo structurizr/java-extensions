@@ -42,6 +42,6 @@ package "F\n[Container]" <<6>> {
   rectangle "==G\n<size:10>[Component]</size>" <<7>> as 7
 }
 
-3 .[#707070,thickness=2].> 7 : ""
-3 .[#707070,thickness=2].> 8 : ""
+3 .[#707070,thickness=2].> 7 : "<color:#707070>"
+3 .[#707070,thickness=2].> 8 : "<color:#707070>"
 @enduml
