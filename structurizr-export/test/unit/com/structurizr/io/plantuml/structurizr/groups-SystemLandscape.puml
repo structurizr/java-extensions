@@ -1,6 +1,8 @@
 @startuml
 title System Landscape for Enterprise
 
+top to bottom direction
+
 skinparam {
   shadowing false
   arrowFontSize 10
@@ -10,8 +12,8 @@ skinparam {
   PackageBorderColor<<group>> #cccccc
   PackageFontColor<<group>> #cccccc
 }
+
 hide stereotype
-top to bottom direction
 
 skinparam rectangle<<1>> {
   BackgroundColor #dddddd

@@ -11,6 +11,10 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## Changelog
 
+### 1.1.1 (9th June 2021)
+
+- Adds support for "left to right direction" layouts with C4-PlantUML.
+
 ### 1.1.0 (7th June 2021)
 
 - Adds support for "external" software system/container boundaries on dynamic views.

@@ -121,6 +121,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
         assertEquals("@startuml\n" +
                 "title Software System 1 - Containers\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
@@ -142,6 +144,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
         diagram = new C4PlantUMLExporter().export(containerView);
         assertEquals("@startuml\n" +
                 "title Software System 1 - Containers\n" +
+                "\n" +
+                "top to bottom direction\n" +
                 "\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
@@ -179,6 +183,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
         assertEquals("@startuml\n" +
                 "title Software System 1 - Container 1 - Components\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
@@ -199,6 +205,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
         diagram = new C4PlantUMLExporter().export(componentView);
         assertEquals("@startuml\n" +
                 "title Software System 1 - Container 1 - Components\n" +
+                "\n" +
+                "top to bottom direction\n" +
                 "\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +

@@ -124,6 +124,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Containers\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -133,6 +135,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<2>> {\n" +
@@ -168,6 +171,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Containers\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -177,6 +182,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<2>> {\n" +
@@ -224,6 +230,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Container 1 - Components\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -233,6 +241,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<3>> {\n" +
@@ -268,6 +277,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Container 1 - Components\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -277,6 +288,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<3>> {\n" +
@@ -321,6 +333,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Dynamic\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -330,6 +344,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<2>> {\n" +
@@ -365,6 +380,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Software System 1 - Dynamic\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -374,6 +391,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<2>> {\n" +
@@ -420,6 +438,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Container 1 - Dynamic\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -429,6 +449,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<3>> {\n" +
@@ -464,6 +485,8 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals("@startuml\n" +
                 "title Container 1 - Dynamic\n" +
                 "\n" +
+                "top to bottom direction\n" +
+                "\n" +
                 "skinparam {\n" +
                 "  shadowing false\n" +
                 "  arrowFontSize 10\n" +
@@ -473,6 +496,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  PackageBorderColor<<group>> #cccccc\n" +
                 "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
+                "\n" +
                 "hide stereotype\n" +
                 "\n" +
                 "skinparam rectangle<<3>> {\n" +

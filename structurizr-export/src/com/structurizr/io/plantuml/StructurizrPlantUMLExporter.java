@@ -35,24 +35,9 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     protected void writeHeader(View view, IndentingWriter writer) {
         super.writeHeader(view, writer);
 
+        writer.writeLine();
         writer.writeLine("hide stereotype");
-
-        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
-            // do nothing
-        } else {
-            if (view.getAutomaticLayout() != null) {
-                switch (view.getAutomaticLayout().getRankDirection()) {
-                    case LeftRight:
-                        writer.writeLine("left to right direction");
-                        break;
-                    default:
-                        writer.writeLine("top to bottom direction");
-                        break;
-                }
-            }
-
-            writer.writeLine();
-        }
+        writer.writeLine();
 
         List<Element> elements = view.getElements().stream().map(ElementView::getElement).sorted(Comparator.comparing(Element::getName)).collect(Collectors.toList());
         for (Element element : elements) {

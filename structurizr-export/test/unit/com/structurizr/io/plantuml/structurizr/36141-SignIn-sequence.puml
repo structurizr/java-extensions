@@ -10,7 +10,9 @@ skinparam {
   PackageBorderColor<<group>> #cccccc
   PackageFontColor<<group>> #cccccc
 }
+
 hide stereotype
+
 skinparam sequenceParticipant<<21>> {
   BackgroundColor #438dd5
   FontColor #ffffff

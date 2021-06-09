@@ -6,6 +6,7 @@ import com.structurizr.model.DeploymentNode;
 import com.structurizr.model.Element;
 import com.structurizr.model.Relationship;
 import com.structurizr.util.StringUtils;
+import com.structurizr.view.DynamicView;
 import com.structurizr.view.RelationshipStyle;
 import com.structurizr.view.Shape;
 import com.structurizr.view.View;
@@ -164,6 +165,25 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
         }
 
         writer.writeLine();
+
+        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+            // do nothing
+        } else {
+            if (view.getAutomaticLayout() != null) {
+                switch (view.getAutomaticLayout().getRankDirection()) {
+                    case LeftRight:
+                        writer.writeLine("left to right direction");
+                        break;
+                    default:
+                        writer.writeLine("top to bottom direction");
+                        break;
+                }
+            } else {
+                writer.writeLine("top to bottom direction");
+            }
+
+            writer.writeLine();
+        }
 
         if (!skinParams.isEmpty()) {
             writer.writeLine("skinparam {");

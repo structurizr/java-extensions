@@ -1,6 +1,8 @@
 @startuml
 title System Landscape for Big Bank plc
 
+top to bottom direction
+
 skinparam {
   shadowing false
   arrowFontSize 10
@@ -10,6 +12,7 @@ skinparam {
   PackageBorderColor<<group>> #cccccc
   PackageFontColor<<group>> #cccccc
 }
+
 hide stereotype
 
 skinparam rectangle<<9>> {

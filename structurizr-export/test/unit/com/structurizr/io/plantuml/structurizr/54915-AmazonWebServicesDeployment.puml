@@ -1,6 +1,8 @@
 @startuml
 title Spring PetClinic - Deployment - Default
 
+left to right direction
+
 skinparam {
   shadowing false
   arrowFontSize 10
@@ -10,8 +12,8 @@ skinparam {
   PackageBorderColor<<group>> #cccccc
   PackageFontColor<<group>> #cccccc
 }
+
 hide stereotype
-left to right direction
 
 skinparam node<<8>> {
   BackgroundColor #ffffff
