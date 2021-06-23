@@ -7,9 +7,8 @@ import com.structurizr.view.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Writes a Structurizr view to a graphviz dot file. Please note that this is not a full export (colours, shapes, etc);
@@ -57,8 +56,6 @@ class DotFileWriter {
 
     void write(CustomView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing custom view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
 
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
@@ -84,13 +81,6 @@ class DotFileWriter {
 
     private void write(View view, boolean enterpriseBoundaryIsVisible) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        if (view instanceof SystemLandscapeView) {
-            System.out.println("Processing system landscape view: " + view.getKey());
-        } else {
-            System.out.println("Processing system context view: " + view.getKey());
-        }
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 
@@ -138,9 +128,6 @@ class DotFileWriter {
 
     void write(ContainerView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing container view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 
@@ -172,9 +159,6 @@ class DotFileWriter {
 
     void write(ComponentView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing component view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 
@@ -206,9 +190,6 @@ class DotFileWriter {
 
     void write(DynamicView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing dynamic view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 
@@ -218,18 +199,43 @@ class DotFileWriter {
             for (ElementView elementView : view.getElements()) {
                 writeElement(view, "  ", elementView.getElement(), fileWriter);
             }
-        } else {
-            fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", element.getId()));
-            fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
-            for (ElementView elementView : view.getElements()) {
-                if (elementView.getElement().getParent() == element) {
-                    writeElement(view, "    ", elementView.getElement(), fileWriter);
+        } else if (element instanceof SoftwareSystem) {
+                List<SoftwareSystem> softwareSystems = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Container).map(c -> ((Container)c).getSoftwareSystem()).collect(Collectors.toSet()));
+                softwareSystems.sort(Comparator.comparing(Element::getId));
+
+                for (SoftwareSystem softwareSystem : softwareSystems) {
+                    fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", softwareSystem.getId()));
+                    fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+                    for (ElementView elementView : view.getElements()) {
+                        if (elementView.getElement().getParent() == softwareSystem) {
+                            writeElement(view, "    ", elementView.getElement(), fileWriter);
+                        }
+                    }
+                    fileWriter.write("  }\n");
                 }
+
+                for (ElementView elementView : view.getElements()) {
+                    if (elementView.getElement().getParent() == null) {
+                        writeElement(view, "  ", elementView.getElement(), fileWriter);
+                    }
+                }
+        } else if (element instanceof Container) {
+            List<Container> containers = new ArrayList<>(view.getElements().stream().map(ElementView::getElement).filter(e -> e instanceof Component).map(c -> ((Component)c).getContainer()).collect(Collectors.toSet()));
+            containers.sort(Comparator.comparing(Element::getId));
+
+            for (Container container : containers) {
+                fileWriter.write(String.format(locale, "  subgraph cluster_%s {\n", container.getId()));
+                fileWriter.write("    margin=" + CLUSTER_INTERNAL_MARGIN + "\n");
+                for (ElementView elementView : view.getElements()) {
+                    if (elementView.getElement().getParent() == container) {
+                        writeElement(view, "    ", elementView.getElement(), fileWriter);
+                    }
+                }
+                fileWriter.write("  }\n");
             }
-            fileWriter.write("  }\n");
 
             for (ElementView elementView : view.getElements()) {
-                if (elementView.getElement().getParent() != element) {
+                if (!(elementView.getElement().getParent() instanceof Container)) {
                     writeElement(view, "  ", elementView.getElement(), fileWriter);
                 }
             }
@@ -243,9 +249,6 @@ class DotFileWriter {
 
      void write(DeploymentView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
-        System.out.println("Processing deployment view: " + view.getKey());
-        System.out.println(" - Writing " + file.getAbsolutePath());
-
         FileWriter fileWriter = new FileWriter(file);
         writeHeader(fileWriter);
 

@@ -73,8 +73,6 @@ public class GraphvizAutomaticLayout {
     }
 
     private void runGraphviz(View view) throws Exception {
-        System.out.println(" - Running graphviz");
-
         ProcessBuilder processBuilder = new ProcessBuilder().inheritIO();
         processBuilder.command("dot", new File(path, view.getKey() + ".dot").getAbsolutePath(), "-Tsvg", "-O");
         Process process = processBuilder.start();

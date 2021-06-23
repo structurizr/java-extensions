@@ -34,8 +34,6 @@ class SVGReader {
 
     void parseAndApplyLayout(View view) throws Exception {
         File file = new File(path, view.getKey() + ".dot.svg");
-        System.out.println(" - Parsing " + file.getAbsolutePath());
-
         FileInputStream fileIS = new FileInputStream(file);
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         builderFactory.setNamespaceAware(false);
@@ -175,8 +173,6 @@ class SVGReader {
                 vertex.setY(vertex.getY() + deltaY);
             }
         }
-
-        System.out.println(" - Done");
     }
 
     private int getElementWidth(View view, String elementId) {
