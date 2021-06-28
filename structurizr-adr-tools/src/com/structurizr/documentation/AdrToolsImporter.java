@@ -104,13 +104,7 @@ public class AdrToolsImporter {
     }
 
     private String calculateUrl(SoftwareSystem softwareSystem, String id) throws Exception {
-        if (softwareSystem == null) {
-            return "#" + urlEncode("/") + ":" + urlEncode(id);
-        } else {
-            String name = softwareSystem.getCanonicalName();
-            name = name.substring("/SoftwareSystem".length() + 1);
-            return "#" + urlEncode(name) + ":" + urlEncode(id);
-        }
+        return "#" + urlEncode(id);
     }
 
     private String urlEncode(String value) throws Exception {
