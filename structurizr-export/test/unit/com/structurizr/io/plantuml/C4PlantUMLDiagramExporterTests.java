@@ -126,7 +126,6 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
-                "LAYOUT_WITH_LEGEND()\n" +
                 "\n" +
                 "System_Boundary(\"1_boundary\", \"Software System 1\") {\n" +
                 "  Container(2, \"Container 1\", \"\")\n" +
@@ -137,6 +136,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "}\n" +
                 "\n" +
                 "Rel_D(2, 4, \"Uses\")\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
 
 
@@ -150,7 +151,6 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
-                "LAYOUT_WITH_LEGEND()\n" +
                 "\n" +
                 "System_Boundary(\"1_boundary\", \"Software System 1\") {\n" +
                 "  Container(2, \"Container 1\", \"\")\n" +
@@ -159,6 +159,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "Container(4, \"Container 2\", \"\")\n" +
                 "\n" +
                 "Rel_D(2, 4, \"Uses\")\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -188,7 +190,6 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
-                "LAYOUT_WITH_LEGEND()\n" +
                 "\n" +
                 "Container_Boundary(\"2_boundary\", \"Container 1\") {\n" +
                 "  Component(3, \"Component 1\", \"\")\n" +
@@ -199,6 +200,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "}\n" +
                 "\n" +
                 "Rel_D(3, 6, \"Uses\")\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
 
         componentView.setExternalSoftwareSystemBoundariesVisible(false);
@@ -211,7 +214,6 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
-                "LAYOUT_WITH_LEGEND()\n" +
                 "\n" +
                 "Container_Boundary(\"2_boundary\", \"Container 1\") {\n" +
                 "  Component(3, \"Component 1\", \"\")\n" +
@@ -220,6 +222,8 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "Component(6, \"Component 2\", \"\")\n" +
                 "\n" +
                 "Rel_D(3, 6, \"Uses\")\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
     }
 

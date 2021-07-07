@@ -7,7 +7,6 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
-LAYOUT_WITH_LEGEND()
 
 Deployment_Node(55, "Big Bank plc", "Big Bank plc data center") {
   Deployment_Node(56, "bigbank-dev001") {
@@ -42,4 +41,6 @@ Rel_D(54, 57, "Makes API calls to", "XML/HTTPS")
 Rel_D(54, 61, "Reads from and writes to", "JDBC")
 Rel_D(64, 54, "Makes API calls to", "JSON/HTTPS")
 Rel_D(53, 64, "Delivers to the customer's web browser")
+
+SHOW_LEGEND()
 @enduml

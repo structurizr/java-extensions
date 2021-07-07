@@ -7,7 +7,6 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-LAYOUT_WITH_LEGEND()
 
 System(4, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
 Container(17, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
@@ -37,4 +36,6 @@ Rel_D(31, 34, "Uses")
 Rel_D(32, 21, "Reads from and writes to", "JDBC")
 Rel_D(33, 4, "Uses", "XML/HTTPS")
 Rel_D(34, 6, "Sends e-mail using")
+
+SHOW_LEGEND()
 @enduml

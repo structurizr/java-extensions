@@ -7,7 +7,6 @@ left to right direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
-LAYOUT_WITH_LEGEND()
 
 Deployment_Node(5, "Amazon Web Services") {
   Deployment_Node(6, "US-East-1") {
@@ -34,4 +33,6 @@ Deployment_Node(5, "Amazon Web Services") {
 Rel_D(10, 11, "Forwards requests to", "HTTPS")
 Rel_D(11, 9, "Forwards requests to", "HTTPS")
 Rel_D(9, 16, "Reads from and writes to", "JDBC/SSL")
+
+SHOW_LEGEND()
 @enduml

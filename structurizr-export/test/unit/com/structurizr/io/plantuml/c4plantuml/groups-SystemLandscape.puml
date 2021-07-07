@@ -5,7 +5,6 @@ top to bottom direction
 
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-LAYOUT_WITH_LEGEND()
 
 Enterprise_Boundary(enterprise, "Enterprise") {
   Boundary(group_0, "Group 2") {
@@ -24,4 +23,6 @@ System_Ext(1, "A", "")
 Rel_D(2, 3, "")
 Rel_D(3, 4, "")
 Rel_D(1, 2, "")
+
+SHOW_LEGEND()
 @enduml

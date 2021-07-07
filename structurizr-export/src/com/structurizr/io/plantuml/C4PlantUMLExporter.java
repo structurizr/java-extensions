@@ -39,9 +39,15 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
             writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml");
         }
 
-        writer.writeLine("LAYOUT_WITH_LEGEND()");
-
         writer.writeLine();
+    }
+
+    @Override
+    protected void writeFooter(View view, IndentingWriter writer) {
+        writer.writeLine();
+        writer.writeLine("SHOW_LEGEND()");
+
+        super.writeFooter(view, writer);
     }
 
     @Override

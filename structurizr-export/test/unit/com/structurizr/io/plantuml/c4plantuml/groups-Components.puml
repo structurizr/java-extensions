@@ -6,7 +6,6 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-LAYOUT_WITH_LEGEND()
 
 System(3, "C", "")
 
@@ -20,4 +19,6 @@ Container_Boundary("6_boundary", "F") {
 
 Rel_D(3, 7, "")
 Rel_D(3, 8, "")
+
+SHOW_LEGEND()
 @enduml

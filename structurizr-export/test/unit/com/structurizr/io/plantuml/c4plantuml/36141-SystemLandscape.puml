@@ -5,7 +5,6 @@ top to bottom direction
 
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-LAYOUT_WITH_LEGEND()
 
 Enterprise_Boundary(enterprise, "Big Bank plc") {
   Person(12, "Customer Service Staff", "Customer service staff within the bank.")
@@ -27,4 +26,6 @@ Rel_D(1, 2, "Views account balances, and makes payments using")
 Rel_D(2, 4, "Gets account information from, and makes payments using")
 Rel_D(2, 6, "Sends e-mail using")
 Rel_D(6, 1, "Sends e-mails to")
+
+SHOW_LEGEND()
 @enduml

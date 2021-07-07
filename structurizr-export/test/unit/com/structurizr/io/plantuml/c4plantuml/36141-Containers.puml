@@ -6,7 +6,6 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-LAYOUT_WITH_LEGEND()
 
 Person_Ext(1, "Personal Banking Customer", "A customer of the bank, with personal bank accounts.")
 System(4, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
@@ -30,4 +29,6 @@ Rel_D(20, 6, "Sends e-mail using", "SMTP")
 Rel_D(17, 20, "Makes API calls to", "JSON/HTTPS")
 Rel_D(18, 20, "Makes API calls to", "JSON/HTTPS")
 Rel_D(6, 1, "Sends e-mails to")
+
+SHOW_LEGEND()
 @enduml

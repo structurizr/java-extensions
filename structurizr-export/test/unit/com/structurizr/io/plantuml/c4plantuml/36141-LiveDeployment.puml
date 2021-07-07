@@ -7,7 +7,6 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
-LAYOUT_WITH_LEGEND()
 
 Deployment_Node(67, "Customer's mobile device", "Apple iOS or Android") {
   Container(68, "Mobile App", "Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
@@ -62,4 +61,6 @@ Rel_D(81, 74, "Makes API calls to", "XML/HTTPS")
 Rel_D(81, 87, "Reads from and writes to", "JDBC")
 Rel_D(81, 91, "Reads from and writes to", "JDBC")
 Rel_D(86, 90, "Replicates data to")
+
+SHOW_LEGEND()
 @enduml
