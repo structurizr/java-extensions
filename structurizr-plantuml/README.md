@@ -1,5 +1,7 @@
 # structurizr-plantuml
 
+__This module is deprecated - please use [structurizr-export](../structurizr-export) instead.__
+
 structurizr-plantuml can export the views in a Structurizr workspace to diagram definitions that are compatible with [PlantUML](http://www.plantuml.com). The following diagram types are supported:
 
 - System Landscape

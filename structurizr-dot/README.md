@@ -1,5 +1,7 @@
 # structurizr-dot
 
+__This module is deprecated - please use [structurizr-export](../structurizr-export) instead.__
+
 structurizr-dot can export the views in a Structurizr workspace to DOT diagram definitions that are compatible with Graphviz. The following diagram types are supported:
 
 - System Landscape

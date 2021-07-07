@@ -1,5 +1,7 @@
 # structurizr-mermaid
 
+__This module is deprecated - please use [structurizr-export](../structurizr-export) instead.__
+
 structurizr-mermaid can export the views in a Structurizr workspace to diagram definitions that are compatible with [Mermaid](https://mermaid-js.github.io/mermaid). The following diagram types are supported:
 
 - System Landscape

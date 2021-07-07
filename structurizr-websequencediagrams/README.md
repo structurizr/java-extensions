@@ -1,4 +1,7 @@
 # structurizr-websequencediagrams
+
+__This module is deprecated - please use [structurizr-export](../structurizr-export) instead.__
+
 structurizr-websequencediagrams can export the dynamic views in a Structurizr workspace to diagram definitions that are compatible with [WebSequenceDiagrams](https://www.websequencediagrams.com).
 
 Create your software architecture model and views as usual, and use the [WebSequenceDiagramsWriter](https://github.com/structurizr/java-extensions/blob/master/structurizr-websequencediagrams/src/com/structurizr/io/websequencediagrams/WebSequenceDiagramsWriter.java) class to export the views. [For example](https://github.com/structurizr/java-extensions/blob/master/structurizr-examples/src/com/structurizr/example/WebSequenceDiagrams.java):
