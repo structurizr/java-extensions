@@ -1,15 +1,11 @@
 dependencies {
     compile project(':structurizr-adr-tools')
     compile project(':structurizr-annotations')
-    compile project(':structurizr-dot')
+    compile project(':structurizr-export')
     compile project(':structurizr-graphviz')
-    compile project(':structurizr-mermaid')
-    compile project(':structurizr-ilograph')
-    compile project(':structurizr-plantuml')
-    compile project(':structurizr-websequencediagrams')
     compile project(':structurizr-spring')
 
-    compile 'com.structurizr:structurizr-client:1.9.0'
+    compile 'com.structurizr:structurizr-client:1.9.6'
 
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.slf4j:slf4j-simple:1.7.21'

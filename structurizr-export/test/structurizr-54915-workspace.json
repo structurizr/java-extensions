@@ -62,7 +62,7 @@
                                 "children": [
                                     {
                                         "id": "15",
-                                        "tags": "Element,Deployment Node,Amazon Web Services - RDS_MySQL_instance",
+                                        "tags": "Element,Deployment Node,Amazon Web Services - RDS MySQL instance",
                                         "name": "MySQL",
                                         "environment": "Default",
                                         "instances": 1,
@@ -309,7 +309,7 @@
                 "relationships": []
             },
             "themes": [
-                "https://raw.githubusercontent.com/structurizr/themes/master/amazon-web-services/theme.json"
+                "https://static.structurizr.com/themes/amazon-web-services-2020.04.30/theme.json"
             ],
             "terminology": {},
             "lastSavedView": "AmazonWebServicesDeployment",

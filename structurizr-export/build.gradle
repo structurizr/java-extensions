@@ -2,10 +2,10 @@ version = '1.1.1'
 
 dependencies {
 
-    compile 'com.structurizr:structurizr-core:1.9.2'
+    compile 'com.structurizr:structurizr-core:1.9.6'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'com.structurizr:structurizr-client:1.9.2'
+    testCompile 'com.structurizr:structurizr-client:1.9.6'
 
 }
 

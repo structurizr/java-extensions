@@ -1,8 +1,9 @@
 package com.structurizr.example;
 
 import com.structurizr.Workspace;
-import com.structurizr.io.plantuml.PlantUMLWriter;
-import com.structurizr.io.plantuml.StructurizrPlantUMLWriter;
+import com.structurizr.io.Diagram;
+import com.structurizr.io.plantuml.AbstractPlantUMLExporter;
+import com.structurizr.io.plantuml.StructurizrPlantUMLExporter;
 import com.structurizr.model.Model;
 import com.structurizr.model.Person;
 import com.structurizr.model.SoftwareSystem;
@@ -12,8 +13,10 @@ import com.structurizr.view.Styles;
 import com.structurizr.view.SystemContextView;
 import com.structurizr.view.ViewSet;
 
+import java.util.Collection;
+
 /**
- * An example of how to use the PlantUML writer. Run this program and copy/paste
+ * An example of how to use the PlantUML exporter(s). Run this program and copy/paste
  * the output into http://www.plantuml.com/plantuml/
  */
 public class PlantUML {
@@ -35,8 +38,9 @@ public class PlantUML {
         styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
 
-        PlantUMLWriter plantUMLWriter = new StructurizrPlantUMLWriter();
-        System.out.println(plantUMLWriter.toString(contextView));
+        AbstractPlantUMLExporter plantUMLExporter = new StructurizrPlantUMLExporter();
+        Collection<Diagram> diagrams= plantUMLExporter.export(workspace);
+        diagrams.forEach(d -> System.out.println(d.getDefinition()));
     }
 
 }
