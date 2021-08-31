@@ -27,7 +27,7 @@ public class DotFileWriterTests {
         view.add(box1);
         view.add(box2);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "CustomView.dot");
@@ -62,7 +62,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemLandscape.dot");
@@ -98,7 +98,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemLandscape.dot");
@@ -142,7 +142,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemLandscape.dot");
@@ -178,7 +178,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(true);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemLandscape.dot");
@@ -218,7 +218,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemContext.dot");
@@ -255,7 +255,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(true);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemContext.dot");
@@ -295,7 +295,7 @@ public class DotFileWriterTests {
         view.add(box);
         view.setEnterpriseBoundaryVisible(false);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "SystemContext.dot");
@@ -340,7 +340,7 @@ public class DotFileWriterTests {
         view.addAllElements();
         view.add(box);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "Containers.dot");
@@ -391,7 +391,7 @@ public class DotFileWriterTests {
         view.addAllElements();
         view.add(box);
 
-        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 1.0, 1.0);
+        DotFileWriter dotFileWriter = new DotFileWriter(PATH, RankDirection.TopBottom, 300, 300);
         dotFileWriter.write(view);
 
         File file = new File(PATH, "Components.dot");

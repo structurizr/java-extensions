@@ -36,7 +36,30 @@ class DotFileWriter {
         this.locale = locale;
     }
 
-    private void writeHeader(Writer writer) throws Exception {
+    private void writeHeader(Writer writer, View view) throws Exception {
+        if (view.getAutomaticLayout() != null) {
+            switch (view.getAutomaticLayout().getRankDirection()) {
+                case TopBottom:
+                    rankDirection = RankDirection.TopBottom;
+                    break;
+                case BottomTop:
+                    rankDirection = RankDirection.BottomTop;
+                    break;
+                case LeftRight:
+                    rankDirection = RankDirection.LeftRight;
+                    break;
+                case RightLeft:
+                    rankDirection = RankDirection.RightLeft;
+                    break;
+            }
+
+            rankSeparation = view.getAutomaticLayout().getRankSeparation();
+            nodeSeparation = view.getAutomaticLayout().getNodeSeparation();
+        }
+
+        rankSeparation = rankSeparation / Constants.STRUCTURIZR_DPI;
+        nodeSeparation = nodeSeparation / Constants.STRUCTURIZR_DPI;
+
         writer.write("digraph {");
         writer.write("\n");
         writer.write("  compound=true");
@@ -58,7 +81,7 @@ class DotFileWriter {
         File file = new File(path, view.getKey() + ".dot");
 
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         Set<GroupableElement> elements = new LinkedHashSet<>();
         for (ElementView elementView : view.getElements()) {
@@ -82,7 +105,7 @@ class DotFileWriter {
     private void write(View view, boolean enterpriseBoundaryIsVisible) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         if (enterpriseBoundaryIsVisible) {
             fileWriter.write("  subgraph cluster_enterprise {\n");
@@ -129,7 +152,7 @@ class DotFileWriter {
     void write(ContainerView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         SoftwareSystem softwareSystem = view.getSoftwareSystem();
 
@@ -160,7 +183,7 @@ class DotFileWriter {
     void write(ComponentView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         Container container = view.getContainer();
 
@@ -191,7 +214,7 @@ class DotFileWriter {
     void write(DynamicView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         Element element = view.getElement();
 
@@ -250,7 +273,7 @@ class DotFileWriter {
      void write(DeploymentView view) throws Exception {
         File file = new File(path, view.getKey() + ".dot");
         FileWriter fileWriter = new FileWriter(file);
-        writeHeader(fileWriter);
+        writeHeader(fileWriter, view);
 
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement() instanceof DeploymentNode && elementView.getElement().getParent() == null) {

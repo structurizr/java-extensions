@@ -35,16 +35,16 @@ public class SVGReaderTests {
 
         assertNull(view.getPaperSize());
 
-        SVGReader svgReader = new SVGReader(PATH, 20, true);
+        SVGReader svgReader = new SVGReader(PATH, 200, true);
         svgReader.parseAndApplyLayout(view);
 
-        assertEquals(420, view.getElementView(user).getX());
-        assertEquals(322, view.getElementView(user).getY());
-
-        assertEquals(395, view.getElementView(softwareSystem).getX());
-        assertEquals(1022, view.getElementView(softwareSystem).getY());
-
         assertEquals(PaperSize.A6_Portrait, view.getPaperSize());
+
+        assertEquals(254, view.getElementView(user).getX());
+        assertEquals(108, view.getElementView(user).getY());
+
+        assertEquals(229, view.getElementView(softwareSystem).getX());
+        assertEquals(808, view.getElementView(softwareSystem).getY());
     }
 
     private static Workspace createWorkspace() {

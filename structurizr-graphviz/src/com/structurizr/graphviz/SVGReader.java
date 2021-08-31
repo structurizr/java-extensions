@@ -132,23 +132,24 @@ class SVGReader {
             }
         }
 
-        if (changePaperSize) {
-            PaperSize.Orientation orientation = (maximumX > maximumY) ? PaperSize.Orientation.Landscape : PaperSize.Orientation.Portrait;
+        int pageWidth = Math.max(margin, maximumX + margin);
+        int pageHeight= Math.max(margin, maximumY + margin);
 
+        if (changePaperSize) {
+            view.setPaperSize(null);
+            view.setDimensions(new Dimensions(pageWidth, pageHeight));
+
+            PaperSize.Orientation orientation = (pageWidth > pageHeight) ? PaperSize.Orientation.Landscape : PaperSize.Orientation.Portrait;
             for (PaperSize paperSize : PaperSize.getOrderedPaperSizes(orientation)) {
-                if (paperSize.getWidth() > (maximumX + margin + margin) && paperSize.getHeight() > (maximumY + margin + margin)) {
+                if (paperSize.getWidth() > (pageWidth) && paperSize.getHeight() > (pageHeight)) {
                     view.setPaperSize(paperSize);
                     break;
                 }
             }
         }
 
-        if (view.getPaperSize() == null) {
-            view.setPaperSize(PaperSize.A0_Landscape);
-        }
-
-        int deltaX = (view.getPaperSize().getWidth() - maximumX + minimumX) / 2;
-        int deltaY = (view.getPaperSize().getHeight() - maximumY + minimumY) / 2;
+        int deltaX = (pageWidth - maximumX + minimumX) / 2;
+        int deltaY = (pageHeight - maximumY + minimumY) / 2;
 
         // move everything relative to 0,0
         for (ElementView elementView : view.getElements()) {

@@ -19,7 +19,7 @@ public class GraphvizAutomaticLayout {
     private double rankSeparation = 1.0;
     private double nodeSeparation = 1.0;
 
-    private int margin = 20;
+    private int margin = 400;
     private boolean changePaperSize = true;
 
     private Locale locale = Locale.US;
@@ -123,6 +123,10 @@ public class GraphvizAutomaticLayout {
     }
 
     public void apply(Workspace workspace) throws Exception {
+        for (CustomView view : workspace.getViews().getCustomViews()) {
+            apply(view);
+        }
+
         for (SystemLandscapeView view : workspace.getViews().getSystemLandscapeViews()) {
             apply(view);
         }

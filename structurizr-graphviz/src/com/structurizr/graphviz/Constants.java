@@ -5,7 +5,7 @@ package com.structurizr.graphviz;
  */
 class Constants {
 
-    // diagrams created by the Structurizr cloud service/on-premises installation are sized for 300dpi
+    // diagrams created by the Structurizr cloud service/on-premises installation/Lite are sized for 300dpi
     static final double STRUCTURIZR_DPI = 300.0;
 
     // graphviz uses 72dpi by default

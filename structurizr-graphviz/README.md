@@ -23,6 +23,12 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
+### 1.6.0 (unreleased)
+
+- Adds support for custom page sizes.
+- Adds support for custom views.
+- Takes layout settings from the view when specified, otherwise defaults are used.
+
 ### 1.5.0 (28th March 2021)
 
 - Adds support for relationships between deployment nodes.
