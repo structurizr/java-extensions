@@ -23,7 +23,7 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
-### 1.6.0 (unreleased)
+### 1.6.0 (3rd September 2021)
 
 - Adds support for custom page sizes.
 - Adds support for custom views.
