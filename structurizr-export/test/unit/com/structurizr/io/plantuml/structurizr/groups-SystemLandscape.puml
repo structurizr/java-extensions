@@ -15,22 +15,22 @@ skinparam {
 
 hide stereotype
 
-skinparam rectangle<<1>> {
+skinparam rectangle<<A>> {
   BackgroundColor #dddddd
   FontColor #000000
   BorderColor #9a9a9a
 }
-skinparam rectangle<<2>> {
+skinparam rectangle<<B>> {
   BackgroundColor #dddddd
   FontColor #000000
   BorderColor #9a9a9a
 }
-skinparam rectangle<<3>> {
+skinparam rectangle<<C>> {
   BackgroundColor #dddddd
   FontColor #000000
   BorderColor #9a9a9a
 }
-skinparam rectangle<<4>> {
+skinparam rectangle<<D>> {
   BackgroundColor #dddddd
   FontColor #000000
   BorderColor #9a9a9a
@@ -41,19 +41,19 @@ package "Enterprise" <<enterprise>> {
   skinparam PackageFontColor<<enterprise>> #444444
 
   package "Group 2\n[Group]" <<group>> {
-    rectangle "==D\n<size:10>[Software System]</size>" <<4>> as 4
+    rectangle "==D\n<size:10>[Software System]</size>" <<D>> as D
   }
 
-  rectangle "==C\n<size:10>[Software System]</size>" <<3>> as 3
+  rectangle "==C\n<size:10>[Software System]</size>" <<C>> as C
 }
 
 package "Group 1\n[Group]" <<group>> {
-  rectangle "==B\n<size:10>[Software System]</size>" <<2>> as 2
+  rectangle "==B\n<size:10>[Software System]</size>" <<B>> as B
 }
 
-rectangle "==A\n<size:10>[Software System]</size>" <<1>> as 1
+rectangle "==A\n<size:10>[Software System]</size>" <<A>> as A
 
-2 .[#707070,thickness=2].> 3 : "<color:#707070>"
-3 .[#707070,thickness=2].> 4 : "<color:#707070>"
-1 .[#707070,thickness=2].> 2 : "<color:#707070>"
+B .[#707070,thickness=2].> C : "<color:#707070>"
+C .[#707070,thickness=2].> D : "<color:#707070>"
+A .[#707070,thickness=2].> B : "<color:#707070>"
 @enduml

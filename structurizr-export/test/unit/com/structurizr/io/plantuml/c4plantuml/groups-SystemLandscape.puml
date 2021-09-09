@@ -8,21 +8,21 @@ top to bottom direction
 
 Enterprise_Boundary(enterprise, "Enterprise") {
   Boundary(group_0, "Group 2") {
-    System(4, "D", "")
+    System(D, "D", "")
   }
 
-  System(3, "C", "")
+  System(C, "C", "")
 }
 
 Boundary(group_1, "Group 1") {
-  System_Ext(2, "B", "")
+  System_Ext(B, "B", "")
 }
 
-System_Ext(1, "A", "")
+System_Ext(A, "A", "")
 
-Rel_D(2, 3, "")
-Rel_D(3, 4, "")
-Rel_D(1, 2, "")
+Rel_D(B, C, "")
+Rel_D(C, D, "")
+Rel_D(A, B, "")
 
 SHOW_LEGEND()
 @enduml

@@ -14,6 +14,7 @@ structurizr-export provides the ability to export views defined in a Structurizr
 ### 1.1.2 (unreleased)
 
 - Adds support for C4-PlantUML `SHOW_LEGEND()`.
+- Identifiers in PlantUML exports are now based upon element names, rather than internal IDs (#59).
 
 ### 1.1.1 (9th June 2021)
 

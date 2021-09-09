@@ -7,28 +7,28 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person_Ext(1, "Personal Banking Customer", "A customer of the bank, with personal bank accounts.")
-System(4, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
-System(6, "E-mail System", "The internal Microsoft Exchange e-mail system.")
+Person_Ext(PersonalBankingCustomer, "Personal Banking Customer", "A customer of the bank, with personal bank accounts.")
+System(MainframeBankingSystem, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+System(EmailSystem, "E-mail System", "The internal Microsoft Exchange e-mail system.")
 
-System_Boundary("2_boundary", "Internet Banking System") {
-  Container(17, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
-  Container(18, "Mobile App", "Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
-  Container(19, "Web Application", "Java and Spring MVC", "Delivers the static content and the Internet banking single page application.")
-  Container(20, "API Application", "Java and Spring MVC", "Provides Internet banking functionality via a JSON/HTTPS API.")
-  ContainerDb(21, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+System_Boundary("InternetBankingSystem_boundary", "Internet Banking System") {
+  Container(InternetBankingSystem.SinglePageApplication, "Single-Page Application", "JavaScript and Angular", "Provides all of the Internet banking functionality to customers via their web browser.")
+  Container(InternetBankingSystem.MobileApp, "Mobile App", "Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
+  Container(InternetBankingSystem.WebApplication, "Web Application", "Java and Spring MVC", "Delivers the static content and the Internet banking single page application.")
+  Container(InternetBankingSystem.APIApplication, "API Application", "Java and Spring MVC", "Provides Internet banking functionality via a JSON/HTTPS API.")
+  ContainerDb(InternetBankingSystem.Database, "Database", "Oracle Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
 }
 
-Rel_D(1, 19, "Visits bigbank.com/ib using", "HTTPS")
-Rel_D(1, 17, "Views account balances, and makes payments using")
-Rel_D(1, 18, "Views account balances, and makes payments using")
-Rel_D(19, 17, "Delivers to the customer's web browser")
-Rel_D(20, 21, "Reads from and writes to", "JDBC")
-Rel_D(20, 4, "Makes API calls to", "XML/HTTPS")
-Rel_D(20, 6, "Sends e-mail using", "SMTP")
-Rel_D(17, 20, "Makes API calls to", "JSON/HTTPS")
-Rel_D(18, 20, "Makes API calls to", "JSON/HTTPS")
-Rel_D(6, 1, "Sends e-mails to")
+Rel_D(PersonalBankingCustomer, InternetBankingSystem.WebApplication, "Visits bigbank.com/ib using", "HTTPS")
+Rel_D(PersonalBankingCustomer, InternetBankingSystem.SinglePageApplication, "Views account balances, and makes payments using")
+Rel_D(PersonalBankingCustomer, InternetBankingSystem.MobileApp, "Views account balances, and makes payments using")
+Rel_D(InternetBankingSystem.WebApplication, InternetBankingSystem.SinglePageApplication, "Delivers to the customer's web browser")
+Rel_D(InternetBankingSystem.APIApplication, InternetBankingSystem.Database, "Reads from and writes to", "JDBC")
+Rel_D(InternetBankingSystem.APIApplication, MainframeBankingSystem, "Makes API calls to", "XML/HTTPS")
+Rel_D(InternetBankingSystem.APIApplication, EmailSystem, "Sends e-mail using", "SMTP")
+Rel_D(InternetBankingSystem.SinglePageApplication, InternetBankingSystem.APIApplication, "Makes API calls to", "JSON/HTTPS")
+Rel_D(InternetBankingSystem.MobileApp, InternetBankingSystem.APIApplication, "Makes API calls to", "JSON/HTTPS")
+Rel_D(EmailSystem, PersonalBankingCustomer, "Sends e-mails to")
 
 SHOW_LEGEND()
 @enduml

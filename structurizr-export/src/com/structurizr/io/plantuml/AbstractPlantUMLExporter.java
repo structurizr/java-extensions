@@ -2,9 +2,7 @@ package com.structurizr.io.plantuml;
 
 import com.structurizr.io.AbstractDiagramExporter;
 import com.structurizr.io.IndentingWriter;
-import com.structurizr.model.DeploymentNode;
-import com.structurizr.model.Element;
-import com.structurizr.model.Relationship;
+import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
 import com.structurizr.view.DynamicView;
 import com.structurizr.view.RelationshipStyle;
@@ -144,8 +142,80 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
         }
     }
 
-    String idOf(Element e) {
-        return e.getId();
+    String idOf(ModelItem modelItem) {
+        if (modelItem instanceof Element) {
+            Element element = (Element)modelItem;
+            if (element.getParent() == null) {
+                if (element instanceof DeploymentNode) {
+                    DeploymentNode dn = (DeploymentNode)element;
+                    return filter(dn.getEnvironment()) + "." + id(dn);
+                } else {
+                    return id(element);
+                }
+            } else {
+                return idOf(element.getParent()) + "." + id(modelItem);
+            }
+        }
+
+        return id(modelItem);
+    }
+
+    private String id(ModelItem modelItem) {
+        if (modelItem instanceof Person) {
+            return id((Person)modelItem);
+        } else  if (modelItem instanceof SoftwareSystem) {
+            return id((SoftwareSystem)modelItem);
+        } else  if (modelItem instanceof Container) {
+            return id((Container)modelItem);
+        } else  if (modelItem instanceof Component) {
+            return id((Component)modelItem);
+        } else  if (modelItem instanceof DeploymentNode) {
+            return id((DeploymentNode)modelItem);
+        } else  if (modelItem instanceof InfrastructureNode) {
+            return id((InfrastructureNode)modelItem);
+        } else  if (modelItem instanceof SoftwareSystemInstance) {
+            return id((SoftwareSystemInstance)modelItem);
+        } else  if (modelItem instanceof ContainerInstance) {
+            return id((ContainerInstance)modelItem);
+        }
+
+        return modelItem.getId();
+    }
+
+    private String id(Person person) {
+        return filter(person.getName());
+    }
+
+    private String id(SoftwareSystem softwareSystem) {
+        return filter(softwareSystem.getName());
+    }
+
+    private String id(Container container) {
+        return filter(container.getName());
+    }
+
+    private String id(Component component) {
+        return filter(component.getName());
+    }
+
+    private String id(DeploymentNode deploymentNode) {
+        return filter(deploymentNode.getName());
+    }
+
+    private String id(InfrastructureNode infrastructureNode) {
+        return filter(infrastructureNode.getName());
+    }
+
+    private String id(SoftwareSystemInstance softwareSystemInstance) {
+        return filter(softwareSystemInstance.getName()) + "_" + softwareSystemInstance.getInstanceId();
+    }
+
+    private String id(ContainerInstance containerInstance) {
+        return filter(containerInstance.getName()) + "_" + containerInstance.getInstanceId();
+    }
+
+    private String filter(String s) {
+        return s.replaceAll("\\W", "");
     }
 
     @Override

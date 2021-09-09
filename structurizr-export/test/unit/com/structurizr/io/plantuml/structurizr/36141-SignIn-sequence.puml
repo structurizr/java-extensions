@@ -13,39 +13,39 @@ skinparam {
 
 hide stereotype
 
-skinparam sequenceParticipant<<21>> {
+skinparam sequenceParticipant<<InternetBankingSystem.Database>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
-skinparam sequenceParticipant<<32>> {
+skinparam sequenceParticipant<<InternetBankingSystem.APIApplication.SecurityComponent>> {
   BackgroundColor #85bbf0
   FontColor #000000
   BorderColor #5d82a8
 }
-skinparam sequenceParticipant<<29>> {
+skinparam sequenceParticipant<<InternetBankingSystem.APIApplication.SignInController>> {
   BackgroundColor #85bbf0
   FontColor #000000
   BorderColor #5d82a8
 }
-skinparam sequenceParticipant<<17>> {
+skinparam sequenceParticipant<<InternetBankingSystem.SinglePageApplication>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
 
-participant "Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>" as 17 <<17>> #438dd5
+participant "Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>" as InternetBankingSystem.SinglePageApplication <<InternetBankingSystem.SinglePageApplication>> #438dd5
 
-participant "Sign In Controller\n<size:10>[Component: Spring MVC Rest Controller]</size>" as 29 <<29>> #85bbf0
+participant "Sign In Controller\n<size:10>[Component: Spring MVC Rest Controller]</size>" as InternetBankingSystem.APIApplication.SignInController <<InternetBankingSystem.APIApplication.SignInController>> #85bbf0
 
-participant "Security Component\n<size:10>[Component: Spring Bean]</size>" as 32 <<32>> #85bbf0
+participant "Security Component\n<size:10>[Component: Spring Bean]</size>" as InternetBankingSystem.APIApplication.SecurityComponent <<InternetBankingSystem.APIApplication.SecurityComponent>> #85bbf0
 
-database "Database\n<size:10>[Container: Oracle Database Schema]</size>" as 21 <<21>> #438dd5
+database "Database\n<size:10>[Container: Oracle Database Schema]</size>" as InternetBankingSystem.Database <<InternetBankingSystem.Database>> #438dd5
 
-17 -[#707070]> 29 : 1. Submits credentials to
-29 -[#707070]> 32 : 2. Validates credentials using
-32 -[#707070]> 21 : 3. select * from users where username = ?
-32 <-[#707070]- 21 : 4. Returns user data to
-29 <-[#707070]- 32 : 5. Returns true if the hashed password matches
-17 <-[#707070]- 29 : 6. Sends back an authentication token to
+InternetBankingSystem.SinglePageApplication -[#707070]> InternetBankingSystem.APIApplication.SignInController : 1. Submits credentials to
+InternetBankingSystem.APIApplication.SignInController -[#707070]> InternetBankingSystem.APIApplication.SecurityComponent : 2. Validates credentials using
+InternetBankingSystem.APIApplication.SecurityComponent -[#707070]> InternetBankingSystem.Database : 3. select * from users where username = ?
+InternetBankingSystem.APIApplication.SecurityComponent <-[#707070]- InternetBankingSystem.Database : 4. Returns user data to
+InternetBankingSystem.APIApplication.SignInController <-[#707070]- InternetBankingSystem.APIApplication.SecurityComponent : 5. Returns true if the hashed password matches
+InternetBankingSystem.SinglePageApplication <-[#707070]- InternetBankingSystem.APIApplication.SignInController : 6. Sends back an authentication token to
 @enduml

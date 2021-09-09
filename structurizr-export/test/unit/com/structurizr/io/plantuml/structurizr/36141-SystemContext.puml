@@ -15,34 +15,34 @@ skinparam {
 
 hide stereotype
 
-skinparam rectangle<<6>> {
+skinparam rectangle<<EmailSystem>> {
   BackgroundColor #999999
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<2>> {
+skinparam rectangle<<InternetBankingSystem>> {
   BackgroundColor #1168bd
   FontColor #ffffff
   BorderColor #0b4884
 }
-skinparam rectangle<<4>> {
+skinparam rectangle<<MainframeBankingSystem>> {
   BackgroundColor #999999
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam person<<1>> {
+skinparam person<<PersonalBankingCustomer>> {
   BackgroundColor #08427b
   FontColor #ffffff
   BorderColor #052e56
 }
 
-person "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<1>> as 1
-rectangle "==Internet Banking System\n<size:10>[Software System]</size>\n\nAllows customers to view information about their bank accounts, and make payments." <<2>> as 2
-rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<4>> as 4
-rectangle "==E-mail System\n<size:10>[Software System]</size>\n\nThe internal Microsoft Exchange e-mail system." <<6>> as 6
+person "==Personal Banking Customer\n<size:10>[Person]</size>\n\nA customer of the bank, with personal bank accounts." <<PersonalBankingCustomer>> as PersonalBankingCustomer
+rectangle "==Internet Banking System\n<size:10>[Software System]</size>\n\nAllows customers to view information about their bank accounts, and make payments." <<InternetBankingSystem>> as InternetBankingSystem
+rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<MainframeBankingSystem>> as MainframeBankingSystem
+rectangle "==E-mail System\n<size:10>[Software System]</size>\n\nThe internal Microsoft Exchange e-mail system." <<EmailSystem>> as EmailSystem
 
-1 .[#707070,thickness=2].> 2 : "<color:#707070>Views account balances, and makes payments using"
-2 .[#707070,thickness=2].> 4 : "<color:#707070>Gets account information from, and makes payments using"
-2 .[#707070,thickness=2].> 6 : "<color:#707070>Sends e-mail using"
-6 .[#707070,thickness=2].> 1 : "<color:#707070>Sends e-mails to"
+PersonalBankingCustomer .[#707070,thickness=2].> InternetBankingSystem : "<color:#707070>Views account balances, and makes payments using"
+InternetBankingSystem .[#707070,thickness=2].> MainframeBankingSystem : "<color:#707070>Gets account information from, and makes payments using"
+InternetBankingSystem .[#707070,thickness=2].> EmailSystem : "<color:#707070>Sends e-mail using"
+EmailSystem .[#707070,thickness=2].> PersonalBankingCustomer : "<color:#707070>Sends e-mails to"
 @enduml

@@ -138,32 +138,32 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<2>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<4>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
-                "  skinparam PackageBorderColor<<1>> #444444\n" +
-                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "package \"Software System 1\\n[Software System]\" <<SoftwareSystem1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<SoftwareSystem1.Container1>> as SoftwareSystem1.Container1\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 2\\n[Software System]\" <<3>> {\n" +
-                "  skinparam PackageBorderColor<<3>> #cccccc\n" +
-                "  skinparam PackageFontColor<<3>> #cccccc\n" +
+                "package \"Software System 2\\n[Software System]\" <<SoftwareSystem2>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem2>> #cccccc\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem2>> #cccccc\n" +
                 "\n" +
-                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<SoftwareSystem2.Container2>> as SoftwareSystem2.Container2\n" +
                 "}\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>Uses\"\n" +
+                "SoftwareSystem1.Container1 .[#707070,thickness=2].> SoftwareSystem2.Container2 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         containerView.setExternalSoftwareSystemBoundariesVisible(false);
@@ -185,27 +185,27 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<2>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<4>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
-                "  skinparam PackageBorderColor<<1>> #444444\n" +
-                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "package \"Software System 1\\n[Software System]\" <<SoftwareSystem1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<SoftwareSystem1.Container1>> as SoftwareSystem1.Container1\n" +
                 "}\n" +
                 "\n" +
-                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<SoftwareSystem2.Container2>> as SoftwareSystem2.Container2\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>Uses\"\n" +
+                "SoftwareSystem1.Container1 .[#707070,thickness=2].> SoftwareSystem2.Container2 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -244,32 +244,32 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<3>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1.Component1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<6>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2.Component2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 1\\n[Container]\" <<2>> {\n" +
-                "  skinparam PackageBorderColor<<2>> #444444\n" +
-                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "package \"Container 1\\n[Container]\" <<SoftwareSystem1.Container1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1.Container1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1.Container1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container1.Component1>> as SoftwareSystem1.Container1.Component1\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 2\\n[Container]\" <<5>> {\n" +
-                "  skinparam PackageBorderColor<<5>> #cccccc\n" +
-                "  skinparam PackageFontColor<<5>> #cccccc\n" +
+                "package \"Container 2\\n[Container]\" <<SoftwareSystem2.Container2>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem2.Container2>> #cccccc\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem2.Container2>> #cccccc\n" +
                 "\n" +
-                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
+                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<SoftwareSystem2.Container2.Component2>> as SoftwareSystem2.Container2.Component2\n" +
                 "}\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 6 : \"<color:#707070>Uses\"\n" +
+                "SoftwareSystem1.Container1.Component1 .[#707070,thickness=2].> SoftwareSystem2.Container2.Component2 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         componentView.setExternalSoftwareSystemBoundariesVisible(false);
@@ -291,27 +291,27 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<3>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1.Component1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<6>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2.Component2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 1\\n[Container]\" <<2>> {\n" +
-                "  skinparam PackageBorderColor<<2>> #444444\n" +
-                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "package \"Container 1\\n[Container]\" <<SoftwareSystem1.Container1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1.Container1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1.Container1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container1.Component1>> as SoftwareSystem1.Container1.Component1\n" +
                 "}\n" +
                 "\n" +
-                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<6>> as 6\n" +
+                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<SoftwareSystem2.Container2.Component2>> as SoftwareSystem2.Container2.Component2\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 6 : \"<color:#707070>Uses\"\n" +
+                "SoftwareSystem1.Container1.Component1 .[#707070,thickness=2].> SoftwareSystem2.Container2.Component2 : \"<color:#707070>Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -347,32 +347,32 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<2>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<4>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
-                "  skinparam PackageBorderColor<<1>> #444444\n" +
-                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "package \"Software System 1\\n[Software System]\" <<SoftwareSystem1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<SoftwareSystem1.Container1>> as SoftwareSystem1.Container1\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 2\\n[Software System]\" <<3>> {\n" +
-                "  skinparam PackageBorderColor<<3>> #cccccc\n" +
-                "  skinparam PackageFontColor<<3>> #cccccc\n" +
+                "package \"Software System 2\\n[Software System]\" <<SoftwareSystem2>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem2>> #cccccc\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem2>> #cccccc\n" +
                 "\n" +
-                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "  rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<SoftwareSystem2.Container2>> as SoftwareSystem2.Container2\n" +
                 "}\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>1. Uses\"\n" +
+                "SoftwareSystem1.Container1 .[#707070,thickness=2].> SoftwareSystem2.Container2 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         dynamicView.setExternalBoundariesVisible(false);
@@ -394,27 +394,27 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<2>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<4>> {\n" +
+                "skinparam rectangle<<SoftwareSystem2.Container2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Software System 1\\n[Software System]\" <<1>> {\n" +
-                "  skinparam PackageBorderColor<<1>> #444444\n" +
-                "  skinparam PackageFontColor<<1>> #444444\n" +
+                "package \"Software System 1\\n[Software System]\" <<SoftwareSystem1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<2>> as 2\n" +
+                "  rectangle \"==Container 1\\n<size:10>[Container]</size>\" <<SoftwareSystem1.Container1>> as SoftwareSystem1.Container1\n" +
                 "}\n" +
                 "\n" +
-                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<4>> as 4\n" +
+                "rectangle \"==Container 2\\n<size:10>[Container]</size>\" <<SoftwareSystem2.Container2>> as SoftwareSystem2.Container2\n" +
                 "\n" +
-                "2 .[#707070,thickness=2].> 4 : \"<color:#707070>1. Uses\"\n" +
+                "SoftwareSystem1.Container1 .[#707070,thickness=2].> SoftwareSystem2.Container2 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 
@@ -452,32 +452,32 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<3>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1.Component1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<5>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container2.Component2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 1\\n[Container]\" <<2>> {\n" +
-                "  skinparam PackageBorderColor<<2>> #444444\n" +
-                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "package \"Container 1\\n[Container]\" <<SoftwareSystem1.Container1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1.Container1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1.Container1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container1.Component1>> as SoftwareSystem1.Container1.Component1\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 2\\n[Container]\" <<4>> {\n" +
-                "  skinparam PackageBorderColor<<4>> #cccccc\n" +
-                "  skinparam PackageFontColor<<4>> #cccccc\n" +
+                "package \"Container 2\\n[Container]\" <<SoftwareSystem1.Container2>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1.Container2>> #cccccc\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1.Container2>> #cccccc\n" +
                 "\n" +
-                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
+                "  rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container2.Component2>> as SoftwareSystem1.Container2.Component2\n" +
                 "}\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 5 : \"<color:#707070>1. Uses\"\n" +
+                "SoftwareSystem1.Container1.Component1 .[#707070,thickness=2].> SoftwareSystem1.Container2.Component2 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
 
         dynamicView.setExternalBoundariesVisible(false);
@@ -499,27 +499,27 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "\n" +
                 "hide stereotype\n" +
                 "\n" +
-                "skinparam rectangle<<3>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container1.Component1>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
-                "skinparam rectangle<<5>> {\n" +
+                "skinparam rectangle<<SoftwareSystem1.Container2.Component2>> {\n" +
                 "  BackgroundColor #dddddd\n" +
                 "  FontColor #000000\n" +
                 "  BorderColor #9a9a9a\n" +
                 "}\n" +
                 "\n" +
-                "package \"Container 1\\n[Container]\" <<2>> {\n" +
-                "  skinparam PackageBorderColor<<2>> #444444\n" +
-                "  skinparam PackageFontColor<<2>> #444444\n" +
+                "package \"Container 1\\n[Container]\" <<SoftwareSystem1.Container1>> {\n" +
+                "  skinparam PackageBorderColor<<SoftwareSystem1.Container1>> #444444\n" +
+                "  skinparam PackageFontColor<<SoftwareSystem1.Container1>> #444444\n" +
                 "\n" +
-                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<3>> as 3\n" +
+                "  rectangle \"==Component 1\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container1.Component1>> as SoftwareSystem1.Container1.Component1\n" +
                 "}\n" +
                 "\n" +
-                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<5>> as 5\n" +
+                "rectangle \"==Component 2\\n<size:10>[Component]</size>\" <<SoftwareSystem1.Container2.Component2>> as SoftwareSystem1.Container2.Component2\n" +
                 "\n" +
-                "3 .[#707070,thickness=2].> 5 : \"<color:#707070>1. Uses\"\n" +
+                "SoftwareSystem1.Container1.Component1 .[#707070,thickness=2].> SoftwareSystem1.Container2.Component2 : \"<color:#707070>1. Uses\"\n" +
                 "@enduml", diagram.getDefinition());
     }
 

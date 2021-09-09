@@ -78,7 +78,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startSoftwareSystemBoundary(View view, SoftwareSystem softwareSystem, IndentingWriter writer) {
-        writer.writeLine(String.format("System_Boundary(\"%s_boundary\", \"%s\") {", softwareSystem.getId(), softwareSystem.getName()));
+        writer.writeLine(String.format("System_Boundary(\"%s_boundary\", \"%s\") {", idOf(softwareSystem), softwareSystem.getName()));
         writer.indent();
     }
 
@@ -91,7 +91,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startContainerBoundary(View view, Container container, IndentingWriter writer) {
-        writer.writeLine(String.format("Container_Boundary(\"%s_boundary\", \"%s\") {", container.getId(), container.getName()));
+        writer.writeLine(String.format("Container_Boundary(\"%s_boundary\", \"%s\") {", idOf(container), container.getName()));
         writer.indent();
     }
 
@@ -107,14 +107,14 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         if (StringUtils.isNullOrEmpty(deploymentNode.getTechnology())) {
             writer.writeLine(
                     format("Deployment_Node(%s, \"%s\") {",
-                            deploymentNode.getId(),
+                            idOf(deploymentNode),
                             deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : "")
                     )
             );
         } else {
             writer.writeLine(
                     format("Deployment_Node(%s, \"%s\", \"%s\") {",
-                            deploymentNode.getId(),
+                            idOf(deploymentNode),
                             deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
                             deploymentNode.getTechnology()
                     )
@@ -123,7 +123,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         writer.indent();
 
         if (!isVisible(view, deploymentNode)) {
-            writer.writeLine("hide " + deploymentNode.getId());
+            writer.writeLine("hide " + idOf(deploymentNode));
         }
     }
 
@@ -146,7 +146,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     @Override
     protected void writeElement(View view, Element element, IndentingWriter writer) {
         Element elementToWrite = element;
-        String id = element.getId();
+        String id = idOf(element);
 
         if (element instanceof StaticStructureElementInstance) {
             StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
@@ -199,10 +199,10 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         } else if (element instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)element;
             if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                writer.writeLine(format("Deployment_Node(%s, \"%s\")", infrastructureNode.getId(), name));
+                writer.writeLine(format("Deployment_Node(%s, \"%s\")", idOf(infrastructureNode), name));
             } else {
                 if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")", infrastructureNode.getId(), name, infrastructureNode.getTechnology()));
+                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")", idOf(infrastructureNode), name, infrastructureNode.getTechnology()));
                 }
             }
         }
@@ -232,9 +232,9 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         description += (hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationshipView.getRelationship().getDescription()) ? relationshipView.getRelationship().getDescription() : "");
 
         if (StringUtils.isNullOrEmpty(relationship.getTechnology())) {
-            writer.writeLine(format("Rel_D(%s, %s, \"%s\")", source.getId(), destination.getId(), description));
+            writer.writeLine(format("Rel_D(%s, %s, \"%s\")", idOf(source), idOf(destination), description));
         } else {
-            writer.writeLine(format("Rel_D(%s, %s, \"%s\", \"%s\")", source.getId(), destination.getId(), description, relationship.getTechnology()));
+            writer.writeLine(format("Rel_D(%s, %s, \"%s\", \"%s\")", idOf(source), idOf(destination), description, relationship.getTechnology()));
         }
     }
 

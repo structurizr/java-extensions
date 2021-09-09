@@ -127,15 +127,15 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
                 "\n" +
-                "System_Boundary(\"1_boundary\", \"Software System 1\") {\n" +
-                "  Container(2, \"Container 1\", \"\")\n" +
+                "System_Boundary(\"SoftwareSystem1_boundary\", \"Software System 1\") {\n" +
+                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "System_Boundary(\"3_boundary\", \"Software System 2\") {\n" +
-                "  Container(4, \"Container 2\", \"\")\n" +
+                "System_Boundary(\"SoftwareSystem2_boundary\", \"Software System 2\") {\n" +
+                "  Container(SoftwareSystem2.Container2, \"Container 2\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "Rel_D(2, 4, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -152,13 +152,13 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
                 "\n" +
-                "System_Boundary(\"1_boundary\", \"Software System 1\") {\n" +
-                "  Container(2, \"Container 1\", \"\")\n" +
+                "System_Boundary(\"SoftwareSystem1_boundary\", \"Software System 1\") {\n" +
+                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "Container(4, \"Container 2\", \"\")\n" +
+                "Container(SoftwareSystem2.Container2, \"Container 2\", \"\")\n" +
                 "\n" +
-                "Rel_D(2, 4, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -191,15 +191,15 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
                 "\n" +
-                "Container_Boundary(\"2_boundary\", \"Container 1\") {\n" +
-                "  Component(3, \"Component 1\", \"\")\n" +
+                "Container_Boundary(\"SoftwareSystem1.Container1_boundary\", \"Container 1\") {\n" +
+                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "Container_Boundary(\"5_boundary\", \"Container 2\") {\n" +
-                "  Component(6, \"Component 2\", \"\")\n" +
+                "Container_Boundary(\"SoftwareSystem2.Container2_boundary\", \"Container 2\") {\n" +
+                "  Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "Rel_D(3, 6, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -215,13 +215,13 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
                 "\n" +
-                "Container_Boundary(\"2_boundary\", \"Container 1\") {\n" +
-                "  Component(3, \"Component 1\", \"\")\n" +
+                "Container_Boundary(\"SoftwareSystem1.Container1_boundary\", \"Container 1\") {\n" +
+                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\")\n" +
                 "}\n" +
                 "\n" +
-                "Component(6, \"Component 2\", \"\")\n" +
+                "Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\")\n" +
                 "\n" +
-                "Rel_D(3, 6, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());

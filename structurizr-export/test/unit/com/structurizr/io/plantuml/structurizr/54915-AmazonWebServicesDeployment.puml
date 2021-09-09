@@ -15,83 +15,83 @@ skinparam {
 
 hide stereotype
 
-skinparam node<<8>> {
+skinparam node<<Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2>> {
   BackgroundColor #ffffff
   FontColor #d86613
   BorderColor #d86613
 }
-skinparam node<<14>> {
+skinparam node<<Default.AmazonWebServices.USEast1.AmazonRDS>> {
   BackgroundColor #ffffff
   FontColor #3b48cc
   BorderColor #3b48cc
 }
-skinparam node<<5>> {
+skinparam node<<Default.AmazonWebServices>> {
   BackgroundColor #ffffff
   FontColor #232f3e
   BorderColor #232f3e
 }
-skinparam node<<7>> {
+skinparam node<<Default.AmazonWebServices.USEast1.Autoscalinggroup>> {
   BackgroundColor #ffffff
   FontColor #cc2264
   BorderColor #cc2264
 }
-skinparam database<<16>> {
+skinparam database<<Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #b2b2b2
 }
-skinparam rectangle<<11>> {
+skinparam rectangle<<Default.AmazonWebServices.USEast1.ElasticLoadBalancer>> {
   BackgroundColor #ffffff
   FontColor #693cc5
   BorderColor #693cc5
   roundCorner 20
 }
-skinparam node<<15>> {
+skinparam node<<Default.AmazonWebServices.USEast1.AmazonRDS.MySQL>> {
   BackgroundColor #ffffff
   FontColor #3b48cc
   BorderColor #3b48cc
 }
-skinparam rectangle<<10>> {
+skinparam rectangle<<Default.AmazonWebServices.USEast1.Route53>> {
   BackgroundColor #ffffff
   FontColor #693cc5
   BorderColor #693cc5
   roundCorner 20
 }
-skinparam node<<6>> {
+skinparam node<<Default.AmazonWebServices.USEast1>> {
   BackgroundColor #ffffff
   FontColor #147eba
   BorderColor #147eba
 }
-skinparam rectangle<<9>> {
+skinparam rectangle<<Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #b2b2b2
   roundCorner 20
 }
 
-node "Amazon Web Services\n[Deployment Node]" <<5>> as 5 {
-  node "US-East-1\n[Deployment Node]" <<6>> as 6 {
-    node "Amazon RDS\n[Deployment Node]" <<14>> as 14 {
-      node "MySQL\n[Deployment Node]" <<15>> as 15 {
-        database "==Database\n<size:10>[Container: Relational database schema]</size>\n\nStores information regarding the veterinarians, the clients, and their pets." <<16>> as 16
+node "Amazon Web Services\n[Deployment Node]" <<Default.AmazonWebServices>> as Default.AmazonWebServices {
+  node "US-East-1\n[Deployment Node]" <<Default.AmazonWebServices.USEast1>> as Default.AmazonWebServices.USEast1 {
+    node "Amazon RDS\n[Deployment Node]" <<Default.AmazonWebServices.USEast1.AmazonRDS>> as Default.AmazonWebServices.USEast1.AmazonRDS {
+      node "MySQL\n[Deployment Node]" <<Default.AmazonWebServices.USEast1.AmazonRDS.MySQL>> as Default.AmazonWebServices.USEast1.AmazonRDS.MySQL {
+        database "==Database\n<size:10>[Container: Relational database schema]</size>\n\nStores information regarding the veterinarians, the clients, and their pets." <<Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1>> as Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1
       }
 
     }
 
-    node "Autoscaling group\n[Deployment Node]" <<7>> as 7 {
-      node "Amazon EC2\n[Deployment Node]" <<8>> as 8 {
-        rectangle "==Web Application\n<size:10>[Container: Java and Spring Boot]</size>\n\nAllows employees to view and manage information regarding the veterinarians, the clients, and their pets." <<9>> as 9
+    node "Autoscaling group\n[Deployment Node]" <<Default.AmazonWebServices.USEast1.Autoscalinggroup>> as Default.AmazonWebServices.USEast1.Autoscalinggroup {
+      node "Amazon EC2\n[Deployment Node]" <<Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2>> as Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2 {
+        rectangle "==Web Application\n<size:10>[Container: Java and Spring Boot]</size>\n\nAllows employees to view and manage information regarding the veterinarians, the clients, and their pets." <<Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1>> as Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1
       }
 
     }
 
-    rectangle "==Elastic Load Balancer\n<size:10>[Infrastructure Node]</size>" <<11>> as 11
-    rectangle "==Route 53\n<size:10>[Infrastructure Node]</size>" <<10>> as 10
+    rectangle "==Elastic Load Balancer\n<size:10>[Infrastructure Node]</size>" <<Default.AmazonWebServices.USEast1.ElasticLoadBalancer>> as Default.AmazonWebServices.USEast1.ElasticLoadBalancer
+    rectangle "==Route 53\n<size:10>[Infrastructure Node]</size>" <<Default.AmazonWebServices.USEast1.Route53>> as Default.AmazonWebServices.USEast1.Route53
   }
 
 }
 
-10 .[#707070,thickness=2].> 11 : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
-11 .[#707070,thickness=2].> 9 : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
-9 .[#707070,thickness=2].> 16 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC/SSL]</size>"
+Default.AmazonWebServices.USEast1.Route53 .[#707070,thickness=2].> Default.AmazonWebServices.USEast1.ElasticLoadBalancer : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
+Default.AmazonWebServices.USEast1.ElasticLoadBalancer .[#707070,thickness=2].> Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1 : "<color:#707070>Forwards requests to\n<color:#707070><size:8>[HTTPS]</size>"
+Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1 .[#707070,thickness=2].> Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC/SSL]</size>"
 @enduml

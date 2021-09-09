@@ -126,10 +126,10 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                 color = "#cccccc";
             }
 
-            writer.writeLine(String.format("package \"%s\\n%s\" <<%s>> {", softwareSystem.getName(), typeOf(view, softwareSystem, true), softwareSystem.getId()));
+            writer.writeLine(String.format("package \"%s\\n%s\" <<%s>> {", softwareSystem.getName(), typeOf(view, softwareSystem, true), idOf(softwareSystem)));
             writer.indent();
-            writer.writeLine(String.format("skinparam PackageBorderColor<<%s>> %s", softwareSystem.getId(), color));
-            writer.writeLine(String.format("skinparam PackageFontColor<<%s>> %s", softwareSystem.getId(), color));
+            writer.writeLine(String.format("skinparam PackageBorderColor<<%s>> %s", idOf(softwareSystem), color));
+            writer.writeLine(String.format("skinparam PackageFontColor<<%s>> %s", idOf(softwareSystem), color));
             writer.writeLine();
         }
     }
@@ -161,10 +161,10 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                 }
             }
 
-            writer.writeLine(String.format("package \"%s\\n%s\" <<%s>> {", container.getName(), typeOf(view, container, true), container.getId()));
+            writer.writeLine(String.format("package \"%s\\n%s\" <<%s>> {", container.getName(), typeOf(view, container, true), idOf(container)));
             writer.indent();
-            writer.writeLine(String.format("skinparam PackageBorderColor<<%s>> %s", container.getId(), color));
-            writer.writeLine(String.format("skinparam PackageFontColor<<%s>> %s", container.getId(), color));
+            writer.writeLine(String.format("skinparam PackageBorderColor<<%s>> %s", idOf(container), color));
+            writer.writeLine(String.format("skinparam PackageFontColor<<%s>> %s", idOf(container), color));
             writer.writeLine();
         }
     }
@@ -191,7 +191,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
         writer.indent();
 
         if (!isVisible(view, deploymentNode)) {
-            writer.writeLine("hide " + deploymentNode.getId());
+            writer.writeLine("hide " + idOf(deploymentNode));
         }
     }
 
@@ -236,8 +236,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                     plantumlSequenceType(view, element),
                     element.getName(),
                     typeOf(view, element, true),
-                    element.getId(),
-                    element.getId(),
+                    idOf(element),
+                    idOf(element),
                     elementStyle.getBackground(),
                     System.lineSeparator()));
         } else {
@@ -310,11 +310,11 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
             writer.writeLine(
                     String.format("%s %s[%s]%s %s : %s",
-                            relationship.getSource().getId(),
+                            idOf(relationship.getSource()),
                             arrowStart,
                             style.getColor(),
                             arrowEnd,
-                            relationship.getDestination().getId(),
+                            idOf(relationship.getDestination()),
                             description));
         } else {
             if (style.getDashed() == null) {

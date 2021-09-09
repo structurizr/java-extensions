@@ -15,103 +15,103 @@ skinparam {
 
 hide stereotype
 
-skinparam rectangle<<54>> {
+skinparam rectangle<<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
-skinparam node<<52>> {
+skinparam node<<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam node<<55>> {
+skinparam node<<Development.BigBankplc>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam database<<61>> {
+skinparam database<<Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer.Database_1>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
-skinparam node<<60>> {
+skinparam node<<Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam node<<50>> {
+skinparam node<<Development.DeveloperLaptop>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam node<<59>> {
+skinparam node<<Development.DeveloperLaptop.DockerContainerDatabaseServer>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam node<<51>> {
+skinparam node<<Development.DeveloperLaptop.DockerContainerWebServer>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam rectangle<<57>> {
+skinparam rectangle<<Development.BigBankplc.bigbankdev001.MainframeBankingSystem_1>> {
   BackgroundColor #999999
   FontColor #ffffff
   BorderColor #6b6b6b
 }
-skinparam rectangle<<64>> {
+skinparam rectangle<<Development.DeveloperLaptop.WebBrowser.SinglePageApplication_1>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
-skinparam rectangle<<53>> {
+skinparam rectangle<<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.WebApplication_1>> {
   BackgroundColor #438dd5
   FontColor #ffffff
   BorderColor #2e6295
 }
-skinparam node<<63>> {
+skinparam node<<Development.DeveloperLaptop.WebBrowser>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
-skinparam node<<56>> {
+skinparam node<<Development.BigBankplc.bigbankdev001>> {
   BackgroundColor #ffffff
   FontColor #000000
   BorderColor #888888
 }
 
-node "Big Bank plc\n[Deployment Node: Big Bank plc data center]" <<55>> as 55 {
-  node "bigbank-dev001\n[Deployment Node]" <<56>> as 56 {
-    rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<57>> as 57
+node "Big Bank plc\n[Deployment Node: Big Bank plc data center]" <<Development.BigBankplc>> as Development.BigBankplc {
+  node "bigbank-dev001\n[Deployment Node]" <<Development.BigBankplc.bigbankdev001>> as Development.BigBankplc.bigbankdev001 {
+    rectangle "==Mainframe Banking System\n<size:10>[Software System]</size>\n\nStores all of the core banking information about customers, accounts, transactions, etc." <<Development.BigBankplc.bigbankdev001.MainframeBankingSystem_1>> as Development.BigBankplc.bigbankdev001.MainframeBankingSystem_1
   }
 
 }
 
-node "Developer Laptop\n[Deployment Node: Microsoft Windows 10 or Apple macOS]" <<50>> as 50 {
-  node "Docker Container - Database Server\n[Deployment Node: Docker]" <<59>> as 59 {
-    node "Database Server\n[Deployment Node: Oracle 12c]" <<60>> as 60 {
-      database "==Database\n<size:10>[Container: Oracle Database Schema]</size>\n\nStores user registration information, hashed authentication credentials, access logs, etc." <<61>> as 61
+node "Developer Laptop\n[Deployment Node: Microsoft Windows 10 or Apple macOS]" <<Development.DeveloperLaptop>> as Development.DeveloperLaptop {
+  node "Docker Container - Database Server\n[Deployment Node: Docker]" <<Development.DeveloperLaptop.DockerContainerDatabaseServer>> as Development.DeveloperLaptop.DockerContainerDatabaseServer {
+    node "Database Server\n[Deployment Node: Oracle 12c]" <<Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer>> as Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer {
+      database "==Database\n<size:10>[Container: Oracle Database Schema]</size>\n\nStores user registration information, hashed authentication credentials, access logs, etc." <<Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer.Database_1>> as Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer.Database_1
     }
 
   }
 
-  node "Docker Container - Web Server\n[Deployment Node: Docker]" <<51>> as 51 {
-    node "Apache Tomcat\n[Deployment Node: Apache Tomcat 8.x]" <<52>> as 52 {
-      rectangle "==API Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nProvides Internet banking functionality via a JSON/HTTPS API." <<54>> as 54
-      rectangle "==Web Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nDelivers the static content and the Internet banking single page application." <<53>> as 53
+  node "Docker Container - Web Server\n[Deployment Node: Docker]" <<Development.DeveloperLaptop.DockerContainerWebServer>> as Development.DeveloperLaptop.DockerContainerWebServer {
+    node "Apache Tomcat\n[Deployment Node: Apache Tomcat 8.x]" <<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat>> as Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat {
+      rectangle "==API Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nProvides Internet banking functionality via a JSON/HTTPS API." <<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1>> as Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1
+      rectangle "==Web Application\n<size:10>[Container: Java and Spring MVC]</size>\n\nDelivers the static content and the Internet banking single page application." <<Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.WebApplication_1>> as Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.WebApplication_1
     }
 
   }
 
-  node "Web Browser\n[Deployment Node: Chrome, Firefox, Safari, or Edge]" <<63>> as 63 {
-    rectangle "==Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>\n\nProvides all of the Internet banking functionality to customers via their web browser." <<64>> as 64
+  node "Web Browser\n[Deployment Node: Chrome, Firefox, Safari, or Edge]" <<Development.DeveloperLaptop.WebBrowser>> as Development.DeveloperLaptop.WebBrowser {
+    rectangle "==Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>\n\nProvides all of the Internet banking functionality to customers via their web browser." <<Development.DeveloperLaptop.WebBrowser.SinglePageApplication_1>> as Development.DeveloperLaptop.WebBrowser.SinglePageApplication_1
   }
 
 }
 
-54 .[#707070,thickness=2].> 57 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[XML/HTTPS]</size>"
-54 .[#707070,thickness=2].> 61 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
-64 .[#707070,thickness=2].> 54 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
-53 .[#707070,thickness=2].> 64 : "<color:#707070>Delivers to the customer's web browser"
+Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1 .[#707070,thickness=2].> Development.BigBankplc.bigbankdev001.MainframeBankingSystem_1 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[XML/HTTPS]</size>"
+Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1 .[#707070,thickness=2].> Development.DeveloperLaptop.DockerContainerDatabaseServer.DatabaseServer.Database_1 : "<color:#707070>Reads from and writes to\n<color:#707070><size:8>[JDBC]</size>"
+Development.DeveloperLaptop.WebBrowser.SinglePageApplication_1 .[#707070,thickness=2].> Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.APIApplication_1 : "<color:#707070>Makes API calls to\n<color:#707070><size:8>[JSON/HTTPS]</size>"
+Development.DeveloperLaptop.DockerContainerWebServer.ApacheTomcat.WebApplication_1 .[#707070,thickness=2].> Development.DeveloperLaptop.WebBrowser.SinglePageApplication_1 : "<color:#707070>Delivers to the customer's web browser"
 @enduml
