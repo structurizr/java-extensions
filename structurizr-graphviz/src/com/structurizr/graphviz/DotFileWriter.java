@@ -278,6 +278,8 @@ class DotFileWriter {
         for (ElementView elementView : view.getElements()) {
             if (elementView.getElement() instanceof DeploymentNode && elementView.getElement().getParent() == null) {
                 write(view, (DeploymentNode)elementView.getElement(), fileWriter, "");
+            } else if (elementView.getElement() instanceof CustomElement) {
+                writeElement(view, "  ", elementView.getElement(), fileWriter);
             }
         }
 
