@@ -23,7 +23,7 @@ Once the layout has been applied, you can upload your workspace to the Structuri
 
 ## Changelog
 
-### 1.6.1 (unreleased)
+### 1.6.1 (1st October 2021)
 
 - Adds support for custom elements on deployment views.
 
