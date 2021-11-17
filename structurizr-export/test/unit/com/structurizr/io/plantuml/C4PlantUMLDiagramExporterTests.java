@@ -7,10 +7,7 @@ import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.AutomaticLayout;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.ThemeUtils;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -222,6 +219,31 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\")\n" +
                 "\n" +
                 "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\")\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDiagramWithElementUrls() {
+        Workspace workspace = new Workspace("Name", "Description");
+        SoftwareSystem softwareSystem = workspace.getModel().addSoftwareSystem("Software System");
+        softwareSystem.setUrl("https://structurizr.com");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.addDefaultElements();
+
+        Diagram diagram = new C4PlantUMLExporter().export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "\n" +
+                "System(SoftwareSystem, \"Software System\", \"\")[[https://structurizr.com]]\n" +
+                "\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());

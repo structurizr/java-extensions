@@ -104,19 +104,28 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startDeploymentNodeBoundary(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer) {
+        String url = deploymentNode.getUrl();
+        if (!StringUtils.isNullOrEmpty(url)) {
+            url = "[[" + url + "]]";
+        } else {
+            url = "";
+        }
+
         if (StringUtils.isNullOrEmpty(deploymentNode.getTechnology())) {
             writer.writeLine(
-                    format("Deployment_Node(%s, \"%s\") {",
+                    format("Deployment_Node(%s, \"%s\")%s {",
                             idOf(deploymentNode),
-                            deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : "")
+                            deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
+                            url
                     )
             );
         } else {
             writer.writeLine(
-                    format("Deployment_Node(%s, \"%s\", \"%s\") {",
+                    format("Deployment_Node(%s, \"%s\", \"%s\")%s {",
                             idOf(deploymentNode),
                             deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
-                            deploymentNode.getTechnology()
+                            deploymentNode.getTechnology(),
+                            url
                     )
             );
         }
@@ -148,9 +157,25 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         Element elementToWrite = element;
         String id = idOf(element);
 
+        String url = element.getUrl();
+        if (!StringUtils.isNullOrEmpty(url)) {
+            url = "[[" + url + "]]";
+        } else {
+            url = "";
+        }
+
         if (element instanceof StaticStructureElementInstance) {
             StaticStructureElementInstance elementInstance = (StaticStructureElementInstance)element;
             element = elementInstance.getElement();
+
+            if (StringUtils.isNullOrEmpty(url)) {
+                url = element.getUrl();
+                if (!StringUtils.isNullOrEmpty(url)) {
+                    url = "[[" + url + "]]";
+                } else {
+                    url = "";
+                }
+            }
         }
 
         String name = element.getName();
@@ -163,16 +188,16 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         if (element instanceof Person) {
             Person person = (Person)element;
             if (person.getLocation() == Location.External) {
-                writer.writeLine(String.format("Person_Ext(%s, \"%s\", \"%s\")", id, name, description));
+                writer.writeLine(String.format("Person_Ext(%s, \"%s\", \"%s\")%s", id, name, description, url));
             } else {
-                writer.writeLine(String.format("Person(%s, \"%s\", \"%s\")", id, name, description));
+                writer.writeLine(String.format("Person(%s, \"%s\", \"%s\")%s", id, name, description, url));
             }
         } else if (element instanceof SoftwareSystem) {
             SoftwareSystem softwareSystem = (SoftwareSystem)element;
             if (softwareSystem.getLocation() == Location.External) {
-                writer.writeLine(String.format("System_Ext(%s, \"%s\", \"%s\")", id, name, description));
+                writer.writeLine(String.format("System_Ext(%s, \"%s\", \"%s\")%s", id, name, description, url));
             } else {
-                writer.writeLine(String.format("System(%s, \"%s\", \"%s\")", id, name, description));
+                writer.writeLine(String.format("System(%s, \"%s\", \"%s\")%s", id, name, description, url));
             }
         } else if (element instanceof Container) {
             Container container = (Container)element;
@@ -185,24 +210,24 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
             }
 
             if (StringUtils.isNullOrEmpty(container.getTechnology())) {
-                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\")", shape, id, name, description));
+                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\")%s", shape, id, name, description, url));
             } else {
-                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\", \"%s\")", shape, id, name, container.getTechnology(), description));
+                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\", \"%s\")%s", shape, id, name, container.getTechnology(), description, url));
             }
         } else if (element instanceof Component) {
             Component component = (Component)element;
             if (StringUtils.isNullOrEmpty(component.getTechnology())) {
-                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\")", id, name, description));
+                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\")%s", id, name, description, url));
             } else {
-                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\", \"%s\")", id, name, component.getTechnology(), description));
+                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\", \"%s\")%s", id, name, component.getTechnology(), description, url));
             }
         } else if (element instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)element;
             if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                writer.writeLine(format("Deployment_Node(%s, \"%s\")", idOf(infrastructureNode), name));
+                writer.writeLine(format("Deployment_Node(%s, \"%s\")%s", idOf(infrastructureNode), name, url));
             } else {
                 if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")", idOf(infrastructureNode), name, infrastructureNode.getTechnology()));
+                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")%s", idOf(infrastructureNode), name, infrastructureNode.getTechnology(), url));
                 }
             }
         }

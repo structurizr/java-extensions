@@ -11,6 +11,11 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## Changelog
 
+## v1.2.1
+
+- Release date: Unreleased
+- Adds support for hyperlinked elements via the C4-PlantUML exporter.
+
 ### v1.2.0
 
 - Release date: 9th September 2021
