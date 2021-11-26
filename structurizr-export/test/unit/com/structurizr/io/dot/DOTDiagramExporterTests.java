@@ -3,14 +3,12 @@ package com.structurizr.io.dot;
 import com.structurizr.Workspace;
 import com.structurizr.io.AbstractExporterTests;
 import com.structurizr.io.Diagram;
+import com.structurizr.io.plantuml.StructurizrPlantUMLExporter;
 import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.AutomaticLayout;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.ThemeUtils;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -241,6 +239,111 @@ public class DOTDiagramExporterTests extends AbstractExporterTests {
                 "  6 [id=6,shape=rect, label=<<font point-size=\"34\">Component 2</font><br /><font point-size=\"19\">[Component]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
                 "\n" +
                 "  3 -> 6 [id=7, label=<<font point-size=\"24\">Uses</font>>, style=\"dashed\", color=\"#707070\", fontcolor=\"#707070\"]\n" +
+                "}", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderGroupStyles() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addPerson("User 1").setGroup("Group 1");
+        workspace.getModel().addPerson("User 2").setGroup("Group 2");
+        workspace.getModel().addPerson("User 3").setGroup("Group 3");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "");
+        view.addDefaultElements();
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 1").color("#111111");
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 2").color("#222222");
+
+        DOTExporter exporter = new DOTExporter();
+        Diagram diagram = exporter.export(view);
+        assertEquals("digraph {\n" +
+                "  compound=true\n" +
+                "  graph [fontname=\"Arial\", rankdir=TB, ranksep=1.0, nodesep=1.0]\n" +
+                "  node [fontname=\"Arial\", shape=box, margin=\"0.4,0.3\"]\n" +
+                "  edge [fontname=\"Arial\"]\n" +
+                "  label=<<br /><font point-size=\"34\">System Landscape</font>>\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 1\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 1</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#111111\"\n" +
+                "    fontcolor=\"#111111\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    1 [id=1,shape=rect, label=<<font point-size=\"34\">User 1</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 2\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 2</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#222222\"\n" +
+                "    fontcolor=\"#222222\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    2 [id=2,shape=rect, label=<<font point-size=\"34\">User 2</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 3\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 3</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#cccccc\"\n" +
+                "    fontcolor=\"#cccccc\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    3 [id=3,shape=rect, label=<<font point-size=\"34\">User 3</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "\n" +
+                "}", diagram.getDefinition());
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group").color("#aabbcc");
+
+        diagram = exporter.export(view);
+        assertEquals("digraph {\n" +
+                "  compound=true\n" +
+                "  graph [fontname=\"Arial\", rankdir=TB, ranksep=1.0, nodesep=1.0]\n" +
+                "  node [fontname=\"Arial\", shape=box, margin=\"0.4,0.3\"]\n" +
+                "  edge [fontname=\"Arial\"]\n" +
+                "  label=<<br /><font point-size=\"34\">System Landscape</font>>\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 1\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 1</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#111111\"\n" +
+                "    fontcolor=\"#111111\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    1 [id=1,shape=rect, label=<<font point-size=\"34\">User 1</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 2\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 2</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#222222\"\n" +
+                "    fontcolor=\"#222222\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    2 [id=2,shape=rect, label=<<font point-size=\"34\">User 2</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "  subgraph \"cluster_group_Group 3\" {\n" +
+                "    margin=25\n" +
+                "    label=<<font point-size=\"24\"><br />Group 3</font><br /><font point-size=\"19\">[Group]</font>>\n" +
+                "    labelloc=b\n" +
+                "    color=\"#aabbcc\"\n" +
+                "    fontcolor=\"#aabbcc\"\n" +
+                "    fillcolor=\"#ffffff\"\n" +
+                "\n" +
+                "    3 [id=3,shape=rect, label=<<font point-size=\"34\">User 3</font><br /><font point-size=\"19\">[Person]</font>>, style=filled, color=\"#9a9a9a\", fillcolor=\"#dddddd\", fontcolor=\"#000000\"]\n" +
+                "  }\n" +
+                "\n" +
+                "\n" +
                 "}", diagram.getDefinition());
     }
 

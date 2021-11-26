@@ -9,8 +9,6 @@ skinparam {
   defaultTextAlignment center
   wrapWidth 200
   maxMessageSize 100
-  PackageBorderColor<<group>> #cccccc
-  PackageFontColor<<group>> #cccccc
 }
 
 hide stereotype
@@ -41,6 +39,9 @@ package "Enterprise" <<enterprise>> {
   skinparam PackageFontColor<<enterprise>> #444444
 
   package "Group 2\n[Group]" <<group>> {
+    skinparam PackageBorderColor<<group>> #cccccc
+    skinparam PackageFontColor<<group>> #cccccc
+
     rectangle "==D\n<size:10>[Software System]</size>" <<D>> as D
   }
 
@@ -48,6 +49,9 @@ package "Enterprise" <<enterprise>> {
 }
 
 package "Group 1\n[Group]" <<group>> {
+  skinparam PackageBorderColor<<group>> #cccccc
+  skinparam PackageFontColor<<group>> #cccccc
+
   rectangle "==B\n<size:10>[Software System]</size>" <<B>> as B
 }
 

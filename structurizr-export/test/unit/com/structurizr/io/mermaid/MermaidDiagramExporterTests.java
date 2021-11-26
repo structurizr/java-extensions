@@ -3,14 +3,12 @@ package com.structurizr.io.mermaid;
 import com.structurizr.Workspace;
 import com.structurizr.io.AbstractExporterTests;
 import com.structurizr.io.Diagram;
+import com.structurizr.io.plantuml.StructurizrPlantUMLExporter;
 import com.structurizr.model.Component;
 import com.structurizr.model.Container;
 import com.structurizr.model.SoftwareSystem;
 import com.structurizr.util.WorkspaceUtils;
-import com.structurizr.view.AutomaticLayout;
-import com.structurizr.view.ComponentView;
-import com.structurizr.view.ContainerView;
-import com.structurizr.view.ThemeUtils;
+import com.structurizr.view.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -200,6 +198,75 @@ public class MermaidDiagramExporterTests extends AbstractExporterTests {
                 "  style 6 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
                 "\n" +
                 "  3-. \"<div>Uses</div><div style='font-size: 70%'></div>\" .->6", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderGroupStyles() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addPerson("User 1").setGroup("Group 1");
+        workspace.getModel().addPerson("User 2").setGroup("Group 2");
+        workspace.getModel().addPerson("User 3").setGroup("Group 3");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "");
+        view.addDefaultElements();
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 1").color("#111111");
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 2").color("#222222");
+
+        MermaidDiagramExporter exporter = new MermaidDiagramExporter();
+        Diagram diagram = exporter.export(view);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph group1 [Group 1]\n" +
+                "    style group1 fill:#ffffff,stroke:#111111,color:#111111\n" +
+                "\n" +
+                "    1[\"<div style='font-weight: bold'>User 1</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 1 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  subgraph group2 [Group 2]\n" +
+                "    style group2 fill:#ffffff,stroke:#222222,color:#222222\n" +
+                "\n" +
+                "    2[\"<div style='font-weight: bold'>User 2</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 2 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  subgraph group3 [Group 3]\n" +
+                "    style group3 fill:#ffffff,stroke:#cccccc,color:#cccccc\n" +
+                "\n" +
+                "    3[\"<div style='font-weight: bold'>User 3</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 3 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n", diagram.getDefinition());
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group").color("#aabbcc");
+
+        diagram = exporter.export(view);
+        assertEquals("graph TB\n" +
+                "  linkStyle default fill:#ffffff\n" +
+                "\n" +
+                "  subgraph group4 [Group 1]\n" +
+                "    style group4 fill:#ffffff,stroke:#111111,color:#111111\n" +
+                "\n" +
+                "    1[\"<div style='font-weight: bold'>User 1</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 1 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  subgraph group5 [Group 2]\n" +
+                "    style group5 fill:#ffffff,stroke:#222222,color:#222222\n" +
+                "\n" +
+                "    2[\"<div style='font-weight: bold'>User 2</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 2 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n" +
+                "  subgraph group6 [Group 3]\n" +
+                "    style group6 fill:#ffffff,stroke:#aabbcc,color:#aabbcc\n" +
+                "\n" +
+                "    3[\"<div style='font-weight: bold'>User 3</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>\"]\n" +
+                "    style 3 fill:#dddddd,stroke:#9a9a9a,color:#000000\n" +
+                "  end\n" +
+                "\n", diagram.getDefinition());
     }
 
 }

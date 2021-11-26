@@ -64,7 +64,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void startGroupBoundary(String group, IndentingWriter writer) {
+    protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
         writer.writeLine(String.format("Boundary(group_%s, \"%s\") {", groupId++, group));
         writer.indent();
     }

@@ -106,6 +106,135 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
     }
 
     @Test
+    public void test_renderGroupStyles() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addPerson("User 1").setGroup("Group 1");
+        workspace.getModel().addPerson("User 2").setGroup("Group 2");
+        workspace.getModel().addPerson("User 3").setGroup("Group 3");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "");
+        view.addDefaultElements();
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 1").color("#111111");
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group:Group 2").color("#222222");
+
+        StructurizrPlantUMLExporter exporter = new StructurizrPlantUMLExporter();
+        Diagram diagram = exporter.export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<User1>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<User2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<User3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 1\\n[Group]\" <<group:Group 1>> {\n" +
+                "  skinparam PackageBorderColor<<group:Group 1>> #111111\n" +
+                "  skinparam PackageFontColor<<group:Group 1>> #111111\n" +
+                "\n" +
+                "  rectangle \"==User 1\\n<size:10>[Person]</size>\" <<User1>> as User1\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 2\\n[Group]\" <<group:Group 2>> {\n" +
+                "  skinparam PackageBorderColor<<group:Group 2>> #222222\n" +
+                "  skinparam PackageFontColor<<group:Group 2>> #222222\n" +
+                "\n" +
+                "  rectangle \"==User 2\\n<size:10>[Person]</size>\" <<User2>> as User2\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 3\\n[Group]\" <<group>> {\n" +
+                "  skinparam PackageBorderColor<<group>> #cccccc\n" +
+                "  skinparam PackageFontColor<<group>> #cccccc\n" +
+                "\n" +
+                "  rectangle \"==User 3\\n<size:10>[Person]</size>\" <<User3>> as User3\n" +
+                "}\n" +
+                "\n" +
+                "\n" +
+                "@enduml", diagram.getDefinition());
+
+        workspace.getViews().getConfiguration().getStyles().addElementStyle("Group").color("#aabbcc");
+
+        diagram = exporter.export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<User1>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<User2>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "skinparam rectangle<<User3>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 1\\n[Group]\" <<group:Group 1>> {\n" +
+                "  skinparam PackageBorderColor<<group:Group 1>> #111111\n" +
+                "  skinparam PackageFontColor<<group:Group 1>> #111111\n" +
+                "\n" +
+                "  rectangle \"==User 1\\n<size:10>[Person]</size>\" <<User1>> as User1\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 2\\n[Group]\" <<group:Group 2>> {\n" +
+                "  skinparam PackageBorderColor<<group:Group 2>> #222222\n" +
+                "  skinparam PackageFontColor<<group:Group 2>> #222222\n" +
+                "\n" +
+                "  rectangle \"==User 2\\n<size:10>[Person]</size>\" <<User2>> as User2\n" +
+                "}\n" +
+                "\n" +
+                "package \"Group 3\\n[Group]\" <<group>> {\n" +
+                "  skinparam PackageBorderColor<<group>> #aabbcc\n" +
+                "  skinparam PackageFontColor<<group>> #aabbcc\n" +
+                "\n" +
+                "  rectangle \"==User 3\\n<size:10>[Person]</size>\" <<User3>> as User3\n" +
+                "}\n" +
+                "\n" +
+                "\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
     public void test_renderContainerDiagramWithExternalContainers() {
         Workspace workspace = new Workspace("Name", "Description");
         SoftwareSystem softwareSystem1 = workspace.getModel().addSoftwareSystem("Software System 1");
@@ -132,8 +261,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -179,8 +306,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -238,8 +363,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -285,8 +408,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -341,8 +462,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -388,8 +507,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -446,8 +563,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +
@@ -493,8 +608,6 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "  defaultTextAlignment center\n" +
                 "  wrapWidth 200\n" +
                 "  maxMessageSize 100\n" +
-                "  PackageBorderColor<<group>> #cccccc\n" +
-                "  PackageFontColor<<group>> #cccccc\n" +
                 "}\n" +
                 "\n" +
                 "hide stereotype\n" +

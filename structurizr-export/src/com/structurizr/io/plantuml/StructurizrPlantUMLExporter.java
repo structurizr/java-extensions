@@ -22,8 +22,6 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
         addSkinParam("defaultTextAlignment", "center");
         addSkinParam("wrapWidth", "200");
         addSkinParam("maxMessageSize", "100");
-        addSkinParam("PackageBorderColor<<group>>", "#cccccc");
-        addSkinParam("PackageFontColor<<group>>", "#cccccc");
     }
 
     @Override
@@ -100,10 +98,30 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void startGroupBoundary(String group, IndentingWriter writer) {
+    protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
         if (!isUseSequenceDiagrams()) {
-            writer.writeLine(String.format("package \"%s\\n[Group]\" <<group>> {", group));
+            String groupId;
+            String color = "#cccccc";
+
+            // is there a style for the group?
+            ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group:" + group);
+            groupId = "group:" + group;
+
+            if (elementStyle == null || StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+                // no, so is there a default group style?
+                elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group");
+                groupId = "group";
+            }
+
+            if (elementStyle != null && !StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+                color = elementStyle.getColor();
+            }
+
+            writer.writeLine(String.format("package \"%s\\n[Group]\" <<%s>> {", group, groupId));
             writer.indent();
+            writer.writeLine(String.format("skinparam PackageBorderColor<<%s>> %s", groupId, color));
+            writer.writeLine(String.format("skinparam PackageFontColor<<%s>> %s", groupId, color));
+            writer.writeLine();
         }
     }
 

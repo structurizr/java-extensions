@@ -70,11 +70,26 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void startGroupBoundary(String group, IndentingWriter writer) {
+    protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
         groupId++;
+
+        String color = "#cccccc";
+
+        // is there a style for the group?
+        ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group:" + group);
+
+        if (elementStyle == null || StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+            // no, so is there a default group style?
+            elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group");
+        }
+
+        if (elementStyle != null && !StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+            color = elementStyle.getColor();
+        }
+
         writer.writeLine(String.format("subgraph group%s [" + group + "]", groupId));
         writer.indent();
-        writer.writeLine(String.format("style group%s fill:#ffffff,stroke:#cccccc,color:#cccccc", groupId));
+        writer.writeLine(String.format("style group%s fill:#ffffff,stroke:%s,color:%s", groupId, color, color));
         writer.writeLine();
     }
 

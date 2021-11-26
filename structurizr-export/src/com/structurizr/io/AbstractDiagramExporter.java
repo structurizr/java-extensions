@@ -481,7 +481,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
 
         // first render grouped elements
         for (String group : groupsAsList) {
-            startGroupBoundary(group, writer);
+            startGroupBoundary(view, group, writer);
 
             for (GroupableElement element : elements) {
                 if (group.equals(element.getGroup())) {
@@ -520,7 +520,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     protected abstract void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer);
     protected abstract void endEnterpriseBoundary(IndentingWriter writer);
 
-    protected abstract void startGroupBoundary(String group, IndentingWriter writer);
+    protected abstract void startGroupBoundary(View view, String group, IndentingWriter writer);
     protected abstract void endGroupBoundary(IndentingWriter writer);
 
     protected abstract void startSoftwareSystemBoundary(View view, SoftwareSystem softwareSystem, IndentingWriter writer);

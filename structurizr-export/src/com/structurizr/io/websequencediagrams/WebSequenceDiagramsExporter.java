@@ -91,7 +91,7 @@ public class WebSequenceDiagramsExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void startGroupBoundary(String group, IndentingWriter writer) {
+    protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
     }
 
     @Override

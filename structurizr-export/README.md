@@ -15,6 +15,7 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 - Release date: Unreleased
 - Adds support for hyperlinked elements via the C4-PlantUML exporter.
+- Adds support for styling groups via an element style named `Group' (for all groups) or `Group:Name` (for the "Name" group).
 
 ### v1.2.0
 

@@ -99,15 +99,29 @@ public class DOTExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void startGroupBoundary(String group, IndentingWriter writer) {
+    protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
+        String color = "#cccccc";
+
+        // is there a style for the group?
+        ElementStyle elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group:" + group);
+
+        if (elementStyle == null || StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+            // no, so is there a default group style?
+            elementStyle = view.getViewSet().getConfiguration().getStyles().findElementStyle("Group");
+        }
+
+        if (elementStyle != null && !StringUtils.isNullOrEmpty(elementStyle.getColor())) {
+            color = elementStyle.getColor();
+        }
+
         writer.writeLine("subgraph \"cluster_group_" + group + "\" {");
 
         writer.indent();
         writer.writeLine("margin=" + clusterInternalMargin);
         writer.writeLine(String.format("label=<<font point-size=\"24\"><br />%s</font><br /><font point-size=\"19\">[Group]</font>>", group));
         writer.writeLine("labelloc=b");
-        writer.writeLine("color=\"#cccccc\"");
-        writer.writeLine("fontcolor=\"#cccccc\"");
+        writer.writeLine(String.format("color=\"%s\"", color));
+        writer.writeLine(String.format("fontcolor=\"%s\"", color));
         writer.writeLine("fillcolor=\"#ffffff\"");
         writer.writeLine();
     }

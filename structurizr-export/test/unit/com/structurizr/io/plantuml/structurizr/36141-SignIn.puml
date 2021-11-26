@@ -9,8 +9,6 @@ skinparam {
   defaultTextAlignment center
   wrapWidth 200
   maxMessageSize 100
-  PackageBorderColor<<group>> #cccccc
-  PackageFontColor<<group>> #cccccc
 }
 
 hide stereotype

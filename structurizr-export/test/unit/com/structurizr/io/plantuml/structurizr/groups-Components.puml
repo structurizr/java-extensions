@@ -9,8 +9,6 @@ skinparam {
   defaultTextAlignment center
   wrapWidth 200
   maxMessageSize 100
-  PackageBorderColor<<group>> #cccccc
-  PackageFontColor<<group>> #cccccc
 }
 
 hide stereotype
@@ -38,6 +36,9 @@ package "F\n[Container]" <<D.F>> {
   skinparam PackageFontColor<<D.F>> #444444
 
   package "Group 4\n[Group]" <<group>> {
+    skinparam PackageBorderColor<<group>> #cccccc
+    skinparam PackageFontColor<<group>> #cccccc
+
     rectangle "==H\n<size:10>[Component]</size>" <<D.F.H>> as D.F.H
   }
 
