@@ -198,12 +198,20 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startDeploymentNodeBoundary(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer) {
+        String url = deploymentNode.getUrl();
+        if (!StringUtils.isNullOrEmpty(url)) {
+            url = " [[" + url + "]]";
+        } else {
+            url = "";
+        }
+
         writer.writeLine(
-                format("node \"%s\\n%s\" <<%s>> as %s {",
+                format("node \"%s\\n%s\" <<%s>> as %s%s {",
                         deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
                         typeOf(view, deploymentNode, true),
                         idOf(deploymentNode),
-                        idOf(deploymentNode)
+                        idOf(deploymentNode),
+                        url
                 )
         );
         writer.indent();
@@ -267,12 +275,28 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
             String description = element.getDescription();
             String type = typeOf(view, element, true);
 
+            String url = element.getUrl();
+            if (!StringUtils.isNullOrEmpty(url)) {
+                url = " [[" + url + "]]";
+            } else {
+                url = "";
+            }
+
             if (element instanceof StaticStructureElementInstance) {
                 StaticStructureElementInstance elementInstance = (StaticStructureElementInstance) element;
                 name = elementInstance.getElement().getName();
                 description = elementInstance.getElement().getDescription();
                 type = typeOf(view, elementInstance.getElement(), true);
                 shape = plantUMLShapeOf(view, elementInstance.getElement());
+
+                if (StringUtils.isNullOrEmpty(url)) {
+                    url = element.getUrl();
+                    if (!StringUtils.isNullOrEmpty(url)) {
+                        url = " [[" + url + "]]";
+                    } else {
+                        url = "";
+                    }
+                }
             }
 
             if (StringUtils.isNullOrEmpty(description) || false == elementStyle.getDescription()) {
@@ -289,13 +313,14 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
             String id = idOf(element);
 
-            writer.writeLine(format("%s \"==%s%s%s\" <<%s>> as %s",
+            writer.writeLine(format("%s \"==%s%s%s\" <<%s>> as %s%s",
                     shape,
                     name,
                     type,
                     description,
                     id,
-                    id)
+                    id,
+                    url)
             );
 
             if (!isVisible(view, element)) {
