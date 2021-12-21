@@ -33,13 +33,9 @@ skinparam sequenceParticipant<<InternetBankingSystem.SinglePageApplication>> {
 }
 
 participant "Single-Page Application\n<size:10>[Container: JavaScript and Angular]</size>" as InternetBankingSystem.SinglePageApplication <<InternetBankingSystem.SinglePageApplication>> #438dd5
-
 participant "Sign In Controller\n<size:10>[Component: Spring MVC Rest Controller]</size>" as InternetBankingSystem.APIApplication.SignInController <<InternetBankingSystem.APIApplication.SignInController>> #85bbf0
-
 participant "Security Component\n<size:10>[Component: Spring Bean]</size>" as InternetBankingSystem.APIApplication.SecurityComponent <<InternetBankingSystem.APIApplication.SecurityComponent>> #85bbf0
-
 database "Database\n<size:10>[Container: Oracle Database Schema]</size>" as InternetBankingSystem.Database <<InternetBankingSystem.Database>> #438dd5
-
 InternetBankingSystem.SinglePageApplication -[#707070]> InternetBankingSystem.APIApplication.SignInController : 1. Submits credentials to
 InternetBankingSystem.APIApplication.SignInController -[#707070]> InternetBankingSystem.APIApplication.SecurityComponent : 2. Validates credentials using
 InternetBankingSystem.APIApplication.SecurityComponent -[#707070]> InternetBankingSystem.Database : 3. select * from users where username = ?

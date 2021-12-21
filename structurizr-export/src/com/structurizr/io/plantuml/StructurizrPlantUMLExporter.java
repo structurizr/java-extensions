@@ -258,14 +258,13 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
         ElementStyle elementStyle = findElementStyle(view, element);
 
         if (view instanceof DynamicView && isUseSequenceDiagrams()) {
-            writer.writeLine(String.format("%s \"%s\\n<size:10>%s</size>\" as %s <<%s>> %s%s",
+            writer.writeLine(String.format("%s \"%s\\n<size:10>%s</size>\" as %s <<%s>> %s",
                     plantumlSequenceType(view, element),
                     element.getName(),
                     typeOf(view, element, true),
                     idOf(element),
                     idOf(element),
-                    elementStyle.getBackground(),
-                    System.lineSeparator()));
+                    elementStyle.getBackground()));
         } else {
             String shape = plantUMLShapeOf(view, element);
             if ("actor".equals(shape)) {
