@@ -46,7 +46,7 @@ public final class IndentingWriter {
     }
 
     public void writeLine(String content) {
-        buf.append(String.format("%s%s\n", padding(), content));
+        buf.append(String.format("%s%s\n", padding(), content.replace("\n", "\\n")));
     }
 
     @Override
