@@ -13,7 +13,7 @@ structurizr-export provides the ability to export views defined in a Structurizr
 
 ## 1.3.0
 
-- Release date:
+- Release date: 29th December 2021
 - Fixes a bug when exporting views to PlantUML formats, when there are newline characters in element names/descriptions/technologies and relationship descriptions/technologies.
 - The C4-PlantUML export now includes tags.
 - Adds support for customizing PlantUML exports via view set properties (plantuml.title, plantuml.includes, etc).
