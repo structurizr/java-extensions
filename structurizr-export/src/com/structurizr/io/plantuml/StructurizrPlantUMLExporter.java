@@ -33,6 +33,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     protected void writeHeader(View view, IndentingWriter writer) {
         super.writeHeader(view, writer);
 
+        writeIncludes(view, writer);
+
         writer.writeLine();
         writer.writeLine("hide stereotype");
         writer.writeLine();
@@ -53,7 +55,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
             String color = elementStyle.getColor();
             Shape shape = elementStyle.getShape();
 
-            if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+            if (view instanceof DynamicView && useSequenceDiagrams(view)) {
                 type = "sequenceParticipant";
             }
 
@@ -78,8 +80,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+    protected void startEnterpriseBoundary(View view, String enterpriseName, IndentingWriter writer) {
+        if (!useSequenceDiagrams(view)) {
             writer.writeLine(String.format("package \"%s\" <<enterprise>> {", enterpriseName));
             writer.indent();
             writer.writeLine("skinparam PackageBorderColor<<enterprise>> #444444");
@@ -89,8 +91,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endEnterpriseBoundary(IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+    protected void endEnterpriseBoundary(View view, IndentingWriter writer) {
+        if (!useSequenceDiagrams(view)) {
             writer.outdent();
             writer.writeLine("}");
             writer.writeLine();
@@ -99,7 +101,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startGroupBoundary(View view, String group, IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+        if (!useSequenceDiagrams(view)) {
             String groupId;
             String color = "#cccccc";
 
@@ -126,8 +128,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endGroupBoundary(IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+    protected void endGroupBoundary(View view, IndentingWriter writer) {
+        if (!useSequenceDiagrams(view)) {
             writer.outdent();
             writer.writeLine("}");
             writer.writeLine();
@@ -136,7 +138,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startSoftwareSystemBoundary(View view, SoftwareSystem softwareSystem, IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+        if (!useSequenceDiagrams(view)) {
             String color;
             if (softwareSystem.equals(view.getSoftwareSystem())) {
                 color = "#444444";
@@ -153,8 +155,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endSoftwareSystemBoundary(IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+    protected void endSoftwareSystemBoundary(View view, IndentingWriter writer) {
+        if (!useSequenceDiagrams(view)) {
             writer.outdent();
             writer.writeLine("}");
             writer.writeLine();
@@ -163,7 +165,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     protected void startContainerBoundary(View view, Container container, IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+        if (!useSequenceDiagrams(view)) {
             String color = "#444444";
             if (view instanceof ComponentView) {
                 if (container.equals(((ComponentView) view).getContainer())) {
@@ -188,8 +190,8 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endContainerBoundary(IndentingWriter writer) {
-        if (!isUseSequenceDiagrams()) {
+    protected void endContainerBoundary(View view, IndentingWriter writer) {
+        if (!useSequenceDiagrams(view)) {
             writer.outdent();
             writer.writeLine("}");
             writer.writeLine();
@@ -222,7 +224,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endDeploymentNodeBoundary(IndentingWriter writer) {
+    protected void endDeploymentNodeBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -230,7 +232,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     public Diagram export(DynamicView view) {
-        if (isUseSequenceDiagrams()) {
+        if (useSequenceDiagrams(view)) {
             IndentingWriter writer = new IndentingWriter();
             writeHeader(view, writer);
 
@@ -257,7 +259,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
     protected void writeElement(View view, Element element, IndentingWriter writer) {
         ElementStyle elementStyle = findElementStyle(view, element);
 
-        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+        if (view instanceof DynamicView && useSequenceDiagrams(view)) {
             writer.writeLine(String.format("%s \"%s\\n<size:10>%s</size>\" as %s <<%s>> %s",
                     plantumlSequenceType(view, element),
                     element.getName(),
@@ -334,6 +336,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
         RelationshipStyle style = findRelationshipStyle(view, relationship);
 
         String description = "";
+        String technology = relationship.getTechnology();
 
         if (!StringUtils.isNullOrEmpty(relationshipView.getOrder())) {
             description = relationshipView.getOrder() + ". ";
@@ -341,7 +344,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
 
         description += (hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationshipView.getRelationship().getDescription()) ? relationshipView.getRelationship().getDescription() : "");
 
-        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+        if (view instanceof DynamicView && useSequenceDiagrams(view)) {
             String arrowStart = "-";
             String arrowEnd = ">";
 
@@ -392,7 +395,7 @@ public class StructurizrPlantUMLExporter extends AbstractPlantUMLExporter {
                     idOf(relationship.getDestination()),
                     style.getColor(),
                     description,
-                    (StringUtils.isNullOrEmpty(relationship.getTechnology()) ? "" : "\\n<color:" + style.getColor() + "><size:8>[" + relationship.getTechnology() + "]</size>")
+                    (StringUtils.isNullOrEmpty(technology) ? "" : "\\n<color:" + style.getColor() + "><size:8>[" + technology + "]</size>")
             ));
         }
     }

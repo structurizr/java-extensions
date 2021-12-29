@@ -24,40 +24,44 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     protected void writeHeader(View view, IndentingWriter writer) {
         super.writeHeader(view, writer);
 
-        writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml");
-        writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml");
+        writer.writeLine("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml");
+        writer.writeLine("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml");
 
         if (view.getElements().stream().map(ElementView::getElement).anyMatch(e -> e instanceof Container || e instanceof ContainerInstance)) {
-            writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml");
+            writer.writeLine("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml");
         }
 
         if (view.getElements().stream().map(ElementView::getElement).anyMatch(e -> e instanceof Component)) {
-            writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml");
+            writer.writeLine("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml");
         }
 
         if (view instanceof DeploymentView) {
-            writer.writeLine("!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml");
+            writer.writeLine("!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml");
         }
+
+        writeIncludes(view, writer);
 
         writer.writeLine();
     }
 
     @Override
     protected void writeFooter(View view, IndentingWriter writer) {
-        writer.writeLine();
-        writer.writeLine("SHOW_LEGEND()");
+        if ("true".equalsIgnoreCase(view.getViewSet().getConfiguration().getProperties().getOrDefault(PLANTUML_LEGEND_PROPERTY, "true"))) {
+            writer.writeLine();
+            writer.writeLine("SHOW_LEGEND()");
+        }
 
         super.writeFooter(view, writer);
     }
 
     @Override
-    protected void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer) {
+    protected void startEnterpriseBoundary(View view, String enterpriseName, IndentingWriter writer) {
         writer.writeLine(String.format("Enterprise_Boundary(enterprise, \"%s\") {", enterpriseName));
         writer.indent();
     }
 
     @Override
-    protected void endEnterpriseBoundary(IndentingWriter writer) {
+    protected void endEnterpriseBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -70,7 +74,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endGroupBoundary(IndentingWriter writer) {
+    protected void endGroupBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -83,7 +87,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endSoftwareSystemBoundary(IndentingWriter writer) {
+    protected void endSoftwareSystemBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -96,7 +100,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endContainerBoundary(IndentingWriter writer) {
+    protected void endContainerBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -113,18 +117,20 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
         if (StringUtils.isNullOrEmpty(deploymentNode.getTechnology())) {
             writer.writeLine(
-                    format("Deployment_Node(%s, \"%s\")%s {",
+                    format("Deployment_Node(%s, \"%s\", $tags=\"%s\")%s {",
                             idOf(deploymentNode),
                             deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
+                            tagsOf(deploymentNode),
                             url
                     )
             );
         } else {
             writer.writeLine(
-                    format("Deployment_Node(%s, \"%s\", \"%s\")%s {",
+                    format("Deployment_Node(%s, \"%s\", \"%s\", $tags=\"%s\")%s {",
                             idOf(deploymentNode),
                             deploymentNode.getName() + (deploymentNode.getInstances() > 1 ? " (x" + deploymentNode.getInstances() + ")" : ""),
                             deploymentNode.getTechnology(),
+                            tagsOf(deploymentNode),
                             url
                     )
             );
@@ -137,7 +143,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
     }
 
     @Override
-    protected void endDeploymentNodeBoundary(IndentingWriter writer) {
+    protected void endDeploymentNodeBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("}");
         writer.writeLine();
@@ -145,7 +151,7 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
 
     @Override
     public Diagram export(DynamicView view) {
-        if (isUseSequenceDiagrams()) {
+        if (useSequenceDiagrams(view)) {
             throw new UnsupportedOperationException("Sequence diagrams are not supported by C4-PlantUML");
         } else {
             return super.export(view);
@@ -188,16 +194,16 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         if (element instanceof Person) {
             Person person = (Person)element;
             if (person.getLocation() == Location.External) {
-                writer.writeLine(String.format("Person_Ext(%s, \"%s\", \"%s\")%s", id, name, description, url));
+                writer.writeLine(String.format("Person_Ext(%s, \"%s\", \"%s\", $tags=\"%s\")%s", id, name, description, tagsOf(elementToWrite), url));
             } else {
-                writer.writeLine(String.format("Person(%s, \"%s\", \"%s\")%s", id, name, description, url));
+                writer.writeLine(String.format("Person(%s, \"%s\", \"%s\", $tags=\"%s\")%s", id, name, description, tagsOf(elementToWrite), url));
             }
         } else if (element instanceof SoftwareSystem) {
             SoftwareSystem softwareSystem = (SoftwareSystem)element;
             if (softwareSystem.getLocation() == Location.External) {
-                writer.writeLine(String.format("System_Ext(%s, \"%s\", \"%s\")%s", id, name, description, url));
+                writer.writeLine(String.format("System_Ext(%s, \"%s\", \"%s\", $tags=\"%s\")%s", id, name, description, tagsOf(elementToWrite), url));
             } else {
-                writer.writeLine(String.format("System(%s, \"%s\", \"%s\")%s", id, name, description, url));
+                writer.writeLine(String.format("System(%s, \"%s\", \"%s\", $tags=\"%s\")%s", id, name, description, tagsOf(elementToWrite), url));
             }
         } else if (element instanceof Container) {
             Container container = (Container)element;
@@ -210,24 +216,24 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
             }
 
             if (StringUtils.isNullOrEmpty(container.getTechnology())) {
-                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\")%s", shape, id, name, description, url));
+                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\", $tags=\"%s\")%s", shape, id, name, description, tagsOf(elementToWrite), url));
             } else {
-                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\", \"%s\")%s", shape, id, name, container.getTechnology(), description, url));
+                writer.writeLine(String.format("Container%s(%s, \"%s\", \"%s\", \"%s\", $tags=\"%s\")%s", shape, id, name, container.getTechnology(), description, tagsOf(elementToWrite), url));
             }
         } else if (element instanceof Component) {
             Component component = (Component)element;
             if (StringUtils.isNullOrEmpty(component.getTechnology())) {
-                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\")%s", id, name, description, url));
+                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\", $tags=\"%s\")%s", id, name, description, tagsOf(elementToWrite), url));
             } else {
-                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\", \"%s\")%s", id, name, component.getTechnology(), description, url));
+                writer.writeLine(String.format("Component(%s, \"%s\", \"%s\", \"%s\", $tags=\"%s\")%s", id, name, component.getTechnology(), description, tagsOf(elementToWrite), url));
             }
         } else if (element instanceof InfrastructureNode) {
             InfrastructureNode infrastructureNode = (InfrastructureNode)element;
             if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                writer.writeLine(format("Deployment_Node(%s, \"%s\")%s", idOf(infrastructureNode), name, url));
+                writer.writeLine(format("Deployment_Node(%s, \"%s\", $tags=\"%s\")%s", idOf(infrastructureNode), name, tagsOf(elementToWrite), url));
             } else {
                 if (StringUtils.isNullOrEmpty(infrastructureNode.getTechnology())) {
-                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\")%s", idOf(infrastructureNode), name, infrastructureNode.getTechnology(), url));
+                    writer.writeLine(format("Deployment_Node(%s, \"%s\", \"%s\", $tags=\"%s\")%s", idOf(infrastructureNode), name, infrastructureNode.getTechnology(), tagsOf(elementToWrite), url));
                 }
             }
         }
@@ -235,6 +241,33 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         if (!isVisible(view, elementToWrite)) {
             writer.writeLine("hide " + id);
         }
+    }
+
+    private String tagsOf(Element element) {
+        String tags;
+        if (element instanceof StaticStructureElementInstance) {
+            tags = ((StaticStructureElementInstance)element).getElement().getTags() + "," + element.getTags();
+        } else {
+            tags = element.getTags();
+        }
+
+        return tags.replaceAll(",", "+");
+    }
+
+    private String tagsOf(Relationship relationship) {
+        String tags;
+
+        if (!StringUtils.isNullOrEmpty(relationship.getLinkedRelationshipId())) {
+            tags = relationship.getModel().getRelationship(relationship.getLinkedRelationshipId()).getTags();
+
+            if (!StringUtils.isNullOrEmpty(relationship.getTags())) {
+                tags = tags + "," + relationship.getTags();
+            }
+        } else {
+            tags = relationship.getTags();
+        }
+
+        return tags.replaceAll(",", "+");
     }
 
     @Override
@@ -257,9 +290,9 @@ public class C4PlantUMLExporter extends AbstractPlantUMLExporter {
         description += (hasValue(relationshipView.getDescription()) ? relationshipView.getDescription() : hasValue(relationshipView.getRelationship().getDescription()) ? relationshipView.getRelationship().getDescription() : "");
 
         if (StringUtils.isNullOrEmpty(relationship.getTechnology())) {
-            writer.writeLine(format("Rel_D(%s, %s, \"%s\")", idOf(source), idOf(destination), description));
+            writer.writeLine(format("Rel_D(%s, %s, \"%s\", $tags=\"%s\")", idOf(source), idOf(destination), description, tagsOf(relationship)));
         } else {
-            writer.writeLine(format("Rel_D(%s, %s, \"%s\", \"%s\")", idOf(source), idOf(destination), description, relationship.getTechnology()));
+            writer.writeLine(format("Rel_D(%s, %s, \"%s\", \"%s\", $tags=\"%s\")", idOf(source), idOf(destination), description, relationship.getTechnology(), tagsOf(relationship)));
         }
     }
 

@@ -61,7 +61,7 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
         assertEquals(6, diagram.getFrames().size());
 
         // and the sequence diagram version
-        exporter.setUseSequenceDiagrams(true);
+        workspace.getViews().getConfiguration().addProperty(exporter.PLANTUML_SEQUENCE_DIAGRAMS_PROPERTY, "true");
         diagrams = exporter.export(workspace);
         diagram = diagrams.stream().filter(d -> d.getKey().equals("SignIn")).findFirst().get();
         expected = readFile(new File("./test/unit/com/structurizr/io/plantuml/structurizr/36141-SignIn-sequence.puml"));
@@ -668,6 +668,79 @@ public class StructurizrPlantUMLDiagramExporterTests extends AbstractExporterTes
                 "}\n" +
                 "\n" +
                 "rectangle \"==Software System\\n<size:10>[Software System]</size>\" <<SoftwareSystem>> as SoftwareSystem [[https://structurizr.com]]\n" +
+                "\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDiagramWithIncludes() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addSoftwareSystem("Software System");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.addDefaultElements();
+
+        view.getViewSet().getConfiguration().addProperty(StructurizrPlantUMLExporter.PLANTUML_INCLUDES_PROPERTY, "styles.puml");
+
+        Diagram diagram = new StructurizrPlantUMLExporter().export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "!include styles.puml\n" +
+                "\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<SoftwareSystem>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Software System\\n<size:10>[Software System]</size>\" <<SoftwareSystem>> as SoftwareSystem\n" +
+                "\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDiagramWithNewLineCharacterInElementName() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addSoftwareSystem("Software\nSystem");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.addDefaultElements();
+
+        Diagram diagram = new StructurizrPlantUMLExporter().export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "skinparam {\n" +
+                "  shadowing false\n" +
+                "  arrowFontSize 10\n" +
+                "  defaultTextAlignment center\n" +
+                "  wrapWidth 200\n" +
+                "  maxMessageSize 100\n" +
+                "}\n" +
+                "\n" +
+                "hide stereotype\n" +
+                "\n" +
+                "skinparam rectangle<<SoftwareSystem>> {\n" +
+                "  BackgroundColor #dddddd\n" +
+                "  FontColor #000000\n" +
+                "  BorderColor #9a9a9a\n" +
+                "}\n" +
+                "\n" +
+                "rectangle \"==Software\\nSystem\\n<size:10>[Software System]</size>\" <<SoftwareSystem>> as SoftwareSystem\n" +
                 "\n" +
                 "@enduml", diagram.getDefinition());
     }

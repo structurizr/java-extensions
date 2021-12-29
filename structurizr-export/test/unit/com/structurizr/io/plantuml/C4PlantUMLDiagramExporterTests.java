@@ -55,7 +55,7 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
 
         try {
             // and the sequence diagram version ... which isn't supported
-            exporter.setUseSequenceDiagrams(true);
+            workspace.getViews().getConfiguration().addProperty(exporter.PLANTUML_SEQUENCE_DIAGRAMS_PROPERTY, "true");
             exporter.export(workspace);
         } catch (UnsupportedOperationException uoe) {
             assertEquals("Sequence diagrams are not supported by C4-PlantUML", uoe.getMessage());
@@ -120,19 +120,19 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "\n" +
                 "top to bottom direction\n" +
                 "\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
                 "\n" +
                 "System_Boundary(\"SoftwareSystem1_boundary\", \"Software System 1\") {\n" +
-                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\")\n" +
+                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\", $tags=\"Element+Container\")\n" +
                 "}\n" +
                 "\n" +
                 "System_Boundary(\"SoftwareSystem2_boundary\", \"Software System 2\") {\n" +
-                "  Container(SoftwareSystem2.Container2, \"Container 2\", \"\")\n" +
+                "  Container(SoftwareSystem2.Container2, \"Container 2\", \"\", $tags=\"Element+Container\")\n" +
                 "}\n" +
                 "\n" +
-                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\", $tags=\"Relationship\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -145,17 +145,17 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "\n" +
                 "top to bottom direction\n" +
                 "\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml\n" +
                 "\n" +
                 "System_Boundary(\"SoftwareSystem1_boundary\", \"Software System 1\") {\n" +
-                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\")\n" +
+                "  Container(SoftwareSystem1.Container1, \"Container 1\", \"\", $tags=\"Element+Container\")\n" +
                 "}\n" +
                 "\n" +
-                "Container(SoftwareSystem2.Container2, \"Container 2\", \"\")\n" +
+                "Container(SoftwareSystem2.Container2, \"Container 2\", \"\", $tags=\"Element+Container\")\n" +
                 "\n" +
-                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1, SoftwareSystem2.Container2, \"Uses\", $tags=\"Relationship\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -184,19 +184,19 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "\n" +
                 "top to bottom direction\n" +
                 "\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
                 "\n" +
                 "Container_Boundary(\"SoftwareSystem1.Container1_boundary\", \"Container 1\") {\n" +
-                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\")\n" +
+                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\", $tags=\"Element+Component\")\n" +
                 "}\n" +
                 "\n" +
                 "Container_Boundary(\"SoftwareSystem2.Container2_boundary\", \"Container 2\") {\n" +
-                "  Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\")\n" +
+                "  Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\", $tags=\"Element+Component\")\n" +
                 "}\n" +
                 "\n" +
-                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\", $tags=\"Relationship\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -208,17 +208,17 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "\n" +
                 "top to bottom direction\n" +
                 "\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml\n" +
                 "\n" +
                 "Container_Boundary(\"SoftwareSystem1.Container1_boundary\", \"Container 1\") {\n" +
-                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\")\n" +
+                "  Component(SoftwareSystem1.Container1.Component1, \"Component 1\", \"\", $tags=\"Element+Component\")\n" +
                 "}\n" +
                 "\n" +
-                "Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\")\n" +
+                "Component(SoftwareSystem2.Container2.Component2, \"Component 2\", \"\", $tags=\"Element+Component\")\n" +
                 "\n" +
-                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\")\n" +
+                "Rel_D(SoftwareSystem1.Container1.Component1, SoftwareSystem2.Container2.Component2, \"Uses\", $tags=\"Relationship\")\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +
                 "@enduml", diagram.getDefinition());
@@ -239,10 +239,61 @@ public class C4PlantUMLDiagramExporterTests extends AbstractExporterTests {
                 "\n" +
                 "top to bottom direction\n" +
                 "\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
-                "!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
                 "\n" +
-                "System(SoftwareSystem, \"Software System\", \"\")[[https://structurizr.com]]\n" +
+                "System(SoftwareSystem, \"Software System\", \"\", $tags=\"Element+Software System\")[[https://structurizr.com]]\n" +
+                "\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDiagramWithIncludes() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addSoftwareSystem("Software System");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.addDefaultElements();
+
+        view.getViewSet().getConfiguration().addProperty(C4PlantUMLExporter.PLANTUML_INCLUDES_PROPERTY, "styles.puml");
+
+        Diagram diagram = new C4PlantUMLExporter().export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "!include styles.puml\n" +
+                "\n" +
+                "System(SoftwareSystem, \"Software System\", \"\", $tags=\"Element+Software System\")\n" +
+                "\n" +
+                "\n" +
+                "SHOW_LEGEND()\n" +
+                "@enduml", diagram.getDefinition());
+    }
+
+    @Test
+    public void test_renderDiagramWithNewLineCharacterInElementName() {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getModel().addSoftwareSystem("Software\nSystem");
+
+        SystemLandscapeView view = workspace.getViews().createSystemLandscapeView("key", "Description");
+        view.addDefaultElements();
+
+        Diagram diagram = new C4PlantUMLExporter().export(view);
+        assertEquals("@startuml\n" +
+                "title System Landscape\n" +
+                "\n" +
+                "top to bottom direction\n" +
+                "\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml\n" +
+                "!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml\n" +
+                "\n" +
+                "System(SoftwareSystem, \"Software\\nSystem\", \"\", $tags=\"Element+Software System\")\n" +
                 "\n" +
                 "\n" +
                 "SHOW_LEGEND()\n" +

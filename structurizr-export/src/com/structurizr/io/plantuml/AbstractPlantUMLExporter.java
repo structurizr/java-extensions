@@ -5,65 +5,22 @@ import com.structurizr.io.IndentingWriter;
 import com.structurizr.model.*;
 import com.structurizr.util.StringUtils;
 import com.structurizr.view.DynamicView;
-import com.structurizr.view.RelationshipStyle;
 import com.structurizr.view.Shape;
 import com.structurizr.view.View;
 
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.format;
 
 public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
 
+    public static final String PLANTUML_TITLE_PROPERTY = "plantuml.title";
+    public static final String PLANTUML_LEGEND_PROPERTY = "plantuml.legend";
+    public static final String PLANTUML_INCLUDES_PROPERTY = "plantuml.includes";
+    public static final String PLANTUML_SEQUENCE_DIAGRAMS_PROPERTY = "plantuml.sequenceDiagrams";
+
     private final Map<String, String> skinParams = new LinkedHashMap<>();
-    private final List<String> includes = new ArrayList<>();
-
-    private boolean useSequenceDiagrams = false;
-    private boolean includeTitle = true;
-
-    public List<String> getIncludes() {
-        return includes;
-    }
-
-    public void addIncludeFile(String file) {
-        addIncludeFile(file, null);
-    }
-
-    public void addIncludeFile(String file, int id) {
-        addIncludeFile(file, String.valueOf(id));
-    }
-
-    public void addIncludeFile(String file, String id) {
-        if (id==null) {
-            includes.add(format("!include %s", file));
-        } else {
-            includes.add(format("!include %s!%s", file, id));
-        }
-    }
-
-    public void addIncludeURL(URI file) {
-        addIncludeURL(file, null);
-    }
-
-    public void addIncludeURL(URI file, int id) {
-        addIncludeURL(file, String.valueOf(id));
-    }
-
-    public void addIncludeURL(URI file, String id) {
-        if (id==null) {
-            includes.add(format("!includeurl %s", file));
-        } else {
-            includes.add(format("!includeurl %s!%s", file, id));
-        }
-    }
-
-    public void clearIncludes() {
-        includes.clear();
-    }
 
     protected Map<String, String> getSkinParams() {
         return skinParams;
@@ -75,22 +32,6 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
 
     public void clearSkinParams() {
         skinParams.clear();
-    }
-
-    public boolean isUseSequenceDiagrams() {
-        return useSequenceDiagrams;
-    }
-
-    public void setUseSequenceDiagrams(boolean useSequenceDiagrams) {
-        this.useSequenceDiagrams = useSequenceDiagrams;
-    }
-
-    public boolean isIncludeTitle() {
-        return includeTitle;
-    }
-
-    public void setIncludeTitle(boolean includeTitle) {
-        this.includeTitle = includeTitle;
     }
 
     String plantUMLShapeOf(View view, Element element) {
@@ -218,15 +159,19 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
         return s.replaceAll("\\W", "");
     }
 
+    protected boolean includeTitle(View view) {
+        return "true".equalsIgnoreCase(view.getViewSet().getConfiguration().getProperties().getOrDefault(PLANTUML_TITLE_PROPERTY, "true"));
+    }
+
+    protected boolean useSequenceDiagrams(View view) {
+        return "true".equalsIgnoreCase(view.getViewSet().getConfiguration().getProperties().getOrDefault(PLANTUML_SEQUENCE_DIAGRAMS_PROPERTY, "false"));
+    }
+
     @Override
     protected void writeHeader(View view, IndentingWriter writer) {
         writer.writeLine("@startuml");
 
-        for (String include : includes) {
-            writer.writeLine(include);
-        }
-
-        if (includeTitle) {
+        if (includeTitle(view)) {
             String viewTitle = view.getTitle();
             if (StringUtils.isNullOrEmpty(viewTitle)) {
                 viewTitle = view.getName();
@@ -236,7 +181,7 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
 
         writer.writeLine();
 
-        if (view instanceof DynamicView && isUseSequenceDiagrams()) {
+        if (view instanceof DynamicView && useSequenceDiagrams(view)) {
             // do nothing
         } else {
             if (view.getAutomaticLayout() != null) {
@@ -263,6 +208,16 @@ public abstract class AbstractPlantUMLExporter extends AbstractDiagramExporter {
             }
             writer.outdent();
             writer.writeLine("}");
+        }
+    }
+
+    protected void writeIncludes(View view, IndentingWriter writer) {
+        String[] includes = view.getViewSet().getConfiguration().getProperties().getOrDefault(PLANTUML_INCLUDES_PROPERTY, "").split(",");
+        for (String include : includes) {
+            if (!StringUtils.isNullOrEmpty(include)) {
+                include = include.trim();
+                writer.writeLine("!include " + include);
+            }
         }
     }
 

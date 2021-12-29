@@ -55,7 +55,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer) {
+    protected void startEnterpriseBoundary(View view, String enterpriseName, IndentingWriter writer) {
         writer.writeLine("subgraph enterprise [" + enterpriseName + "]");
         writer.indent();
         writer.writeLine("style enterprise fill:#ffffff,stroke:#444444,color:#444444");
@@ -63,7 +63,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void endEnterpriseBoundary(IndentingWriter writer) {
+    protected void endEnterpriseBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("end");
         writer.writeLine();
@@ -94,7 +94,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void endGroupBoundary(IndentingWriter writer) {
+    protected void endGroupBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("end");
         writer.writeLine();
@@ -116,7 +116,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void endSoftwareSystemBoundary(IndentingWriter writer) {
+    protected void endSoftwareSystemBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("end");
         writer.writeLine();
@@ -146,7 +146,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void endContainerBoundary(IndentingWriter writer) {
+    protected void endContainerBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("end");
         writer.writeLine();
@@ -163,7 +163,7 @@ public class MermaidDiagramExporter extends AbstractDiagramExporter {
     }
 
     @Override
-    protected void endDeploymentNodeBoundary(IndentingWriter writer) {
+    protected void endDeploymentNodeBoundary(View view, IndentingWriter writer) {
         writer.outdent();
         writer.writeLine("end");
         writer.writeLine();

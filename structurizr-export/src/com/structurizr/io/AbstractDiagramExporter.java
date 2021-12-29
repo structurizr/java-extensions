@@ -121,7 +121,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
                 enterpriseName = view.getModel().getEnterprise().getName();
             }
 
-            startEnterpriseBoundary(enterpriseName, writer);
+            startEnterpriseBoundary(view, enterpriseName, writer);
 
             List<GroupableElement> elementsInsideEnterpriseBoundary = new ArrayList<>();
             for (ElementView elementView : view.getElements()) {
@@ -134,7 +134,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
             }
             writeElements(view, elementsInsideEnterpriseBoundary, writer);
 
-            endEnterpriseBoundary(writer);
+            endEnterpriseBoundary(view, writer);
 
             List<GroupableElement> elementsOutsideEnterpriseBoundary = new ArrayList<>();
             for (ElementView elementView : view.getElements()) {
@@ -214,7 +214,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
             writeElements(view, scopedElements, writer);
 
             if (showSoftwareSystemBoundary) {
-                endSoftwareSystemBoundary(writer);
+                endSoftwareSystemBoundary(view, writer);
             } else {
                 writer.writeLine();
             }
@@ -276,7 +276,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
             writeElements(view, scopedElements, writer);
 
             if (showContainerBoundary) {
-                endContainerBoundary(writer);
+                endContainerBoundary(view, writer);
             } else {
                 writer.writeLine();
             }
@@ -340,7 +340,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
                     }
 
                     if (showSoftwareSystemBoundary) {
-                        endSoftwareSystemBoundary(writer);
+                        endSoftwareSystemBoundary(view, writer);
                     } else {
                         writer.writeLine();
                     }
@@ -370,7 +370,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
                     }
 
                     if (showContainerBoundary) {
-                        endContainerBoundary(writer);
+                        endContainerBoundary(view, writer);
                     } else {
                         writer.writeLine();
                     }
@@ -461,7 +461,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
             }
         }
 
-        endDeploymentNodeBoundary(writer);
+        endDeploymentNodeBoundary(view, writer);
     }
 
     protected void writeElements(View view, List<GroupableElement> elements, IndentingWriter writer) {
@@ -489,7 +489,7 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
                 }
             }
 
-            endGroupBoundary(writer);
+            endGroupBoundary(view, writer);
         }
 
         // then render ungrouped elements
@@ -517,20 +517,20 @@ public abstract class AbstractDiagramExporter extends AbstractExporter {
     protected abstract void writeHeader(View view, IndentingWriter writer);
     protected abstract void writeFooter(View view, IndentingWriter writer);
 
-    protected abstract void startEnterpriseBoundary(String enterpriseName, IndentingWriter writer);
-    protected abstract void endEnterpriseBoundary(IndentingWriter writer);
+    protected abstract void startEnterpriseBoundary(View view, String enterpriseName, IndentingWriter writer);
+    protected abstract void endEnterpriseBoundary(View view, IndentingWriter writer);
 
     protected abstract void startGroupBoundary(View view, String group, IndentingWriter writer);
-    protected abstract void endGroupBoundary(IndentingWriter writer);
+    protected abstract void endGroupBoundary(View view, IndentingWriter writer);
 
     protected abstract void startSoftwareSystemBoundary(View view, SoftwareSystem softwareSystem, IndentingWriter writer);
-    protected abstract void endSoftwareSystemBoundary(IndentingWriter writer);
+    protected abstract void endSoftwareSystemBoundary(View view, IndentingWriter writer);
 
     protected abstract void startContainerBoundary(View view, Container container, IndentingWriter writer);
-    protected abstract void endContainerBoundary(IndentingWriter writer);
+    protected abstract void endContainerBoundary(View view, IndentingWriter writer);
 
     protected abstract void startDeploymentNodeBoundary(DeploymentView view, DeploymentNode deploymentNode, IndentingWriter writer);
-    protected abstract void endDeploymentNodeBoundary(IndentingWriter writer);
+    protected abstract void endDeploymentNodeBoundary(View view, IndentingWriter writer);
 
     protected abstract void writeElement(View view, Element element, IndentingWriter writer);
     protected abstract void writeRelationship(View view, RelationshipView relationshipView, IndentingWriter writer);

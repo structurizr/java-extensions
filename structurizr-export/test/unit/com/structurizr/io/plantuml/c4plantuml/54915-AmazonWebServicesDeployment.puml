@@ -3,36 +3,36 @@ title Spring PetClinic - Deployment - Default
 
 left to right direction
 
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 
-Deployment_Node(Default.AmazonWebServices, "Amazon Web Services") {
-  Deployment_Node(Default.AmazonWebServices.USEast1, "US-East-1") {
-    Deployment_Node(Default.AmazonWebServices.USEast1.AmazonRDS, "Amazon RDS") {
-      Deployment_Node(Default.AmazonWebServices.USEast1.AmazonRDS.MySQL, "MySQL") {
-        ContainerDb(Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1, "Database", "Relational database schema", "Stores information regarding the veterinarians, the clients, and their pets.")
+Deployment_Node(Default.AmazonWebServices, "Amazon Web Services", $tags="Element+Deployment Node+Amazon Web Services - Cloud") {
+  Deployment_Node(Default.AmazonWebServices.USEast1, "US-East-1", $tags="Element+Deployment Node+Amazon Web Services - Region") {
+    Deployment_Node(Default.AmazonWebServices.USEast1.AmazonRDS, "Amazon RDS", $tags="Element+Deployment Node+Amazon Web Services - RDS") {
+      Deployment_Node(Default.AmazonWebServices.USEast1.AmazonRDS.MySQL, "MySQL", $tags="Element+Deployment Node+Amazon Web Services - RDS MySQL instance") {
+        ContainerDb(Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1, "Database", "Relational database schema", "Stores information regarding the veterinarians, the clients, and their pets.", $tags="Element+Container+Database+Container Instance")
       }
 
     }
 
-    Deployment_Node(Default.AmazonWebServices.USEast1.Autoscalinggroup, "Autoscaling group") {
-      Deployment_Node(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2, "Amazon EC2") {
-        Container(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, "Web Application", "Java and Spring Boot", "Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.")
+    Deployment_Node(Default.AmazonWebServices.USEast1.Autoscalinggroup, "Autoscaling group", $tags="Element+Deployment Node+Amazon Web Services - Auto Scaling") {
+      Deployment_Node(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2, "Amazon EC2", $tags="Element+Deployment Node+Amazon Web Services - EC2") {
+        Container(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, "Web Application", "Java and Spring Boot", "Allows employees to view and manage information regarding the veterinarians, the clients, and their pets.", $tags="Element+Container+Spring Boot Application+Container Instance")
       }
 
     }
 
-    Deployment_Node(Default.AmazonWebServices.USEast1.ElasticLoadBalancer, "Elastic Load Balancer")
-    Deployment_Node(Default.AmazonWebServices.USEast1.Route53, "Route 53")
+    Deployment_Node(Default.AmazonWebServices.USEast1.ElasticLoadBalancer, "Elastic Load Balancer", $tags="Element+Infrastructure Node+Amazon Web Services - Elastic Load Balancing")
+    Deployment_Node(Default.AmazonWebServices.USEast1.Route53, "Route 53", $tags="Element+Infrastructure Node+Amazon Web Services - Route 53")
   }
 
 }
 
-Rel_D(Default.AmazonWebServices.USEast1.Route53, Default.AmazonWebServices.USEast1.ElasticLoadBalancer, "Forwards requests to", "HTTPS")
-Rel_D(Default.AmazonWebServices.USEast1.ElasticLoadBalancer, Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, "Forwards requests to", "HTTPS")
-Rel_D(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1, "Reads from and writes to", "JDBC/SSL")
+Rel_D(Default.AmazonWebServices.USEast1.Route53, Default.AmazonWebServices.USEast1.ElasticLoadBalancer, "Forwards requests to", "HTTPS", $tags="Relationship+Synchronous")
+Rel_D(Default.AmazonWebServices.USEast1.ElasticLoadBalancer, Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, "Forwards requests to", "HTTPS", $tags="Relationship+Synchronous")
+Rel_D(Default.AmazonWebServices.USEast1.Autoscalinggroup.AmazonEC2.WebApplication_1, Default.AmazonWebServices.USEast1.AmazonRDS.MySQL.Database_1, "Reads from and writes to", "JDBC/SSL", $tags="Relationship+Synchronous")
 
 SHOW_LEGEND()
 @enduml
