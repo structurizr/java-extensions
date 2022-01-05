@@ -1,7 +1,6 @@
 dependencies {
     compile project(':structurizr-adr-tools')
     compile project(':structurizr-annotations')
-    compile project(':structurizr-export')
     compile project(':structurizr-graphviz')
     compile project(':structurizr-spring')
 
