@@ -136,7 +136,7 @@ public class SourceCodeComponentFinderStrategy implements ComponentFinderStrateg
         }
         finally {
             System.setOut(outOriginal);
-            System.setOut(errOriginal);
+            System.setErr(errOriginal);
         }
     }
 
