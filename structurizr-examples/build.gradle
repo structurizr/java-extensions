@@ -1,6 +1,5 @@
 dependencies {
     compile project(':structurizr-annotations')
-    compile project(':structurizr-graphviz')
     compile project(':structurizr-spring')
 
     compile 'com.structurizr:structurizr-client:1.9.6'
