@@ -11,7 +11,6 @@ Name                                                  | Description
 ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------
 com.structurizr:structurizr-analysis:1.3.5            | Provides analysis capabilities, using reflection on compiled bytecode to find components.
 com.structurizr:structurizr-annotations:1.3.5         | A very small, standalone, library that allows you to add software architecture hints into your own code.
-com.structurizr:structurizr-graphviz:1.4.0            | Applies the Graphviz automatic layout algorithm to the views in a Structurizr workspace.
 com.structurizr:structurizr-spring:1.3.5              | Extends structurizr-analysis to help find Spring components that correspond to Java types annotated ```@Controller```, ```@RestController```, ```@Component```, ```@Service``` and ```@Repository```, plus those that extend ```JpaRepository```.
 
 * Extracting software architecture information from code

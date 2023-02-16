@@ -2,7 +2,6 @@ rootProject.name = 'structurizr'
 
 include 'structurizr-analysis'
 include 'structurizr-annotations'
-include 'structurizr-graphviz'
 include 'structurizr-diff'
 include 'structurizr-examples'
 include 'structurizr-spring'
